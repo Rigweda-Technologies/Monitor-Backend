@@ -1,0 +1,17 @@
+{
+  "name": "monitor-backend",
+  "private": true,
+  "scripts": {
+    "start": "node scripts/run.mjs",
+    "local": "node scripts/run.mjs all local",
+    "server": "node scripts/run.mjs all server",
+    "all:local": "node scripts/run.mjs all local",
+    "all:server": "node scripts/run.mjs all server",
+    "hrms:local": "node scripts/run.mjs hrms local",
+    "hrms:server": "node scripts/run.mjs hrms server",
+    "desktop:local": "node scripts/run.mjs desktop local",
+    "desktop:server": "node scripts/run.mjs desktop server",
+    "setup": "npm ci --prefix hrms/back-end && npm ci --prefix desktop/backend",
+    "test": "npm test --prefix hrms/back-end && npm test --prefix desktop/backend"
+  }
+}

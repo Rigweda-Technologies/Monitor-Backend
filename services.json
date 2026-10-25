@@ -1,0 +1,39 @@
+{
+  "default": "all",
+  "services": {
+    "all": [
+      {
+        "label": "HRMS API",
+        "cwd": "hrms/back-end",
+        "args": [
+          "app.js"
+        ]
+      },
+      {
+        "label": "Monitor API",
+        "cwd": "desktop/backend",
+        "args": [
+          "src/server.js"
+        ]
+      }
+    ],
+    "hrms": [
+      {
+        "label": "HRMS API",
+        "cwd": "hrms/back-end",
+        "args": [
+          "app.js"
+        ]
+      }
+    ],
+    "desktop": [
+      {
+        "label": "Monitor API",
+        "cwd": "desktop/backend",
+        "args": [
+          "src/server.js"
+        ]
+      }
+    ]
+  }
+}
