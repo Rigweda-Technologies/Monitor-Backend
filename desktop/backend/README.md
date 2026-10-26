@@ -165,3 +165,7 @@ retention policy after deploying the new upload flow.
 ```sh
 node --test hrms/back-end/tests/screenshotSignedDelivery.test.js hrms/back-end/tests/screenshotAssetVerification.test.js desktop/backend/tests/cloudinarySecrets.test.js
 ```
+
+## V2 engineering guidance
+
+See [service-specific v2 guidance](docs/engineering/README.md) for architecture, API inventory, database requirements, testing and migration. V2 is planned as a separate implementation; existing application code and commands are unchanged.

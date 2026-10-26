@@ -25,3 +25,11 @@ Start `npm run local` separately in Monitor-Frontend and Monitor-Agent to connec
 Deploy HRMS with root `hrms/back-end`, and monitor ingestion with root `desktop/backend`. Keep both deployment services; this migration does not merge their HTTP APIs.
 
 See [ENVIRONMENTS.md](ENVIRONMENTS.md), [migration inventory](docs/MIGRATION.md), and [verification](docs/VERIFICATION.md). Existing app READMEs and historical monorepo docs are preserved.
+
+## Engineering standards and code generation
+
+Start with [engineering guidance](docs/engineering/README.md) for the handbook-derived standards, repository constraints, open decisions and reusable feature/release templates. Coding agents should read [AGENTS.md](AGENTS.md). These documents describe the proposed baseline; they do not imply CI or deployment controls are already implemented.
+
+## V2 API direction
+
+A separate Node.js/Fastify v2 with Prisma for PostgreSQL is specified in [V2-API-SPEC.md](docs/engineering/V2-API-SPEC.md). It retains existing databases and leaves v1 untouched. V2 code and startup commands are not implemented yet; the commands above continue to run v1.
