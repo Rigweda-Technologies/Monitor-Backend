@@ -4,9 +4,9 @@ Date: 26 October 2026. User-selected target: **production branch, Ubuntu EC2, Do
 
 ## Goal and architecture
 
-Run genuine quality gates on pull requests and branch pushes. Only a successful `production` push may publish/deploy. Use a dedicated restricted SSH identity and pinned host key to stream the validated Docker image to Ubuntu. Deploy by a commit-specific tag with a verified source-revision label, never a floating tag. This replaces the initial OIDC/ECR/SSM proposal because the supplied access is SSH and the instance has no IAM role.
+Run genuine quality gates on pull requests and branch pushes. Only a successful `production` push may publish/deploy. Run the deploy job on a dedicated EC2 self-hosted runner in an organization runner group restricted to this repository and the production workflow. The runner uses a root-owned, argument-validating receiver through a limited sudo rule. Deploy by a commit-specific tag with a verified source-revision label, never a floating tag. This replaces the initial OIDC/ECR/SSM proposal because the supplied instance has no IAM role and GitHub-hosted runner egress cannot reliably reach its SSH port.
 
-The production job uses a GitHub environment named `hrms-production`. Environment variables supply EC2 host, restricted user and pinned host identity; a dedicated secret supplies its SSH key. Operators provision those resources and the instance configuration; no real credentials or AWS changes are needed to implement/test this repository change.
+The production job uses a GitHub environment named `hrms-production`, restricted to the `production` branch. The organization runner group restricts access to the `Monitor-Backend` repository and `.github/workflows/hrms-production.yml@refs/heads/production`. The runner is an unprivileged system service; its only sudo permission is the root-owned deployment receiver. A separate restricted SSH account remains available for operator recovery. Do not expose the production runner to pull-request or arbitrary workflow jobs.
 
 ## Quality gates
 
@@ -20,7 +20,7 @@ The production job uses a GitHub environment named `hrms-production`. Environmen
 
 ## Deployment behavior
 
-After all gates pass, load the image artifact built by the quality job, verify its commit-specific tag and source revision label, then stream the archive to the restricted instance receiver. The receiver and deployment script are root-owned, operator-installed files. Serialize production deployments and acquire an instance lock. Keep an existing container for rollback, stop it before starting the replacement on the configured port, and verify `/ready` before recording success. This single-instance process has a short interruption; it is not zero-downtime or database rollback.
+After all gates pass, download the same-run image artifact on the restricted EC2 runner and stream the archive to the local root-owned receiver. The receiver and deployment script are operator-installed files. Serialize production deployments and acquire an instance lock. Keep an existing container for rollback, stop it before starting the replacement on the configured port, and verify `/ready` before recording success. This single-instance process has a short interruption; it is not zero-downtime or database rollback.
 
 Production environment variables live in a protected instance-local file, not in the image or GitHub artifact. Do not run automatic schema migrations or cleanup scripts. Existing application startup side effects remain a deployment consideration. Container rollback cannot undo database changes, bootstrap writes or external effects.
 

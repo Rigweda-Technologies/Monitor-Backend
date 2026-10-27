@@ -85,7 +85,9 @@ jobs:
     name: Deploy HRMS to EC2
     needs: quality
     if: github.ref == 'refs/heads/production' && github.event_name != 'pull_request' && needs.quality.result == 'success'
-    runs-on: ubuntu-24.04
+    runs-on:
+      group: hrms-production-deployment
+      labels: [self-hosted, linux, x64, hrms-production]
     timeout-minutes: 30
     environment: hrms-production
     concurrency:
@@ -94,19 +96,11 @@ jobs:
     permissions:
       contents: read
     env:
-      EC2_HOST: ${{ vars.EC2_HOST }}
-      EC2_USER: ${{ vars.EC2_USER }}
-      EC2_SSH_KNOWN_HOSTS: ${{ vars.EC2_SSH_KNOWN_HOSTS }}
       SOURCE_SHA: ${{ github.sha }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
-      - name: Validate deployment configuration
-        run: |
-          [[ "$EC2_HOST" =~ ^[a-zA-Z0-9.-]+$ ]]
-          [[ "$EC2_USER" =~ ^[a-z_][a-z0-9_-]*$ ]]
-          test -n "$EC2_SSH_KNOWN_HOSTS"
       - name: Refuse superseded production commits
         env:
           GH_TOKEN: ${{ github.token }}
@@ -117,31 +111,13 @@ jobs:
         with:
           name: hrms-image-${{ github.sha }}
           path: ${{ runner.temp }}/hrms-image
-      - name: Prepare restricted deployment key and pinned host identity
-        env:
-          EC2_SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-        run: |
-          test -n "$EC2_SSH_PRIVATE_KEY"
-          umask 077
-          printf '%s\n' "$EC2_SSH_PRIVATE_KEY" > "$RUNNER_TEMP/hrms-deploy-key"
-          printf '%s\n' "$EC2_SSH_KNOWN_HOSTS" > "$RUNNER_TEMP/hrms-known-hosts"
-      - name: Transfer validated image and verify readiness
+      - name: Deploy validated image and verify readiness
         run: |
           archive="$RUNNER_TEMP/hrms-image/hrms-image.tar.gz"
-          gzip -dc "$archive" | docker load
           image_ref="hrms-backend:$SOURCE_SHA"
-          image_revision=$(docker image inspect --format '{{index .Config.Labels "org.opencontainers.image.revision"}}' "$image_ref")
-          test "$image_revision" = "$SOURCE_SHA"
-          ssh -T -i "$RUNNER_TEMP/hrms-deploy-key" \
-            -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
-            -o "UserKnownHostsFile=$RUNNER_TEMP/hrms-known-hosts" \
-            -o ConnectTimeout=15 -o ServerAliveInterval=15 -o ServerAliveCountMax=4 \
-            "$EC2_USER@$EC2_HOST" "deploy $image_ref $SOURCE_SHA" < "$archive"
+          cat "$archive" | sudo -n /usr/local/sbin/hrms-ci-receive "deploy $image_ref $SOURCE_SHA"
           {
             echo "Source: $SOURCE_SHA"
             echo "Docker image reference: $image_ref"
-            echo "Instance host: $EC2_HOST"
+            echo "Runner: $RUNNER_NAME"
           } >> "$GITHUB_STEP_SUMMARY"
-      - name: Remove temporary SSH key
-        if: always()
-        run: rm -f "$RUNNER_TEMP/hrms-deploy-key" "$RUNNER_TEMP/hrms-known-hosts"

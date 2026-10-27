@@ -6,7 +6,7 @@ This pipeline deploys the **existing Express HRMS API**, not v2. The user select
 
 Every PR runs the required `HRMS quality gates` job, without deployment credentials. Pushes to `production` and manual runs on `production` also deploy after that job succeeds. Other manual branches only validate. There are no path filters that silently omit a required check.
 
-Gates: locked install, ESLint, JavaScript type checking, production npm audit (high/critical block), HRMS and coupled desktop tests with isolated PostgreSQL and zero skips, deployment regression tests, and Docker build. The deploy job consumes the exact image archive built by the quality job, streams it over pinned-host SSH and uses its commit-tagged image for deployment. A superseded production commit is rejected before publishing. GitHub serializes deploy jobs; the instance script also takes a lock.
+Gates: locked install, ESLint, JavaScript type checking, production npm audit (high/critical block), HRMS and coupled desktop tests with isolated PostgreSQL and zero skips, deployment regression tests, and Docker build. The deploy job runs on the EC2 self-hosted runner, consumes the exact image archive built by the quality job and invokes the root-owned receiver through a narrow sudo rule. A superseded production commit is rejected before publishing. GitHub serializes deploy jobs; the instance script also takes a lock.
 
 Type checking currently records 243 known legacy diagnostics across 248 source files. `npm run typecheck` rejects changes to this baseline; `npm run typecheck:strict` exposes all debt and currently fails. CI never regenerates the baseline. Adding/removing entries requires code review; fix diagnostics and remove their entries rather than suppressing new errors. The existing overwritten Swagger `paths` key has one documented lint exception to preserve the current exported contract. Formatting and full TypeScript strictness are not claimed.
 
@@ -14,10 +14,13 @@ Type checking currently records 243 known legacy diagnostics across 248 source f
 
 - Repository: `Rigweda-Technologies/Monitor-Backend`; deployment branch: `production`.
 - EC2: `i-09702b28362fdda43`, Hyderabad (`ap-south-2`), Ubuntu x86_64, `16.113.19.189`.
-- Transport: SSH image streaming using a dedicated restricted key. This was selected after inspection found no instance IAM role; the user's personal key is not stored in GitHub.
+- Runner: dedicated systemd self-hosted runner on this EC2 instance, registered to the organization group `hrms-production-deployment`.
+- Runner group: selected repository `Monitor-Backend`, restricted to `.github/workflows/hrms-production.yml@refs/heads/production`. The runner is not available to other repositories or workflows.
 - GitHub environment: `hrms-production`, restricted to the `production` branch.
-- Environment variables: `EC2_HOST`, `EC2_USER`, `EC2_SSH_KNOWN_HOSTS` (public pinned host identity).
-- Environment secret: `EC2_SSH_PRIVATE_KEY`, a separately generated key for `hrms-deploy`.
+- No EC2 SSH key or AWS credential is used by the active deployment workflow. GitHub-hosted quality jobs still produce the image artifact; the runner downloads it over outbound HTTPS.
+- Runner software: GitHub Actions runner `2.338.2`, installed under `/opt/actions-runner`; runner registration is organization scoped and assigned to the restricted group above.
+- Service account: `actions-runner` (no login shell, not in the Docker group). Its only sudo permission is `/usr/local/sbin/hrms-ci-receive` through `/etc/sudoers.d/actions-runner`.
+- systemd unit: `actions.runner.Rigweda-Technologies.hrms-ec2-ap-south-2.service`, enabled at boot.
 - Instance configuration: `/etc/hrms-backend/runtime.env`, root-owned mode 0600.
 - Containers: `hrms-backend`, with `hrms-backend-previous` retained for rollback.
 
@@ -31,21 +34,24 @@ Firebase's multiline private key is represented as escaped newlines in Docker's 
 
 The container forces `NODE_ENV=production` and `PORT=8000`; no `.env` enters the image. V1 bootstrap and permission synchronization can write on startup. Verify existing accounts and data; the pipeline does not automatically run migration/cleanup commands. Existing v1 PostgreSQL `require` mode encrypts transport but does not validate the server certificate; verified Aiven CA handling is separate hardening, not claimed here.
 
-`hrms-deploy` is not a Docker-group member. Its authorized key uses `restrict` and a forced root-owned entrypoint. It accepts only `deploy sha256:<64 hex> <40-character commit>` and a gzipped image archive on stdin. It cannot open an arbitrary SSH shell, use SCP, or forward ports. The sudo rule permits only the root-owned receiver. The receiver validates arguments, locks transfer, loads the image, verifies the source commit in its tag and invokes the root-owned deployment script, which checks the image revision label. Access to this key still authorizes application releases; restrict environment secrets and review production changes.
+The runner runs as its dedicated unprivileged `actions-runner` account, which is not a Docker-group member. Its sudo rule permits only the root-owned receiver. The receiver validates arguments, locks transfer, loads the image, verifies the source commit in its tag and invokes the root-owned deployment script, which checks the image revision label. GitHub's organization runner group limits which repository and workflow can schedule jobs on the instance. Review production changes and keep this group restricted.
+
+The organization group is named `hrms-production-deployment`, allows only repository `Rigweda-Technologies/Monitor-Backend`, and restricts workflow access to `.github/workflows/hrms-production.yml@refs/heads/production`. The deploy job must select that group and the `hrms-production` runner label. If the workflow path or production ref changes, update the group restriction before merging; otherwise the deploy job remains queued. Pull request tests continue on GitHub-hosted runners. Do not add the production runner group to other workflows.
+
+The runner service connects outbound to GitHub; no inbound runner port is opened. To inspect it, use `systemctl status actions.runner.Rigweda-Technologies.hrms-ec2-ap-south-2.service` and `journalctl -u actions.runner.Rigweda-Technologies.hrms-ec2-ap-south-2.service`. Re-register with a fresh short-lived organization runner token if GitHub removes it. Remove the runner from the organization and group before uninstalling the service or deleting `/opt/actions-runner`.
 
 Root-owned deployment files:
 
-- `/usr/local/bin/hrms-deploy-entry` from `ssh-entry.sh`
 - `/usr/local/sbin/hrms-ci-receive` from `receive.sh`
 - `/usr/local/sbin/hrms-deploy` from `deploy.sh`
 
-Changes to these helpers require an operator to install the reviewed versions; CI intentionally cannot replace its own privileged receiver through arbitrary commands.
+The runner service and deployment receiver are separate: CI cannot replace the root-owned receiver through arbitrary commands. Changes to these helpers require an operator to install the reviewed versions.
 
 ## Networking
 
 Nginx listens on host port 80 and proxies to Docker's loopback binding `127.0.0.1:8000`. WebSocket forwarding and the 25 MiB body limit are configured in [nginx.conf](nginx.conf). The requested initial endpoint is `http://16.113.19.189`; no HTTPS/domain certificate has been configured.
 
-AWS security groups must allow TCP 80 from intended API clients and TCP 22 from the GitHub deployment runner. The current instance accepts SSH from this workstation; GitHub runner reachability must be verified on the first run. GitHub-hosted runner IP ranges change; a runner with stable egress or a future SSM deployment avoids broad SSH ingress. Restrict port 22 as tightly as the chosen runner setup permits. Docker port 8000 need not be public.
+AWS security groups must allow TCP 80 from intended API clients. The self-hosted runner requires outbound HTTPS to GitHub Actions and artifact storage, Aiven, MongoDB Atlas and application providers. No inbound TCP 22 rule is needed for CI deployment; SSH remains available for operator access according to the existing security-group rule. Docker port 8000 need not be public.
 
 The host firewall is checked separately from AWS security groups. SSH access does not grant permission/API credentials to edit EC2 security groups. If HTTP cannot be reached externally while localhost works, update the AWS inbound rule and verify NACL/routing. Outbound access must reach GitHub image transfer, Aiven, MongoDB Atlas and application providers; database allowlists may also need the instance egress IP.
 
@@ -55,7 +61,7 @@ The `hrms-production` environment has a production-only deployment branch policy
 
 ## Deployment and recovery
 
-The quality job builds the Linux amd64 Docker image and saves it as an immutable same-run Actions artifact. The deployment job loads that artifact to verify its source revision label, then streams the same compressed image to the restricted receiver. There is no server-side Git pull, dependency install or image rebuild.
+The quality job builds the Linux amd64 Docker image and saves it as an immutable same-run Actions artifact. The organization-scoped runner downloads that artifact and streams it to the restricted local receiver, which loads the image and verifies its source commit tag and revision label. There is no server-side Git pull, dependency install or image rebuild.
 
 The instance loads the new image before stopping the current container. It keeps the old container as `hrms-backend-previous`, starts the replacement and polls `/ready` for up to 30 attempts (3-second request timeout, 2-second spacing). A failed start/readiness check removes the replacement, restores the previous container if present, checks recovery and exits nonzero. First deployment has no previous container. This single-instance design has a short interruption; it is not zero-downtime deployment.
 
@@ -85,6 +91,8 @@ docker build -t hrms-ci hrms/back-end
 ## Primary references
 
 - [GitHub OIDC with AWS](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws)
+- [GitHub self-hosted runner groups](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/manage-access)
+- [GitHub runner service setup](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/configure-the-application)
 - [GitHub deployment environments and concurrency](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/control-deployments)
 - [AWS ECR registry authentication](https://docs.aws.amazon.com/AmazonECR/latest/userguide/registry_auth.html)
 - [AWS Run Command status](https://docs.aws.amazon.com/systems-manager/latest/userguide/monitor-commands.html)
