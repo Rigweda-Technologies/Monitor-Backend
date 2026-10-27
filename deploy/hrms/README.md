@@ -21,6 +21,7 @@ Type checking currently records 243 known legacy diagnostics across 248 source f
 - Runner software: GitHub Actions runner `2.338.2`, installed under `/opt/actions-runner`; runner registration is organization scoped and assigned to the restricted group above.
 - Service account: `actions-runner` (no login shell, not in the Docker group). Its only sudo permission is `/usr/local/sbin/hrms-ci-receive` through `/etc/sudoers.d/actions-runner`.
 - systemd unit: `actions.runner.Rigweda-Technologies.hrms-ec2-ap-south-2.service`, enabled at boot.
+- The previous `hrms-deploy` forced-command SSH account remains on the host but is not used by CI. Its GitHub private-key secret and old environment variables have been removed, and its public key was revoked; rekey it before using as a fallback.
 - Instance configuration: `/etc/hrms-backend/runtime.env`, root-owned mode 0600.
 - Containers: `hrms-backend`, with `hrms-backend-previous` retained for rollback.
 
@@ -34,7 +35,7 @@ Firebase's multiline private key is represented as escaped newlines in Docker's 
 
 The container forces `NODE_ENV=production` and `PORT=8000`; no `.env` enters the image. V1 bootstrap and permission synchronization can write on startup. Verify existing accounts and data; the pipeline does not automatically run migration/cleanup commands. Existing v1 PostgreSQL `require` mode encrypts transport but does not validate the server certificate; verified Aiven CA handling is separate hardening, not claimed here.
 
-The runner runs as its dedicated unprivileged `actions-runner` account, which is not a Docker-group member. Its sudo rule permits only the root-owned receiver. The receiver validates arguments, locks transfer, loads the image, verifies the source commit in its tag and invokes the root-owned deployment script, which checks the image revision label. GitHub's organization runner group limits which repository and workflow can schedule jobs on the instance. Review production changes and keep this group restricted.
+The runner runs as its dedicated unprivileged `actions-runner` account, which is not a Docker-group member. Its sudo rule permits only the root-owned receiver. The receiver validates arguments, locks transfer, loads the image, verifies the source commit in its tag and invokes the root-owned deployment script, which checks the image revision label. GitHub's organization runner group limits which repository and workflow can schedule jobs on the instance. Review production changes and keep this group restricted. The old `hrms-deploy` user is an inactive fallback; its previous GitHub private-key secret was deleted and its public key revoked. Install a new restricted key before any fallback use.
 
 The organization group is named `hrms-production-deployment`, allows only repository `Rigweda-Technologies/Monitor-Backend`, and restricts workflow access to `.github/workflows/hrms-production.yml@refs/heads/production`. The deploy job must select that group and the `hrms-production` runner label. If the workflow path or production ref changes, update the group restriction before merging; otherwise the deploy job remains queued. Pull request tests continue on GitHub-hosted runners. Do not add the production runner group to other workflows.
 
