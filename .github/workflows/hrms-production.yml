@@ -59,7 +59,7 @@ jobs:
           bash -n deploy/hrms/deploy.sh
           python3 -m unittest discover -s deploy/hrms/tests -v
       - name: Build deployable image (Linux amd64)
-        run: docker build --pull --tag hrms-backend:${{ github.sha }} hrms/back-end
+        run: docker build --pull --label org.opencontainers.image.revision=${{ github.sha }} --tag hrms-backend:${{ github.sha }} hrms/back-end
       - name: Save validated production image
         if: github.ref == 'refs/heads/production' && github.event_name != 'pull_request'
         run: docker save hrms-backend:${{ github.sha }} | gzip > "$RUNNER_TEMP/hrms-image.tar.gz"
