@@ -22,7 +22,7 @@ elif cmd=='curl':
     code = 1 if os.environ.get('FAIL_HEALTH')=='1' and state.get('hrms-backend')=='new' else 0
 elif cmd=='docker':
     op=args[0]
-    if op=='image' and args[1:3]==['inspect','--format']: print('b'*40)
+    if op=='image' and args[1:3]==['inspect','--format']: os.write(1, b'b'*40+bytes([10]))
     elif op=='image': pass
     elif op=='inspect' and '--format' in args: print('b'*40)
     elif op in ['login','pull']: code=1 if op=='pull' and os.environ.get('FAIL_PULL')=='1' else 0
@@ -38,7 +38,9 @@ elif cmd=='docker':
         state[args[args.index('--name')+1]]='new'
         code=1 if os.environ.get('FAIL_RUN')=='1' else 0
     else: raise Exception(args)
-state_path.write_text(json.dumps(state))
+state_tmp = state_path.with_suffix('.tmp')
+state_tmp.write_text(json.dumps(state))
+state_tmp.replace(state_path)
 sys.exit(code)
 '''
 
