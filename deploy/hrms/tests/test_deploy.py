@@ -38,7 +38,7 @@ elif cmd=='docker':
         state[args[args.index('--name')+1]]='new'
         code=1 if os.environ.get('FAIL_RUN')=='1' else 0
     else: raise Exception(args)
-state_tmp = state_path.with_suffix('.tmp')
+state_tmp = state_path.with_name(state_path.name + '.' + str(os.getpid()) + '.tmp')
 state_tmp.write_text(json.dumps(state))
 state_tmp.replace(state_path)
 sys.exit(code)
