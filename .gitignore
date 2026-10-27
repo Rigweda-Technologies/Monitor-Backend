@@ -356,3 +356,10 @@ dump-*.sql
 !package-lock.json
 !Podfile.lock
 !*.spec
+
+# CI reports and Python deployment-test caches
+hrms/back-end/ci/reports/
+deploy/hrms/tests/__pycache__/
+
+# Keep the HRMS Docker build-context allowlist versioned.
+!hrms/back-end/.dockerignore

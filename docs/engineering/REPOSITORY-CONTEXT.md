@@ -50,3 +50,7 @@ Ownership integration tests use `MONITOR_OWNERSHIP_TEST_URL` pointing to a dispo
 Package manifests inspected for this task do not define format, lint, type-check or build scripts. No tracked GitHub Actions workflow or CODEOWNERS file was found. This does not establish whether remote CI or branch protection exists; remote settings were not inspected. Do not claim these gates are implemented or passing.
 
 TypeScript strictness is conditional on an approved TypeScript adoption scope. The handbook does not mandate a framework replacement; the user has separately selected Fastify and Prisma for a new v2, while leaving v1 unchanged. Coverage targets, scanner severity thresholds, deployment infrastructure and production approvers require decisions in [DECISIONS.md](DECISIONS.md).
+
+## HRMS v1 CI/CD update
+
+The preceding missing-tooling observations describe the original snapshot. The user subsequently authorized v1 CI/CD: HRMS now has lint, JavaScript type-check baseline, no-skip CI tests and production audit commands, a Dockerfile, and a GitHub production workflow. See [the runbook](../../deploy/hrms/README.md) for limits and required infrastructure. Remote branch protections and AWS resources are not established by these files.

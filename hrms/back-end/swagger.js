@@ -507,6 +507,8 @@ module.exports = {
     }
   },
 
+  // Preserve the legacy exported contract; consolidating the earlier paths requires a separate API-doc review.
+  // eslint-disable-next-line no-dupe-keys
   paths: {
     /* ===================== AUTH ===================== */
 

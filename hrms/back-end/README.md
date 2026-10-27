@@ -201,3 +201,7 @@ node --test tests/screenshotAssetVerification.test.js
 ## V2 engineering guidance
 
 See [service-specific v2 guidance](docs/engineering/README.md) for architecture, API inventory, database requirements, testing and migration. V2 is planned as a separate implementation; existing application code and commands are unchanged.
+
+## CI/CD to AWS
+
+The [HRMS v1 pipeline](../../.github/workflows/hrms-production.yml) checks lint, JavaScript type diagnostics, production dependencies, tests and Docker packaging. Green `production` runs deploy a validated Docker image to Ubuntu EC2 through restricted SSH after infrastructure configuration. See the [setup and recovery runbook](../../deploy/hrms/README.md) and [development specification](docs/engineering/CICD-AWS.md).

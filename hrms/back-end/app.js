@@ -141,7 +141,7 @@ app.get("/ready", async (req, res) => {
   const redisEnabled = isRedisEnabled();
   const payrollDbEnabled = isPayrollDbEnabled();
 
-  let redisReady = !redisEnabled;
+  let redisReady = !redisEnabled || isRedisReady();
   if (redisEnabled && !isRedisReady()) {
     const client = await getRedisClient();
     redisReady = Boolean(client && client.status === "ready");

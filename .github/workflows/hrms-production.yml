@@ -1,0 +1,146 @@
+name: HRMS v1 quality and production
+
+on:
+  pull_request:
+  push:
+    branches: [production]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '24'
+
+jobs:
+  quality:
+    name: HRMS quality gates
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci-only-password
+          POSTGRES_DB: hrms_ci
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres -d hrms_ci"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    env:
+      NODE_ENV: test
+      MONITOR_OWNERSHIP_TEST_URL: postgresql://postgres:ci-only-password@127.0.0.1:5432/hrms_ci
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: |
+            hrms/back-end/package-lock.json
+            desktop/backend/package-lock.json
+      - name: Locked dependency installs
+        run: npm run setup
+      - name: Lint (zero warnings)
+        run: npm run lint --prefix hrms/back-end
+      - name: Typecheck (no new legacy diagnostics)
+        run: npm run typecheck --prefix hrms/back-end
+      - name: Production dependency audit
+        run: npm run audit:production --prefix hrms/back-end
+      - name: HRMS tests with real PostgreSQL and no skips
+        run: npm run test:ci --prefix hrms/back-end
+      - name: Coupled desktop regression tests
+        run: node hrms/back-end/ci/run-tests.cjs desktop
+      - name: Deployment regression tests
+        run: |
+          bash -n deploy/hrms/deploy.sh
+          python3 -m unittest discover -s deploy/hrms/tests -v
+      - name: Build deployable image (Linux amd64)
+        run: docker build --pull --tag hrms-backend:${{ github.sha }} hrms/back-end
+      - name: Save validated production image
+        if: github.ref == 'refs/heads/production' && github.event_name != 'pull_request'
+        run: docker save hrms-backend:${{ github.sha }} | gzip > "$RUNNER_TEMP/hrms-image.tar.gz"
+      - name: Store immutable image artifact
+        if: github.ref == 'refs/heads/production' && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: hrms-image-${{ github.sha }}
+          path: ${{ runner.temp }}/hrms-image.tar.gz
+          retention-days: 3
+          compression-level: 0
+          if-no-files-found: error
+      - name: Retain test evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: hrms-test-results-${{ github.run_id }}-${{ github.run_attempt }}
+          path: hrms/back-end/ci/reports/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  deploy:
+    name: Deploy HRMS to EC2
+    needs: quality
+    if: github.ref == 'refs/heads/production' && github.event_name != 'pull_request' && needs.quality.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: hrms-production
+    concurrency:
+      group: hrms-production
+      cancel-in-progress: false
+    permissions:
+      contents: read
+    env:
+      EC2_HOST: ${{ vars.EC2_HOST }}
+      EC2_USER: ${{ vars.EC2_USER }}
+      EC2_SSH_KNOWN_HOSTS: ${{ vars.EC2_SSH_KNOWN_HOSTS }}
+      SOURCE_SHA: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Validate deployment configuration
+        run: |
+          [[ "$EC2_HOST" =~ ^[a-zA-Z0-9.-]+$ ]]
+          [[ "$EC2_USER" =~ ^[a-z_][a-z0-9_-]*$ ]]
+          test -n "$EC2_SSH_KNOWN_HOSTS"
+      - name: Refuse superseded production commits
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          latest=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/production" --jq .object.sha)
+          test "$latest" = "$SOURCE_SHA"
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: hrms-image-${{ github.sha }}
+          path: ${{ runner.temp }}/hrms-image
+      - name: Prepare restricted deployment key and pinned host identity
+        env:
+          EC2_SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+        run: |
+          test -n "$EC2_SSH_PRIVATE_KEY"
+          umask 077
+          printf '%s\n' "$EC2_SSH_PRIVATE_KEY" > "$RUNNER_TEMP/hrms-deploy-key"
+          printf '%s\n' "$EC2_SSH_KNOWN_HOSTS" > "$RUNNER_TEMP/hrms-known-hosts"
+      - name: Transfer validated image and verify readiness
+        run: |
+          archive="$RUNNER_TEMP/hrms-image/hrms-image.tar.gz"
+          gzip -dc "$archive" | docker load
+          image_id=$(docker image inspect --format '{{.Id}}' "hrms-backend:$SOURCE_SHA")
+          [[ "$image_id" =~ ^sha256:[a-f0-9]{64}$ ]]
+          ssh -T -i "$RUNNER_TEMP/hrms-deploy-key" \
+            -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
+            -o "UserKnownHostsFile=$RUNNER_TEMP/hrms-known-hosts" \
+            -o ConnectTimeout=15 -o ServerAliveInterval=15 -o ServerAliveCountMax=4 \
+            "$EC2_USER@$EC2_HOST" "deploy $image_id $SOURCE_SHA" < "$archive"
+          {
+            echo "Source: $SOURCE_SHA"
+            echo "Docker image ID: $image_id"
+            echo "Instance host: $EC2_HOST"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Remove temporary SSH key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/hrms-deploy-key" "$RUNNER_TEMP/hrms-known-hosts"

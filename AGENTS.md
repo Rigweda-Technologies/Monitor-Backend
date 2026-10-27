@@ -22,3 +22,7 @@ These files translate the Rigweda Engineering Standards, Testing & CI/CD Handboo
 - Fastify and Prisma for PostgreSQL are user-selected v2 requirements. Do not introduce NestJS, a message broker, a cloud provider, TypeScript migration or numerical quality targets from handbook examples. JavaScript remains the default.
 - Before implementation, describe the requested behavior and relevant acceptance criteria using the [feature specification template](docs/engineering/templates/FEATURE-SPEC.md) when useful. Do not invent missing business policy.
 - Before reporting completion, run applicable checks and report actual evidence, remaining gaps and migration/recovery implications. Do not claim deployment or organizational approval from local test success.
+
+## Authorized v1 CI/CD exception
+
+The user explicitly authorized HRMS v1 CI/CD work for the `production` branch on Ubuntu EC2/Docker before the v2 migration. This permits the necessary HRMS quality tooling, dependency fixes, readiness correction and deployment files described in [CICD-AWS.md](hrms/back-end/docs/engineering/CICD-AWS.md). It does not authorize a v1 framework/database migration.
