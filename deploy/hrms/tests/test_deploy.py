@@ -22,7 +22,9 @@ elif cmd=='curl':
     code = 1 if os.environ.get('FAIL_HEALTH')=='1' and state.get('hrms-backend')=='new' else 0
 elif cmd=='docker':
     op=args[0]
-    if op=='image': pass
+    if op=='image' and args[1:3]==['inspect','--format']: print('b'*40)
+    elif op=='image': pass
+    elif op=='inspect' and '--format' in args: print('b'*40)
     elif op in ['login','pull']: code=1 if op=='pull' and os.environ.get('FAIL_PULL')=='1' else 0
     elif op=='inspect':
         name=args[-1]
@@ -53,15 +55,44 @@ class DeploymentTests(unittest.TestCase):
                  'HRMS_LOCK_FILE':str(root/'lock'),'HRMS_HEALTH_ATTEMPTS':'2', **overrides}
             result=subprocess.run(['bash',str(SCRIPT),image,'ap-south-1','b'*40],env=env,capture_output=True,text=True)
             return result,json.loads(state_path.read_text())
-    def test_local_image_id_deploys_without_registry(self):
-        result,state=self.run_deploy({'hrms-backend':'old'},image='sha256:'+'a'*64)
+    def test_local_commit_tag_deploys_without_registry(self):
+        result,state=self.run_deploy({'hrms-backend':'old'},image='hrms-backend:'+'b'*40)
         self.assertEqual(result.returncode,0,result.stderr)
         self.assertEqual(state['hrms-backend'],'new')
+    def test_local_commit_tag_must_match_source_revision(self):
+        result,state=self.run_deploy({'hrms-backend':'old'},image='hrms-backend:'+'c'*40)
+        self.assertNotEqual(result.returncode,0)
+        self.assertEqual(state,{'hrms-backend':'old'})
     def test_receiver_rejects_arbitrary_shell_commands(self):
         receiver=SCRIPT.with_name('receive.sh')
-        for command in ['whoami', 'deploy latest bad', 'deploy sha256:'+'a'*64+' '+'b'*40+';id']:
+        for command in ['whoami', 'deploy latest bad', 'deploy sha256:'+'a'*64+' '+'b'*40+';id', 'deploy hrms-backend:'+'a'*40+' '+'b'*40]:
             result=subprocess.run(['bash',str(receiver),command],capture_output=True,text=True)
             self.assertEqual(result.returncode,2)
+    def run_receiver(self, archive, image='hrms-backend:'+'b'*40, revision='b'*40):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);bin_dir=root/'bin';bin_dir.mkdir()
+            state=root/'deploy-args.json';env_file=root/'runtime.env';env_file.write_text('NODE_ENV=production\n')
+            flock=bin_dir/'flock';flock.write_text('#!/bin/sh\nexit 0\n');flock.chmod(0o755)
+            docker=bin_dir/'docker';docker.write_text("#!/usr/bin/env python3\nimport sys\na=sys.argv[1:]\nif a[0]=='load': sys.stdin.buffer.read()\nelif a[:2]==['image','inspect']: pass\nelse: sys.exit(2)\n");docker.chmod(0o755)
+            deploy=bin_dir/'deploy';deploy.write_text("#!/usr/bin/env python3\nimport json,sys\nopen("+repr(str(state))+",'w').write(json.dumps(sys.argv[1:]))\n");deploy.chmod(0o755)
+            env={**os.environ,'PATH':str(bin_dir)+os.pathsep+os.environ['PATH'],'HRMS_RUNTIME_ENV':str(env_file),'HRMS_RECEIVE_LOCK_FILE':str(root/'lock'),'HRMS_DEPLOY_COMMAND':str(deploy)}
+            result=subprocess.run(['bash',str(SCRIPT.with_name('receive.sh')),f'deploy {image} {revision}'],input=archive,capture_output=True,env=env)
+            return result,(json.loads(state.read_text()) if state.exists() else None)
+    def test_receiver_loads_archive_and_invokes_fixed_deployer(self):
+        import gzip
+        archive=gzip.compress(b'docker image archive')
+        result,args=self.run_receiver(archive)
+        self.assertEqual(result.returncode,0,result.stderr.decode())
+        self.assertEqual(args,['hrms-backend:'+'b'*40,'ap-south-2','b'*40])
+    def test_receiver_does_not_deploy_after_corrupt_archive(self):
+        result,args=self.run_receiver(b'not a gzip archive')
+        self.assertNotEqual(result.returncode,0)
+        self.assertIsNone(args)
+    def test_receiver_rejects_source_tag_mismatch(self):
+        import gzip
+        result,args=self.run_receiver(gzip.compress(b'image'),'hrms-backend:'+'a'*40,'b'*40)
+        self.assertEqual(result.returncode,2)
+        self.assertIsNone(args)
     def test_success_retains_previous_container(self):
         result,state=self.run_deploy({'hrms-backend':'old'})
         self.assertEqual(result.returncode,0,result.stderr)

@@ -6,7 +6,7 @@ This pipeline deploys the **existing Express HRMS API**, not v2. The user select
 
 Every PR runs the required `HRMS quality gates` job, without deployment credentials. Pushes to `production` and manual runs on `production` also deploy after that job succeeds. Other manual branches only validate. There are no path filters that silently omit a required check.
 
-Gates: locked install, ESLint, JavaScript type checking, production npm audit (high/critical block), HRMS and coupled desktop tests with isolated PostgreSQL and zero skips, deployment regression tests, and Docker build. The deploy job consumes the exact image archive built by the quality job, streams it over pinned-host SSH and uses its immutable image ID for deployment. A superseded production commit is rejected before publishing. GitHub serializes deploy jobs; the instance script also takes a lock.
+Gates: locked install, ESLint, JavaScript type checking, production npm audit (high/critical block), HRMS and coupled desktop tests with isolated PostgreSQL and zero skips, deployment regression tests, and Docker build. The deploy job consumes the exact image archive built by the quality job, streams it over pinned-host SSH and uses its commit-tagged image for deployment. A superseded production commit is rejected before publishing. GitHub serializes deploy jobs; the instance script also takes a lock.
 
 Type checking currently records 243 known legacy diagnostics across 248 source files. `npm run typecheck` rejects changes to this baseline; `npm run typecheck:strict` exposes all debt and currently fails. CI never regenerates the baseline. Adding/removing entries requires code review; fix diagnostics and remove their entries rather than suppressing new errors. The existing overwritten Swagger `paths` key has one documented lint exception to preserve the current exported contract. Formatting and full TypeScript strictness are not claimed.
 
@@ -31,7 +31,7 @@ Firebase's multiline private key is represented as escaped newlines in Docker's 
 
 The container forces `NODE_ENV=production` and `PORT=8000`; no `.env` enters the image. V1 bootstrap and permission synchronization can write on startup. Verify existing accounts and data; the pipeline does not automatically run migration/cleanup commands. Existing v1 PostgreSQL `require` mode encrypts transport but does not validate the server certificate; verified Aiven CA handling is separate hardening, not claimed here.
 
-`hrms-deploy` is not a Docker-group member. Its authorized key uses `restrict` and a forced root-owned entrypoint. It accepts only `deploy sha256:<64 hex> <40-character commit>` and a gzipped image archive on stdin. It cannot open an arbitrary SSH shell, use SCP, or forward ports. The sudo rule permits only the root-owned receiver. The receiver validates arguments, locks transfer, loads the image, verifies the requested immutable local image ID and invokes the root-owned deployment script. Access to this key still authorizes application releases; restrict environment secrets and review production changes.
+`hrms-deploy` is not a Docker-group member. Its authorized key uses `restrict` and a forced root-owned entrypoint. It accepts only `deploy sha256:<64 hex> <40-character commit>` and a gzipped image archive on stdin. It cannot open an arbitrary SSH shell, use SCP, or forward ports. The sudo rule permits only the root-owned receiver. The receiver validates arguments, locks transfer, loads the image, verifies the source commit in its tag and invokes the root-owned deployment script, which checks the image revision label. Access to this key still authorizes application releases; restrict environment secrets and review production changes.
 
 Root-owned deployment files:
 
@@ -55,7 +55,7 @@ The `hrms-production` environment has a production-only deployment branch policy
 
 ## Deployment and recovery
 
-The quality job builds the Linux amd64 Docker image and saves it as an immutable same-run Actions artifact. The deployment job loads that artifact to obtain its immutable image ID, then streams the same compressed image to the restricted receiver. There is no server-side Git pull, dependency install or image rebuild.
+The quality job builds the Linux amd64 Docker image and saves it as an immutable same-run Actions artifact. The deployment job loads that artifact to verify its source revision label, then streams the same compressed image to the restricted receiver. There is no server-side Git pull, dependency install or image rebuild.
 
 The instance loads the new image before stopping the current container. It keeps the old container as `hrms-backend-previous`, starts the replacement and polls `/ready` for up to 30 attempts (3-second request timeout, 2-second spacing). A failed start/readiness check removes the replacement, restores the previous container if present, checks recovery and exits nonzero. First deployment has no previous container. This single-instance design has a short interruption; it is not zero-downtime deployment.
 

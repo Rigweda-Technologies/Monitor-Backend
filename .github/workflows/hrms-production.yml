@@ -129,16 +129,17 @@ jobs:
         run: |
           archive="$RUNNER_TEMP/hrms-image/hrms-image.tar.gz"
           gzip -dc "$archive" | docker load
-          image_id=$(docker image inspect --format '{{.Id}}' "hrms-backend:$SOURCE_SHA")
-          [[ "$image_id" =~ ^sha256:[a-f0-9]{64}$ ]]
+          image_ref="hrms-backend:$SOURCE_SHA"
+          image_revision=$(docker image inspect --format '{{index .Config.Labels "org.opencontainers.image.revision"}}' "$image_ref")
+          test "$image_revision" = "$SOURCE_SHA"
           ssh -T -i "$RUNNER_TEMP/hrms-deploy-key" \
             -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
             -o "UserKnownHostsFile=$RUNNER_TEMP/hrms-known-hosts" \
             -o ConnectTimeout=15 -o ServerAliveInterval=15 -o ServerAliveCountMax=4 \
-            "$EC2_USER@$EC2_HOST" "deploy $image_id $SOURCE_SHA" < "$archive"
+            "$EC2_USER@$EC2_HOST" "deploy $image_ref $SOURCE_SHA" < "$archive"
           {
             echo "Source: $SOURCE_SHA"
-            echo "Docker image ID: $image_id"
+            echo "Docker image reference: $image_ref"
             echo "Instance host: $EC2_HOST"
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Remove temporary SSH key

@@ -4,9 +4,9 @@ set -Eeuo pipefail
 image=${1:?immutable ECR image required}
 region=${2:?AWS region required}
 revision=${3:?source commit required}
-[[ "$image" =~ ^sha256:[a-f0-9]{64}$ || "$image" =~ ^[0-9]{12}\.dkr\.ecr\.[a-z0-9-]+\.amazonaws\.com/[a-z0-9/_-]+@sha256:[a-f0-9]{64}$ ]] || { echo 'Invalid immutable image reference' >&2; exit 2; }
+[[ "$image" =~ ^sha256:[a-f0-9]{64}$ || "$image" =~ ^hrms-backend:[a-f0-9]{40}$ || "$image" =~ ^[0-9]{12}\.dkr\.ecr\.[a-z0-9-]+\.amazonaws\.com/[a-z0-9/_-]+@sha256:[a-f0-9]{64}$ ]] || { echo 'Invalid immutable image reference' >&2; exit 2; }
 [[ "$region" =~ ^[a-z]{2}-[a-z]+-[0-9]+$ && "$revision" =~ ^[a-f0-9]{40}$ ]] || { echo 'Invalid region or revision' >&2; exit 2; }
-[[ "$image" == sha256:* || "$image" == *".ecr.$region.amazonaws.com/"* ]] || { echo 'Image region mismatch' >&2; exit 2; }
+[[ "$image" == sha256:* || "$image" == "hrms-backend:$revision" || "$image" == *".ecr.$region.amazonaws.com/"* ]] || { echo 'Image reference does not match its source commit' >&2; exit 2; }
 env_file=${HRMS_ENV_FILE:-/etc/hrms-backend/runtime.env}
 lock_file=${HRMS_LOCK_FILE:-/var/lock/hrms-backend-deploy.lock}
 attempts=${HRMS_HEALTH_ATTEMPTS:-30}
@@ -58,6 +58,9 @@ trap 'exit 143' TERM
 registry=${image%%/*}
 if [[ "$image" == sha256:* ]]; then
   docker image inspect "$image" >/dev/null
+elif [[ "$image" == "hrms-backend:$revision" ]]; then
+  image_revision=$(docker image inspect --format '{{index .Config.Labels "org.opencontainers.image.revision"}}' "$image")
+  [[ "$image_revision" == "$revision" ]] || { echo 'Image revision label mismatch' >&2; exit 1; }
 else
   aws ecr get-login-password --region "$region" | docker login --username AWS --password-stdin "$registry" >/dev/null
   docker pull "$image" >/dev/null
