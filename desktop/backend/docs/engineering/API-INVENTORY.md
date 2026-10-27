@@ -2,6 +2,8 @@
 
 Observed registrations: `desktop/backend/src/routes.js`, the five `src/modules/*/*.routes.js` files and `src/routes/agents.js`. All rows are **inventoried only**, not implemented or verified in v2. Full field-level contracts must be extracted from controllers, validators, services and tests before each module is generated.
 
+See the repository [V1 module inventory](../../../../docs/engineering/V1-MODULE-INVENTORY.md) for the combined HRMS and desktop module checklist and supporting modules.
+
 ## Business endpoints
 
 All business endpoints require authenticated HRMS sessions in v2. Preserve business payloads unless a documented versioned change is necessary. The target prefix is `/api/v2` in the independent monitor service.

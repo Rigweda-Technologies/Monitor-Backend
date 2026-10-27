@@ -58,6 +58,8 @@ Keep existing callers, agent endpoints, scheduled tasks, workers and webhook des
 
 “All APIs” includes HRMS modules, authentication/session flows, organization/employee permissions, monitor reads, payroll APIs and monitor ingestion. Include uploads/downloads, webhooks, realtime integration, scheduled jobs and administrative scripts in the dependency inventory where they support API behavior. Do not interpret a health endpoint or partial scaffold as completion.
 
+Use the repository [V1 module inventory](V1-MODULE-INVENTORY.md) as the module-level checklist: 26 HRMS Express route groups (including nested agent and FCM handlers) and 6 desktop Fastify route groups. It also records HRMS modules without standalone route mounts and supporting system behavior. Expand each group into individual endpoints and contracts before implementation; these counts are not endpoint coverage.
+
 Before implementation, enumerate every mounted route and middleware chain from both v1 services. Create a v2 endpoint matrix containing:
 
 | Field | Required evidence |

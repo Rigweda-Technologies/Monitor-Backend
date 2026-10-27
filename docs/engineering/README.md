@@ -11,10 +11,11 @@ The user selected a separate **Node.js + Fastify v2 API**, with **Prisma for Pos
 ## Read order
 
 1. [Repository context](REPOSITORY-CONTEXT.md): services, paths, existing commands and constraints.
-2. [Standards](STANDARDS.md): all 22 handbook sections, their applicability and gates.
-3. [Decision register](DECISIONS.md): current conventions versus unresolved organizational choices.
-4. [Feature specification](templates/FEATURE-SPEC.md): fill in the behavior before generating a feature.
-5. [Review and release evidence](templates/REVIEW-AND-RELEASE.md): record validation and distinct completion gates.
+2. [V1 module inventory](V1-MODULE-INVENTORY.md): registered business APIs and supporting V1 modules to migrate.
+3. [Standards](STANDARDS.md): all 22 handbook sections, their applicability and gates.
+4. [Decision register](DECISIONS.md): current conventions versus unresolved organizational choices.
+5. [Feature specification](templates/FEATURE-SPEC.md): fill in the behavior before generating a feature.
+6. [Review and release evidence](templates/REVIEW-AND-RELEASE.md): record validation and distinct completion gates.
 
 The root [AGENTS.md](../../AGENTS.md) is the entry point for coding agents. HRMS Express v1 routes use `/api/v1`; desktop Fastify v1 route paths remain as registered. Existing [setup](../../README.md), [environments](../../ENVIRONMENTS.md), and service documentation remain relevant. Historical verification reports describe their recorded runs, not current test results.
 

@@ -2,6 +2,8 @@
 
 Source: `hrms/back-end/src/routes/apiV1.js` and `app.js`, updated 27 October 2026. This is a mount-level inventory, not a complete endpoint or field-level contract inventory. HRMS Express v1 mounts now use `/api/v1`; every row is **inventoried only** for v2, which is not implemented.
 
+See the repository [V1 module inventory](../../../../docs/engineering/V1-MODULE-INVENTORY.md) for the combined HRMS and desktop module checklist and supporting modules.
+
 Current HRMS Express routes use `/api/v1`. Update integrations that call HRMS to use this prefix. Proposed v2 routes use `/api/v2` in the independent HRMS service. Expand each router into its HTTP methods, nested paths, middleware, permissions, request/response fields, statuses, data dependencies and tests before implementation.
 
 The previous unversioned HRMS business paths are not retained as aliases. Client base URLs must include `/api/v1` before the server change is released. Operational endpoints (`/`, `/health`, `/ready`, `/metrics`) and Swagger UI remain outside the versioned business API namespace.
