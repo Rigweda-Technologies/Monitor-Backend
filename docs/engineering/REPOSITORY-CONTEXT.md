@@ -4,7 +4,7 @@ Observed from tracked files on 26 October 2026. This is a structural snapshot, n
 
 ## Selected v2 target
 
-The existing code described below is v1 and MUST remain unchanged. The user selected a separate Node.js/Fastify v2 using Prisma for PostgreSQL and preserving existing databases. MongoDB continues through Mongoose. See [V2-API-SPEC.md](V2-API-SPEC.md) for isolation, compatibility, migration gates and proposed directories. V2 is specified, not implemented. Existing commands below run v1 only.
+The existing code described below is v1. HRMS Express routes use `/api/v1`; desktop Fastify v1 routes retain their existing paths. Keep v1 behavior and service lifecycle stable while allowing the explicitly requested HRMS URL prefix and required client URL updates. The user selected a separate Node.js/Fastify v2 using Prisma for PostgreSQL and preserving existing databases. MongoDB continues through Mongoose. See [V2-API-SPEC.md](V2-API-SPEC.md) for isolation, compatibility, migration gates and proposed directories. V2 is specified, not implemented. Existing commands below run v1 only.
 
 ## Current v1 services and boundaries
 

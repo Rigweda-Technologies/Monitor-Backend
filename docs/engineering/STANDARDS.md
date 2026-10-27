@@ -6,6 +6,8 @@ Source: Rigweda Engineering Standards, Testing & CI/CD Handbook v1.0, 8 October 
 
 User direction dated 26 October 2026: create a separate Node.js/Fastify v2 using Prisma for PostgreSQL and the existing databases, without touching v1. This is a repository requirement in addition to the proposed handbook baseline. Follow [the v2 specification](V2-API-SPEC.md). Current v1 Express/Fastify and direct PostgreSQL access are historical implementation context, not the target for new v2 code.
 
+User direction dated 27 October 2026: namespace all HRMS Express business API routes under `/api/v1`; desktop Fastify v1 route paths remain unchanged. Update integrations that call HRMS. This explicit URL-prefix change takes precedence over the general existing-route compatibility guidance below. Coordinate deployed clients before releasing the HRMS prefix change.
+
 ## 1. General coding standards
 
 Source: pp. 3-5. Applies to all code changes.

@@ -1,13 +1,4 @@
-import { getEnv } from "../config/env.js";
-
-const buildHrmsApiUrl = (path) => {
-  const baseUrl = getEnv().hrmsBackendUrl.replace(/\/+$/, "");
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  if (baseUrl.endsWith("/api")) {
-    return `${baseUrl}${normalizedPath.startsWith("/api/") ? normalizedPath.slice(4) : normalizedPath}`;
-  }
-  return `${baseUrl}${normalizedPath}`;
-};
+import { buildHrmsApiUrl } from "./hrmsApiUrl.js";
 
 const fetchProfileCandidate = async ({ token, path }) => {
   try {
@@ -33,8 +24,8 @@ const fetchProfileCandidate = async ({ token, path }) => {
 
 export const getEmployeeProfileFromRigweda = async ({ token }) => {
   const attempts = [
-    await fetchProfileCandidate({ token, path: "/api/employees/me" }),
-    await fetchProfileCandidate({ token, path: "/api/users/me/profile" }),
+    await fetchProfileCandidate({ token, path: "/employees/me" }),
+    await fetchProfileCandidate({ token, path: "/users/me/profile" }),
   ];
 
   const success = attempts.find((attempt) => attempt.ok);

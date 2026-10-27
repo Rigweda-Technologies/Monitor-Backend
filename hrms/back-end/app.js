@@ -44,7 +44,6 @@ const shouldExposeMetrics = process.env.ENABLE_HTTP_METRICS === "true" || proces
 // Parse JSON. Document uploads are sent as base64 JSON, which is larger than the original file.
 app.use(express.json({ limit: "25mb" }));
 app.use(express.urlencoded({ extended: true, limit: "25mb" }));
-require("./src/integrations/fcm").mount(app);
 
 const defaultAllowedOrigins = [
   "http://localhost:3000",
@@ -109,6 +108,7 @@ if (process.env.ENABLE_RATE_LIMIT !== "false") {
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./swagger");
 const { initRealtime } = require("./src/realtime/socket");
+const { mountApiV1Routes } = require("./src/routes/apiV1");
 
 if (shouldExposeSwagger) {
   app.use("/swagger-ui", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -165,33 +165,8 @@ if (shouldExposeMetrics) {
   app.get("/metrics", metricsHandler);
 }
 
-// API routes
-app.use("/api/users", require("./src/modules/users/user.routes"));
-app.use("/api/organizations", require("./src/modules/organizations/organization.routes"));
-app.use("/api/roles", require("./src/modules/roles/role.routes"));
-app.use("/api/permissions", require("./src/modules/permissions/permission.routes"));
-app.use("/api/employees", require("./src/modules/employees/employee.routes"));
-app.use("/api/agents", require("./src/modules/agent/agent.routes"));
-app.use("/api/monitor", require("./src/modules/monitorUpdates/monitorUpdates.routes"));
-app.use("/api/departments", require("./src/modules/departments/department.routes"));
-app.use("/api/designations", require("./src/modules/designations/designation.routes"));
-app.use("/api/leave-types", require("./src/modules/leaveTypes/leaveType.routes"));
-app.use("/api/leaves", require("./src/modules/leaves/leave.routes"));
-app.use("/api/holidays", require("./src/modules/holidays/holiday.routes"));
-app.use("/api/week-offs", require("./src/modules/weekOffs/weekOff.routes"));
-app.use("/api/shifts", require("./src/modules/shifts/shift.routes"));
-app.use("/api/approval-flows", require("./src/modules/approvalFlows/approvalFlow.routes"));
-app.use("/api/leave-balances", require("./src/modules/leaveBalances/leaveBalance.routes"));
-app.use("/api/timesheets", require("./src/modules/timesheets/timesheet.routes"));
-app.use("/api/org-settings", require("./src/modules/orgSettings/orgSettings.routes"));
-app.use("/api/organization-documents", require("./src/modules/organizationDocuments/organizationDocuments.routes"));
-app.use("/api/notifications", require("./src/modules/notifications/notification.routes"));
-app.use("/api/expenses", require("./src/modules/expenses/expense.routes"));
-app.use("/api/projects", require("./src/modules/projects/project.routes"));
-app.use("/api/hiring", require("./src/modules/hiring/hiring.routes"));
-app.use("/api/dashboard", require("./src/modules/dashboard/dashboard.routes"));
-app.use("/api/payroll", require("./src/modules/payroll/payrollAttendance.routes"));
-app.use("/api/activity", require("./src/modules/activity/activity.routes"));
+// All existing Express API routes are explicitly versioned as v1.
+mountApiV1Routes(app);
 
 const shouldRunSchedulerInApi = process.env.ENABLE_JOB_SCHEDULER === "true";
 

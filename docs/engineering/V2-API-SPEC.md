@@ -6,7 +6,7 @@ Status: requirements recorded; implementation not started. Date: 26 October 2026
 
 - Create a separate v2 implementation of all backend API capabilities using Node.js and Fastify, following the engineering standards.
 - Use Prisma for PostgreSQL and preserve the existing databases and data.
-- Leave v1 untouched. The user will migrate clients to v2; creating v2 does not authorize switching traffic, retiring v1 or deploying.
+- Leave v1 behavior and implementation otherwise untouched. Existing HRMS Express APIs are explicitly namespaced under `/api/v1`; the desktop Fastify v1 API retains its existing route paths. The user will migrate clients to v2; creating v2 does not authorize switching traffic, retiring v1 or deploying.
 
 This document updates the code-generation target. It is not evidence that any endpoints, Prisma schemas or deployment resources already exist.
 
@@ -48,9 +48,9 @@ This tree is a documentation proposal, not scaffolding. Define the packaging and
 
 ## V1 isolation
 
-Treat `hrms/back-end`, `desktop/backend`, their manifests/lockfiles, environment files, launchers and existing API paths as immutable migration references. Do not upgrade their dependencies, convert their imports, mount v2 inside their servers or change root scripts to redirect their execution. New launch/configuration/test files belong under `v2/`.
+Treat `hrms/back-end` and `desktop/backend` as v1 migration references. HRMS Express routes use `/api/v1`; desktop Fastify routes retain their existing paths. Do not upgrade v1 dependencies, convert imports, mount v2 inside v1 servers or change root scripts to redirect execution. New launch/configuration/test files belong under `v2/`.
 
-V2 must have independent dependency installation, configuration validation, ports and process lifecycle. Assign non-conflicting ports and document them when implementing; do not assume hosted routing exists. Use `/api/v2` as the proposed v2 API namespace and maintain an explicit route mapping. “V1” means the existing APIs even if their URLs do not literally contain `/v1`.
+V2 must have independent dependency installation, configuration validation, ports and process lifecycle. Assign non-conflicting ports and document them when implementing; do not assume hosted routing exists. Use `/api/v2` as the proposed v2 API namespace and maintain an explicit route mapping. HRMS Express v1 uses `/api/v1`; desktop Fastify v1 retains its existing paths.
 
 Keep existing callers, agent endpoints, scheduled tasks, workers and webhook destinations on v1 until explicitly migrated. During coexistence, prevent v1 and v2 from independently running the same scheduled job or processing the same effect twice. Define worker ownership before enabling v2 background processing.
 

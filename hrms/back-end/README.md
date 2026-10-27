@@ -7,10 +7,10 @@ Express API for the multi-tenant HRMS and monitor administration app.
 - Authentication, JWT sessions, role switching, permissions, and active-login limits
 - Organization, role, permission, employee, department, designation, shift, week-off, holiday, leave, attendance, timesheet, document, notification, expense, project, hiring, and dashboard APIs
 - Organization settings, tenant theme, and logo storage
-- Agent APIs under `/api/agents`
-- Monitor read APIs under `/api/activity`
-- Monitor update distribution under `/api/monitor`
-- Optional payroll APIs under `/api/payroll`
+- Agent APIs under `/api/v1/agents`
+- Monitor read APIs under `/api/v1/activity`
+- Monitor update distribution under `/api/v1/monitor`
+- Optional payroll APIs under `/api/v1/payroll`
 - Realtime notifications through Socket.IO
 
 ## Data Stores
@@ -135,10 +135,10 @@ The startup log prints local superadmin credentials when bootstrap runs.
 Settings route:
 
 ```text
-GET  /api/org-settings
-POST /api/org-settings
-GET  /api/org-settings/theme
-POST /api/org-settings/theme
+GET  /api/v1/org-settings
+POST /api/v1/org-settings
+GET  /api/v1/org-settings/theme
+POST /api/v1/org-settings/theme
 ```
 
 Important fields:

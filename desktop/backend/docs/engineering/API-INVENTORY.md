@@ -32,6 +32,8 @@ V1 additionally registers `GET /`, `GET /api/health` and Swagger UI under `/docs
 
 ## Boundaries and tracking
 
+Desktop-to-HRMS profile/session lookups use the HRMS Express v1 namespace `/api/v1`. `HRMS_BACKEND_URL` may be configured as a host, `/api`, or `/api/v1` base; the desktop integration normalizes each form to `/api/v1`.
+
 `monitor_device_health` exists in schema initialization, but no device-health business endpoint is registered in the inspected desktop router. Do not infer an endpoint from its table. Likewise, unused list/helper functions are not automatically public APIs. Inspect HRMS-owned APIs before assigning shared behavior to this service.
 
 For each row record implementation file, request/response schemas, success/error statuses, permissions, persistence, provider effects, tests, versioned differences and client migration status. API coverage is complete only when all rows and their supporting behaviors are verified; this inventory alone is not that evidence.
