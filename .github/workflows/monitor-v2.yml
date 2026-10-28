@@ -195,7 +195,7 @@ jobs:
             --region "$AWS_REGION" \
             --role-arn "$CFN_EXECUTION_ROLE_ARN" \
             --s3-bucket "$ARTIFACT_BUCKET" \
-            --capabilities CAPABILITY_IAM \
+            --capabilities CAPABILITY_NAMED_IAM \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
             --parameter-overrides \
