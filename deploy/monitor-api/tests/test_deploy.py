@@ -168,6 +168,10 @@ class MonitorDeploymentTests(unittest.TestCase):
             template,
         )
 
+    def test_lambda_deployment_acknowledges_named_iam_resources(self):
+        workflow = (ROOT.parents[1] / ".github/workflows/monitor-v2.yml").read_text()
+        self.assertIn("--capabilities CAPABILITY_NAMED_IAM", workflow)
+
 
 if __name__ == "__main__":
     unittest.main()
