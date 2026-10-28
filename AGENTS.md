@@ -14,6 +14,7 @@ These files translate the Rigweda Engineering Standards, Testing & CI/CD Handboo
 - Use functions by default for routes, controllers, services, repositories, hooks and utilities. Explain a concrete benefit before introducing a class.
 - Keep HTTP handling, business rules and persistence separate. Inject external dependencies into testable functions/factories. Follow existing module names and layout.
 - Validate external inputs; derive organization, employee and device ownership from verified authentication and enforce authorization server-side.
+- Every API route created under `v2/` MUST be described in the generated OpenAPI document served through Swagger UI. Add route schemas for summaries, tags, request parameters/body, authentication, success responses and applicable errors; include operational routes too. Add/extend an automated check that confirms each new route appears in OpenAPI.
 - Keep secrets out of code, responses, logs, fixtures and documentation. Do not read or copy local secrets merely to generate code.
 - Use parameterized SQL, business-operation transactions, bounded external-call timeouts and safe retry/idempotency policies.
 - Add meaningful tests for changed business rules, authorization and failure paths. Reproducible bug fixes need a failing regression test before the fix.

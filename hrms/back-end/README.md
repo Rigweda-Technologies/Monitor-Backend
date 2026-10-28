@@ -114,7 +114,7 @@ GET /ready
 GET /metrics
 ```
 
-Swagger is available at `/swagger-ui` unless disabled by production settings.
+Swagger is available at `/swagger-ui` unless disabled by production settings. The UI includes an API selector for HRMS V1 and Monitor V2. HRMS serves its own document at `/openapi/v1.json` and loads the Monitor V2 document from `V2_OPENAPI_SOURCE_URL` (default `http://127.0.0.1:3002/docs/json`), falling back to the generated `src/openapi/monitor-v2.json` snapshot when V2 is stopped. Regenerate the snapshot from `v2/monitor-api` with `npm run openapi:export` after changing V2 routes. For Swagger “Try it out” on V2 routes, start the V2 service and allow the HRMS UI origin in the V2 service's `CORS_ORIGINS` (for local HRMS on port 8000, `http://localhost:8000`).
 
 ## Local Bootstrap
 

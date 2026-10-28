@@ -6,7 +6,7 @@ Use these documents as context for future code generation. They summarize and ad
 
 ## Selected v2 architecture
 
-The user selected a separate **Node.js + Fastify v2 API**, with **Prisma for PostgreSQL** and existing MongoDB persistence retained. HRMS Express APIs now use `/api/v1`; desktop Fastify v1 route paths remain unchanged. Client migration to v2 is user-controlled. Read [the v2 specification](V2-API-SPEC.md) before generating v2 code. This decision supersedes the earlier instruction to preserve the framework stack for all future code; framework preservation applies to v1. No v2 implementation or database migration has run.
+The user selected a separate **Node.js + Fastify v2 API**, with **Prisma for PostgreSQL** and existing MongoDB persistence retained. HRMS Express APIs now use `/api/v1`; desktop Fastify v1 route paths remain unchanged. Client migration to v2 is user-controlled. Read [the v2 specification](V2-API-SPEC.md) before generating v2 code. This decision supersedes the earlier instruction to preserve the framework stack for all future code; framework preservation applies to v1. All eight registered desktop business route paths are implemented under `v2/monitor-api` with OpenAPI schemas and unit/repository/HTTP coverage. Optional isolated-PostgreSQL tests skip unless explicitly configured. No database migration, client cutover or deployment has run.
 
 ## Read order
 

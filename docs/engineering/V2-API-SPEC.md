@@ -1,6 +1,6 @@
 # V2 API migration specification
 
-Status: requirements recorded; implementation not started. Date: 26 October 2026.
+Status: all registered desktop monitor business routes implemented in the independent V2 service; HRMS V2 migration remains in progress. Updated: 27 October 2026.
 
 ## User-selected requirements
 
@@ -8,7 +8,7 @@ Status: requirements recorded; implementation not started. Date: 26 October 2026
 - Use Prisma for PostgreSQL and preserve the existing databases and data.
 - Leave v1 behavior and implementation otherwise untouched. Existing HRMS Express APIs are explicitly namespaced under `/api/v1`; the desktop Fastify v1 API retains its existing route paths. The user will migrate clients to v2; creating v2 does not authorize switching traffic, retiring v1 or deploying.
 
-This document updates the code-generation target. It is not evidence that any endpoints, Prisma schemas or deployment resources already exist.
+This document defines the code-generation target. The current implementation includes all eight business routes listed in `desktop/backend/docs/engineering/API-INVENTORY.md` in `v2/monitor-api`. Unit, repository and HTTP behavior are tested, and every API has an OpenAPI schema. Real isolated-PostgreSQL integration, deployment resources and client migration are not complete.
 
 ## Implementation defaults
 
@@ -77,6 +77,8 @@ The inventory is an implementation deliverable, not completed by this document. 
 ## Fastify implementation requirements
 
 Use function-first route plugins, controllers, services and repositories with explicit dependency injection. Separate application construction from listening so tests can instantiate the application independently. Adapt authentication, validation, error mapping, rate limiting, CORS, multipart uploads, OpenAPI and realtime integration to Fastify while preserving behavior.
+
+Every v2 HTTP route, including health/readiness and other operational routes, MUST include an OpenAPI schema so it appears with a useful summary, tags, request/response contracts and applicable authentication/error details in the generated Swagger documentation. Add or extend an automated OpenAPI test whenever a route is added. Serve the documentation from each independent service and keep its source document scoped to that service's routes. The HRMS Swagger UI may provide a catalog selector for the independent service documents without mounting V2 business routes in HRMS.
 
 Validate and bound untrusted inputs. Verify that response serialization does not omit required fields or leak internal data. Preserve cookie/header behavior, authentication failures, revoked sessions, ownership checks and safe error correlation. Keep secrets out of responses and diagnostic artifacts. Release database clients and background resources during graceful shutdown.
 

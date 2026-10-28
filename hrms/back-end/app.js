@@ -107,11 +107,17 @@ if (process.env.ENABLE_RATE_LIMIT !== "false") {
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./swagger");
+const {
+  createSwaggerCatalogOptions,
+  createV2OpenApiProxyHandler
+} = require("./src/utils/swaggerCatalog");
 const { initRealtime } = require("./src/realtime/socket");
 const { mountApiV1Routes } = require("./src/routes/apiV1");
 
 if (shouldExposeSwagger) {
-  app.use("/swagger-ui", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.get("/openapi/v1.json", (_request, response) => response.json(swaggerSpec));
+  app.get("/openapi/v2.json", createV2OpenApiProxyHandler());
+  app.use("/swagger-ui", swaggerUi.serve, swaggerUi.setup(null, createSwaggerCatalogOptions()));
 }
 
 /* -------------------------------------------------------------------------- */
