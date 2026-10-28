@@ -34,6 +34,15 @@ Set these non-secret **repository variables** after the stack completes:
 
 The repository does not currently have AWS CLI credentials or an EC2 instance profile with Lambda/IAM permissions. Therefore this bootstrap and the Lambda stack must be applied only after an AWS-authorized session is available. The GitHub-hosted deployment job assumes the OIDC role; no AWS access key is stored in GitHub.
 
+### Console setup checklist
+
+1. In the AWS console, switch to `ap-south-2` and open **IAM → Identity providers**. If `token.actions.githubusercontent.com` already exists, copy its provider ARN; otherwise leave `ExistingGithubOidcProviderArn` blank so the bootstrap stack creates it.
+2. Open **CloudFormation → Create stack → With new resources**, upload `bootstrap.yaml`, and set stack name `monitor-v2-bootstrap`.
+3. For `MonitorRuntimeConfigJson`, enter a JSON object using the existing HRMS `.env` values locally. Map `MONITOR_DATABASE_URL` to `DATABASE_URL`, the EC2 HRMS V1 origin ending in `/api/v1` to `HRMS_BACKEND_URL`, and the existing compatible `JWT_SECRET` to `MONITOR_SETTINGS_SECRET`. Add `DATABASE_SSL: true`, `DATABASE_SSL_REJECT_UNAUTHORIZED: true`, `DATABASE_POOL_MAX`, and `CORS_ORIGINS` as needed. This parameter is marked `NoEcho`; do not paste it into chat, GitHub, or a terminal command.
+4. After the stack reaches `CREATE_COMPLETE`, copy its four outputs into the matching GitHub **repository variables** in the table above. Set `MONITOR_CORS_ORIGINS` to the exact production frontend origins. Set Lambda reserved concurrency and its DB pool ceiling to stay within the Aiven connection limit.
+5. After `monitor-v2.yml` is merged into `development`, edit **Organization Settings → Actions → Runner groups → `hrms-production-deployment` → Workflow access**. Keep the existing HRMS workflow entry and add `Rigweda-Technologies/Monitor-Backend/.github/workflows/monitor-v2.yml@refs/heads/development`. This group intentionally restricts access to named workflows.
+6. Merge the deployment change to `development` only after the repository variables are present. The workflow will run quality gates, deploy the EC2 GET service, then deploy Lambda POST routes. Check the **Actions** run and the `MonitorApiBaseUrl` CloudFormation output for deployment evidence.
+
 ## EC2 runtime and routing
 
 The EC2 container reads `/etc/monitor-v2/runtime.env`, mode `0600`, with:
