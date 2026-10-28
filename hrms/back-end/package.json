@@ -28,7 +28,8 @@
     "typecheck": "node ci/typecheck.cjs",
     "typecheck:strict": "tsc --project tsconfig.check.json",
     "test:ci": "node ci/run-tests.cjs",
-    "audit:production": "npm audit --omit=dev --audit-level=high"
+    "audit:production": "npm audit --omit=dev --audit-level=high",
+    "openapi:v1:export": "node scripts/generate-v1-openapi-route-catalog.cjs"
   },
   "dependencies": {
     "@socket.io/redis-adapter": "^8.3.0",
