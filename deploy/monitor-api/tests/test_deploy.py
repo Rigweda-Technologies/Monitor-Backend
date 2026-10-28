@@ -131,6 +131,18 @@ class MonitorDeploymentTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr.decode())
             self.assertEqual(state_file.read_text().splitlines(), [IMAGE, REVISION])
 
+    def test_bootstrap_trust_uses_this_repositories_immutable_development_subject(self):
+        template = (ROOT / "bootstrap.yaml").read_text()
+        self.assertIn(
+            "token.actions.githubusercontent.com:sub: "
+            "repo:Rigweda-Technologies@290628100/Monitor-Backend@1433043932:ref:refs/heads/development",
+            template,
+        )
+        self.assertNotIn(
+            "repo:Rigweda-Technologies/Monitor-Backend:ref:refs/heads/development",
+            template,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
