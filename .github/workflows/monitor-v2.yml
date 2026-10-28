@@ -92,7 +92,15 @@ jobs:
   deploy-ec2:
     name: Deploy Monitor GET app to EC2
     needs: quality
-    if: github.ref == 'refs/heads/development' && github.event_name != 'pull_request'
+    if: >-
+      github.ref == 'refs/heads/development' &&
+      github.event_name != 'pull_request' &&
+      vars.MONITOR_AWS_DEPLOY_ROLE_ARN != '' &&
+      vars.MONITOR_CFN_EXECUTION_ROLE_ARN != '' &&
+      vars.MONITOR_ARTIFACT_BUCKET != '' &&
+      vars.MONITOR_RUNTIME_SECRET_ARN != '' &&
+      vars.MONITOR_CORS_ORIGINS != '' &&
+      vars.MONITOR_LAMBDA_RESERVED_CONCURRENCY != ''
     runs-on:
       group: hrms-production-deployment
       labels: [self-hosted, linux, x64, hrms-production]
@@ -132,7 +140,15 @@ jobs:
   deploy-lambda:
     name: Deploy Monitor POST APIs to Lambda
     needs: [quality, deploy-ec2]
-    if: github.ref == 'refs/heads/development' && github.event_name != 'pull_request'
+    if: >-
+      github.ref == 'refs/heads/development' &&
+      github.event_name != 'pull_request' &&
+      vars.MONITOR_AWS_DEPLOY_ROLE_ARN != '' &&
+      vars.MONITOR_CFN_EXECUTION_ROLE_ARN != '' &&
+      vars.MONITOR_ARTIFACT_BUCKET != '' &&
+      vars.MONITOR_RUNTIME_SECRET_ARN != '' &&
+      vars.MONITOR_CORS_ORIGINS != '' &&
+      vars.MONITOR_LAMBDA_RESERVED_CONCURRENCY != ''
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
