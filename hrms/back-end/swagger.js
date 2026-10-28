@@ -2603,3 +2603,16 @@ module.exports = {
     }
   }
 };
+
+const v1RouteCatalog = JSON.parse(
+  require("node:fs").readFileSync(
+    require("node:path").join(__dirname, "src/openapi/v1-route-catalog.json"),
+    "utf8",
+  ),
+);
+for (const [routePath, methods] of Object.entries(v1RouteCatalog)) {
+  module.exports.paths[routePath] ||= {};
+  for (const [method, operation] of Object.entries(methods)) {
+    module.exports.paths[routePath][method] ||= operation;
+  }
+}

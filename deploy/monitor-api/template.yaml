@@ -1,0 +1,98 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Route Monitor V2 GET requests to the EC2 Fastify app and POST requests to Lambda.
+
+Parameters:
+  MonitorRuntimeSecretArn:
+    Type: String
+    Description: Secrets Manager JSON secret with DATABASE_URL, HRMS_BACKEND_URL, and MONITOR_SETTINGS_SECRET.
+  MonitorEc2Origin:
+    Type: String
+    Default: http://16.113.19.189
+    Description: Public HTTP origin for the EC2 Nginx proxy; do not add a trailing slash.
+  MonitorCorsOrigins:
+    Type: String
+    Description: Comma-separated, exact browser origins allowed by the Monitor API.
+  MonitorLambdaReservedConcurrency:
+    Type: Number
+    MinValue: 1
+    MaxValue: 1000
+    Description: Concurrency ceiling sized against the shared Aiven PostgreSQL connection budget.
+
+Resources:
+  MonitorHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: $default
+      CorsConfiguration:
+        AllowOrigins: !Split [',', !Ref MonitorCorsOrigins]
+        AllowHeaders: [authorization, content-type]
+        AllowMethods: [GET, POST, OPTIONS]
+        AllowCredentials: true
+
+  MonitorLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../../v2/monitor-api
+      Handler: src/lambda.handler
+      Runtime: nodejs24.x
+      Timeout: 28
+      ReservedConcurrentExecutions: !Ref MonitorLambdaReservedConcurrency
+      Role: !GetAtt MonitorLambdaRuntimeRole.Arn
+      Environment:
+        Variables:
+          MONITOR_RUNTIME_SECRET_ARN: !Ref MonitorRuntimeSecretArn
+          PUBLIC_API_URL: !Sub 'https://${MonitorHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}'
+      Events:
+        MonitorPostRoutes:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref MonitorHttpApi
+            Path: /api/v2/{proxy+}
+            Method: POST
+            PayloadFormatVersion: '2.0'
+
+  MonitorLambdaRuntimeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: monitor-v2-development-runtime
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+      Policies:
+        - PolicyName: ReadMonitorRuntimeSecret
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: secretsmanager:GetSecretValue
+                Resource: !Ref MonitorRuntimeSecretArn
+
+  MonitorGetIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref MonitorHttpApi
+      IntegrationType: HTTP_PROXY
+      IntegrationMethod: GET
+      IntegrationUri: !Sub '${MonitorEc2Origin}/api/v2/{proxy}'
+      PayloadFormatVersion: '1.0'
+
+  MonitorGetRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref MonitorHttpApi
+      RouteKey: 'GET /api/v2/{proxy+}'
+      Target: !Join ['', ['integrations/', !Ref MonitorGetIntegration]]
+
+Outputs:
+  MonitorApiBaseUrl:
+    Description: Use this base URL for Monitor V2; API Gateway routes GET to EC2 and POST to Lambda.
+    Value: !Sub 'https://${MonitorHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}'
+  MonitorLambdaName:
+    Value: !Ref MonitorLambda

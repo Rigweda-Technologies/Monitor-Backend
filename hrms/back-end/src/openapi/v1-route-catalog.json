@@ -1,0 +1,3134 @@
+{
+  "/hiring/candidates/{id}": {
+    "delete": {
+      "tags": [
+        "Hiring"
+      ],
+      "summary": "DELETE /hiring/candidates/{id}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "put": {
+      "tags": [
+        "Hiring"
+      ],
+      "summary": "PUT /hiring/candidates/{id}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/hiring/jobs/{id}": {
+    "delete": {
+      "tags": [
+        "Hiring"
+      ],
+      "summary": "DELETE /hiring/jobs/{id}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "put": {
+      "tags": [
+        "Hiring"
+      ],
+      "summary": "PUT /hiring/jobs/{id}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/organization-documents/{id}": {
+    "delete": {
+      "tags": [
+        "Organization Documents"
+      ],
+      "summary": "DELETE /organization-documents/{id}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "patch": {
+      "tags": [
+        "Organization Documents"
+      ],
+      "summary": "PATCH /organization-documents/{id}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/employee-profiles/{profileId}": {
+    "delete": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "DELETE /payroll/employee-profiles/{profileId}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "profileId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/employee-profiles/{profileId}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "profileId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "put": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "PUT /payroll/employee-profiles/{profileId}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "profileId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/pay-groups/{payGroupId}": {
+    "delete": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "DELETE /payroll/pay-groups/{payGroupId}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "payGroupId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/pay-groups/{payGroupId}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "payGroupId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "put": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "PUT /payroll/pay-groups/{payGroupId}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "payGroupId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/salary-components/{id}": {
+    "delete": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "DELETE /payroll/salary-components/{id}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/salary-components/{id}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "put": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "PUT /payroll/salary-components/{id}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/salary-structures/{salaryStructureId}": {
+    "delete": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "DELETE /payroll/salary-structures/{salaryStructureId}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "salaryStructureId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "put": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "PUT /payroll/salary-structures/{salaryStructureId}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "salaryStructureId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/projects/{id}": {
+    "delete": {
+      "tags": [
+        "Projects"
+      ],
+      "summary": "DELETE /projects/{id}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "get": {
+      "tags": [
+        "Projects"
+      ],
+      "summary": "GET /projects/{id}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "put": {
+      "tags": [
+        "Projects"
+      ],
+      "summary": "PUT /projects/{id}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/activity/app-key-usage": {
+    "get": {
+      "tags": [
+        "Activity"
+      ],
+      "summary": "GET /activity/app-key-usage",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/activity/apps": {
+    "get": {
+      "tags": [
+        "Activity"
+      ],
+      "summary": "GET /activity/apps",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/activity/browser-history": {
+    "get": {
+      "tags": [
+        "Activity"
+      ],
+      "summary": "GET /activity/browser-history",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/activity/employees": {
+    "get": {
+      "tags": [
+        "Activity"
+      ],
+      "summary": "GET /activity/employees",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/activity/laptop-health": {
+    "get": {
+      "tags": [
+        "Activity"
+      ],
+      "summary": "GET /activity/laptop-health",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/agents/cloudinary": {
+    "get": {
+      "tags": [
+        "Agents"
+      ],
+      "summary": "GET /agents/cloudinary",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "post": {
+      "tags": [
+        "Agents"
+      ],
+      "summary": "POST /agents/cloudinary",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "put": {
+      "tags": [
+        "Agents"
+      ],
+      "summary": "PUT /agents/cloudinary",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/agents/cloudinary/upload-config": {
+    "get": {
+      "tags": [
+        "Agents"
+      ],
+      "summary": "GET /agents/cloudinary/upload-config",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/agents/me": {
+    "get": {
+      "tags": [
+        "Agents"
+      ],
+      "summary": "GET /agents/me",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/agents/monitor-settings/cloudinary": {
+    "get": {
+      "tags": [
+        "Agents"
+      ],
+      "summary": "GET /agents/monitor-settings/cloudinary",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "put": {
+      "tags": [
+        "Agents"
+      ],
+      "summary": "PUT /agents/monitor-settings/cloudinary",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/agents/monitor-settings/cloudinary/upload-config": {
+    "get": {
+      "tags": [
+        "Agents"
+      ],
+      "summary": "GET /agents/monitor-settings/cloudinary/upload-config",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/agents/monitor-settings/usb/control-config": {
+    "get": {
+      "tags": [
+        "Agents"
+      ],
+      "summary": "GET /agents/monitor-settings/usb/control-config",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/agents/screenshots": {
+    "get": {
+      "tags": [
+        "Agents"
+      ],
+      "summary": "GET /agents/screenshots",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/agents/usb/control-config": {
+    "get": {
+      "tags": [
+        "Agents"
+      ],
+      "summary": "GET /agents/usb/control-config",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/dashboard/summary": {
+    "get": {
+      "tags": [
+        "Dashboard"
+      ],
+      "summary": "GET /dashboard/summary",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/departments/{id}": {
+    "get": {
+      "tags": [
+        "Departments"
+      ],
+      "summary": "GET /departments/{id}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/employees/export": {
+    "get": {
+      "tags": [
+        "Employees"
+      ],
+      "summary": "GET /employees/export",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/employees/next-code": {
+    "get": {
+      "tags": [
+        "Employees"
+      ],
+      "summary": "GET /employees/next-code",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/expenses/employees": {
+    "get": {
+      "tags": [
+        "Expenses"
+      ],
+      "summary": "GET /expenses/employees",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/hiring/candidates": {
+    "get": {
+      "tags": [
+        "Hiring"
+      ],
+      "summary": "GET /hiring/candidates",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "post": {
+      "tags": [
+        "Hiring"
+      ],
+      "summary": "POST /hiring/candidates",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/hiring/employees": {
+    "get": {
+      "tags": [
+        "Hiring"
+      ],
+      "summary": "GET /hiring/employees",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/hiring/jobs": {
+    "get": {
+      "tags": [
+        "Hiring"
+      ],
+      "summary": "GET /hiring/jobs",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "post": {
+      "tags": [
+        "Hiring"
+      ],
+      "summary": "POST /hiring/jobs",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/hiring/overview": {
+    "get": {
+      "tags": [
+        "Hiring"
+      ],
+      "summary": "GET /hiring/overview",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/monitor/releases": {
+    "get": {
+      "tags": [
+        "Monitor"
+      ],
+      "summary": "GET /monitor/releases",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "post": {
+      "tags": [
+        "Monitor"
+      ],
+      "summary": "POST /monitor/releases",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/monitor/update/latest": {
+    "get": {
+      "tags": [
+        "Monitor"
+      ],
+      "summary": "GET /monitor/update/latest",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/org-settings/theme": {
+    "get": {
+      "tags": [
+        "Organization Settings"
+      ],
+      "summary": "GET /org-settings/theme",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "post": {
+      "tags": [
+        "Organization Settings"
+      ],
+      "summary": "POST /org-settings/theme",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/organization-documents": {
+    "get": {
+      "tags": [
+        "Organization Documents"
+      ],
+      "summary": "GET /organization-documents",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/organization-documents/{id}/access": {
+    "get": {
+      "tags": [
+        "Organization Documents"
+      ],
+      "summary": "GET /organization-documents/{id}/access",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/organization-documents/{id}/download": {
+    "get": {
+      "tags": [
+        "Organization Documents"
+      ],
+      "summary": "GET /organization-documents/{id}/download",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/organization-documents/{id}/preview": {
+    "get": {
+      "tags": [
+        "Organization Documents"
+      ],
+      "summary": "GET /organization-documents/{id}/preview",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/organization-documents/catalog": {
+    "get": {
+      "tags": [
+        "Organization Documents"
+      ],
+      "summary": "GET /organization-documents/catalog",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/organization-documents/reports/expiring-soon": {
+    "get": {
+      "tags": [
+        "Organization Documents"
+      ],
+      "summary": "GET /organization-documents/reports/expiring-soon",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/organization-documents/reports/missing": {
+    "get": {
+      "tags": [
+        "Organization Documents"
+      ],
+      "summary": "GET /organization-documents/reports/missing",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/organization-documents/summary": {
+    "get": {
+      "tags": [
+        "Organization Documents"
+      ],
+      "summary": "GET /organization-documents/summary",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/attendance-snapshots": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/attendance-snapshots",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/bank-details/lookup/by-account": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/bank-details/lookup/by-account",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/bank-details/lookup/by-ifsc/{ifscCode}": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/bank-details/lookup/by-ifsc/{ifscCode}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "ifscCode",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/employee-profiles": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/employee-profiles",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/employee-profiles",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/pay-groups": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/pay-groups",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/pay-groups",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/payslips/monthly": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/payslips/monthly",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/payslips/my/monthly": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/payslips/my/monthly",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/payslips/my/months": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/payslips/my/months",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/payslips/my/runs": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/payslips/my/runs",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/payslips/my/runs/{runId}": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/payslips/my/runs/{runId}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "runId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/reports/bank-transfer-export": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/reports/bank-transfer-export",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/reports/cost-center-totals": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/reports/cost-center-totals",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/reports/deduction-summary": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/reports/deduction-summary",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/reports/employer-contribution-summary": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/reports/employer-contribution-summary",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/reports/payroll-register": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/reports/payroll-register",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/runs": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/runs",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/runs",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/runs/{runId}": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/runs/{runId}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "runId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/runs/{runId}/audit": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/runs/{runId}/audit",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "runId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/runs/{runId}/employee-breakdown": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/runs/{runId}/employee-breakdown",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "runId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/runs/{runId}/payslips/{employeeExternalId}": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/runs/{runId}/payslips/{employeeExternalId}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "runId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "employeeExternalId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/salary-components": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/salary-components",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/salary-components",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/settings": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/settings",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "put": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "PUT /payroll/settings",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/setup/bootstrap": {
+    "get": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "GET /payroll/setup/bootstrap",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/projects": {
+    "get": {
+      "tags": [
+        "Projects"
+      ],
+      "summary": "GET /projects",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    "post": {
+      "tags": [
+        "Projects"
+      ],
+      "summary": "POST /projects",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/projects/employees": {
+    "get": {
+      "tags": [
+        "Projects"
+      ],
+      "summary": "GET /projects/employees",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/timesheets/attendance/requests/defaults/my": {
+    "get": {
+      "tags": [
+        "Timesheets"
+      ],
+      "summary": "GET /timesheets/attendance/requests/defaults/my",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/timesheets/checkin-policy": {
+    "get": {
+      "tags": [
+        "Timesheets"
+      ],
+      "summary": "GET /timesheets/checkin-policy",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/monitor/releases/{releaseId}": {
+    "patch": {
+      "tags": [
+        "Monitor"
+      ],
+      "summary": "PATCH /monitor/releases/{releaseId}",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "releaseId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/agents/cloudinary/test": {
+    "post": {
+      "tags": [
+        "Agents"
+      ],
+      "summary": "POST /agents/cloudinary/test",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/agents/health": {
+    "post": {
+      "tags": [
+        "Agents"
+      ],
+      "summary": "POST /agents/health",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/agents/monitor-settings/cloudinary/test": {
+    "post": {
+      "tags": [
+        "Agents"
+      ],
+      "summary": "POST /agents/monitor-settings/cloudinary/test",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/agents/screenshot-batches/{batchId}/complete": {
+    "post": {
+      "tags": [
+        "Agents"
+      ],
+      "summary": "POST /agents/screenshot-batches/{batchId}/complete",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "batchId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/agents/screenshot-batches/uploads": {
+    "post": {
+      "tags": [
+        "Agents"
+      ],
+      "summary": "POST /agents/screenshot-batches/uploads",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/hiring/candidates/{id}/convert-to-employee": {
+    "post": {
+      "tags": [
+        "Hiring"
+      ],
+      "summary": "POST /hiring/candidates/{id}/convert-to-employee",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/hiring/candidates/{id}/interviews": {
+    "post": {
+      "tags": [
+        "Hiring"
+      ],
+      "summary": "POST /hiring/candidates/{id}/interviews",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/hiring/candidates/{id}/release-offer-letter": {
+    "post": {
+      "tags": [
+        "Hiring"
+      ],
+      "summary": "POST /hiring/candidates/{id}/release-offer-letter",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/hiring/candidates/{id}/send-rejection-email": {
+    "post": {
+      "tags": [
+        "Hiring"
+      ],
+      "summary": "POST /hiring/candidates/{id}/send-rejection-email",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/leave-balances/adjust-all": {
+    "post": {
+      "tags": [
+        "Leave Balances"
+      ],
+      "summary": "POST /leave-balances/adjust-all",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/leave-balances/employee/{employeeId}/adjust": {
+    "post": {
+      "tags": [
+        "Leave Balances"
+      ],
+      "summary": "POST /leave-balances/employee/{employeeId}/adjust",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "employeeId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/leaves/{id}/revert-request": {
+    "post": {
+      "tags": [
+        "Leaves"
+      ],
+      "summary": "POST /leaves/{id}/revert-request",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/monitor/update/status": {
+    "post": {
+      "tags": [
+        "Monitor"
+      ],
+      "summary": "POST /monitor/update/status",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/notifications/device-token/register": {
+    "post": {
+      "tags": [
+        "Notifications"
+      ],
+      "summary": "POST /notifications/device-token/register",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/notifications/device-token/unregister": {
+    "post": {
+      "tags": [
+        "Notifications"
+      ],
+      "summary": "POST /notifications/device-token/unregister",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/organization-documents/upload": {
+    "post": {
+      "tags": [
+        "Organization Documents"
+      ],
+      "summary": "POST /organization-documents/upload",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/organizations/{id}/lifecycle": {
+    "post": {
+      "tags": [
+        "Organizations"
+      ],
+      "summary": "POST /organizations/{id}/lifecycle",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/organizations/{id}/payroll-clear": {
+    "post": {
+      "tags": [
+        "Organizations"
+      ],
+      "summary": "POST /organizations/{id}/payroll-clear",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/attendance-snapshots/generate": {
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/attendance-snapshots/generate",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/employee-profiles/{profileId}/bank-details": {
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/employee-profiles/{profileId}/bank-details",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "profileId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/employee-profiles/{profileId}/salary-structures": {
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/employee-profiles/{profileId}/salary-structures",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "profileId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/employee-profiles/{profileId}/statutory-details": {
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/employee-profiles/{profileId}/statutory-details",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "profileId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/runs/{runId}/approve": {
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/runs/{runId}/approve",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "runId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/runs/{runId}/compute": {
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/runs/{runId}/compute",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "runId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/runs/{runId}/lock": {
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/runs/{runId}/lock",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "runId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/runs/{runId}/preview": {
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/runs/{runId}/preview",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "runId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/runs/{runId}/recompute": {
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/runs/{runId}/recompute",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "runId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/runs/{runId}/reject": {
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/runs/{runId}/reject",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "runId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/runs/{runId}/reopen": {
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/runs/{runId}/reopen",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "runId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/runs/{runId}/submit": {
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/runs/{runId}/submit",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "runId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/runs/{runId}/validate": {
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/runs/{runId}/validate",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "runId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/payroll/setup/save": {
+    "post": {
+      "tags": [
+        "Payroll"
+      ],
+      "summary": "POST /payroll/setup/save",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/timesheets/attendance/matrix/lock-month": {
+    "post": {
+      "tags": [
+        "Timesheets"
+      ],
+      "summary": "POST /timesheets/attendance/matrix/lock-month",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/users/change-password/send-otp": {
+    "post": {
+      "tags": [
+        "Users"
+      ],
+      "summary": "POST /users/change-password/send-otp",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/users/change-password/update": {
+    "post": {
+      "tags": [
+        "Users"
+      ],
+      "summary": "POST /users/change-password/update",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/users/change-password/verify-otp": {
+    "post": {
+      "tags": [
+        "Users"
+      ],
+      "summary": "POST /users/change-password/verify-otp",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/users/forgot-password/reset-password": {
+    "post": {
+      "tags": [
+        "Users"
+      ],
+      "summary": "POST /users/forgot-password/reset-password",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": []
+    }
+  },
+  "/users/forgot-password/send-otp": {
+    "post": {
+      "tags": [
+        "Users"
+      ],
+      "summary": "POST /users/forgot-password/send-otp",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": []
+    }
+  },
+  "/users/forgot-password/verify-otp": {
+    "post": {
+      "tags": [
+        "Users"
+      ],
+      "summary": "POST /users/forgot-password/verify-otp",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": []
+    }
+  },
+  "/users/login/selfie": {
+    "post": {
+      "tags": [
+        "Users"
+      ],
+      "summary": "POST /users/login/selfie",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "security": []
+    }
+  },
+  "/expenses/{id}/reimbursement": {
+    "put": {
+      "tags": [
+        "Expenses"
+      ],
+      "summary": "PUT /expenses/{id}/reimbursement",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/hiring/candidates/{id}/interviews/{interviewId}/feedback": {
+    "put": {
+      "tags": [
+        "Hiring"
+      ],
+      "summary": "PUT /hiring/candidates/{id}/interviews/{interviewId}/feedback",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "interviewId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/hiring/candidates/{id}/stage": {
+    "put": {
+      "tags": [
+        "Hiring"
+      ],
+      "summary": "PUT /hiring/candidates/{id}/stage",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  },
+  "/leaves/{id}/revert-request/action": {
+    "put": {
+      "tags": [
+        "Leaves"
+      ],
+      "summary": "PUT /leaves/{id}/revert-request/action",
+      "description": "Registered V1 route. Request and response fields follow the existing V1 validator and controller; detailed schemas are not declared in this catalog entry.",
+      "responses": {
+        "default": {
+          "description": "Response follows the existing V1 route implementation."
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    }
+  }
+}
