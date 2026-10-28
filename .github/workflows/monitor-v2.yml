@@ -46,10 +46,13 @@ jobs:
         run: |
           npm ci --prefix v2/monitor-api
           npm run prisma:generate --prefix v2/monitor-api
-      - name: Validate Prisma schema and V2 route contracts
+      - name: Validate Prisma schema and provision the isolated CI database
         run: |
           npm run prisma:validate --prefix v2/monitor-api
-          npm test --prefix v2/monitor-api
+          DATABASE_URL="$V2_MONITOR_ISOLATED_TEST_DATABASE_URL" \
+            npm exec --prefix v2/monitor-api -- prisma db push
+      - name: Run V2 route and repository tests
+        run: npm test --prefix v2/monitor-api
       - name: Test EC2 deployment recovery and receiver validation
         run: |
           bash -n deploy/monitor-api/deploy.sh deploy/monitor-api/receive.sh
