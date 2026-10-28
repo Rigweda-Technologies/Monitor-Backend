@@ -12,14 +12,14 @@ API Gateway allows requests up to 10 MB, but synchronous Lambda invocation event
 
 An AWS administrator must deploy [bootstrap.yaml](bootstrap.yaml) in `ap-south-2`. It creates:
 
-- A GitHub OIDC provider if one is not supplied, and a deployment role trusted only for pushes to `Rigweda-Technologies/Monitor-Backend`'s `development` branch.
+- A GitHub OIDC provider if one is not supplied, and a deployment role trusted only for the `development` branch using this repository's immutable GitHub OIDC subject (`Rigweda-Technologies@290628100/Monitor-Backend@1433043932`).
 - A CloudFormation execution role scoped to the Monitor V2 Lambda/API Gateway resources.
 - A private, encrypted SAM artifact bucket with 30-day artifact expiry.
 - A Secrets Manager runtime secret.
 
 Set `MonitorRuntimeConfigJson` in the stack to a JSON object containing `DATABASE_URL`, `HRMS_BACKEND_URL`, and `MONITOR_SETTINGS_SECRET`. Copy the Aiven URL from `MONITOR_DATABASE_URL` in the existing HRMS runtime configuration, set the HRMS V1 origin ending in `/api/v1`, and use the existing compatible settings key. Add database TLS and pool settings if required. The parameter is `NoEcho`; enter it through the AWS console or another secure parameter-entry path, not a shell command recorded in history. The bootstrap file and GitHub workflow never contain the secret values.
 
-If the account already has the GitHub OIDC provider, set `ExistingGithubOidcProviderArn` to its ARN. Otherwise leave it empty and the stack creates the provider. The user deploying the bootstrap stack needs IAM, S3, Secrets Manager, and CloudFormation permissions.
+If the account already has the GitHub OIDC provider, set `ExistingGithubOidcProviderArn` to its ARN. Otherwise leave it empty and the stack creates the provider. This repository uses GitHub's immutable OIDC subject format, so the trust policy includes its owner and repository IDs. The user deploying the bootstrap stack needs IAM, S3, Secrets Manager, and CloudFormation permissions.
 
 Set these non-secret **repository variables** after the stack completes:
 
