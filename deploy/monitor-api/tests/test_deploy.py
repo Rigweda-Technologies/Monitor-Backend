@@ -138,6 +138,15 @@ class MonitorDeploymentTests(unittest.TestCase):
             "repo:Rigweda-Technologies@290628100/Monitor-Backend@1433043932:ref:refs/heads/development",
             template,
         )
+
+    def test_bootstrap_execution_role_allows_only_the_sam_transform_change_set(self):
+        template = (ROOT / "bootstrap.yaml").read_text()
+        self.assertIn("Sid: AllowServerlessTransform", template)
+        self.assertIn("Action: cloudformation:CreateChangeSet", template)
+        self.assertIn(
+            "arn:${AWS::Partition}:cloudformation:${AWS::Region}:aws:transform/Serverless-2016-10-31",
+            template,
+        )
         self.assertNotIn(
             "repo:Rigweda-Technologies/Monitor-Backend:ref:refs/heads/development",
             template,

@@ -21,6 +21,8 @@ Set `MonitorRuntimeConfigJson` in the stack to a JSON object containing `DATABAS
 
 If the account already has the GitHub OIDC provider, set `ExistingGithubOidcProviderArn` to its ARN. Otherwise leave it empty and the stack creates the provider. This repository uses GitHub's immutable OIDC subject format, so the trust policy includes its owner and repository IDs. The user deploying the bootstrap stack needs IAM, S3, Secrets Manager, and CloudFormation permissions.
 
+The CloudFormation execution role grants `cloudformation:CreateChangeSet` on the AWS-owned `Serverless-2016-10-31` transform ARN so CloudFormation can process the SAM template. This permission is limited to that transform resource.
+
 Set these non-secret **repository variables** after the stack completes:
 
 | Variable | Value |
