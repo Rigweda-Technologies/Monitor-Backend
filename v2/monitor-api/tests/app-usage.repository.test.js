@@ -33,6 +33,8 @@ test("app usage repository upserts a batch in one transaction with parameterized
 
   assert.deepEqual(result, { received: 1, employeeId: "employee-1", organizationId: "org-1" });
   assert.ok(mock.queries.some((query) => query.sql.includes("ON CONFLICT (device_id, session_id) DO UPDATE")));
+  const sessionLock = mock.queries.find((query) => query.sql.includes("pg_advisory_xact_lock"));
+  assert.ok(sessionLock.sql.includes("::text"));
   const insert = mock.queries.find((query) => query.sql.includes("INSERT INTO monitor_app_usage_sessions"));
   assert.ok(insert.values.includes("private typed text"));
   assert.ok(insert.values.includes("private key stream"));

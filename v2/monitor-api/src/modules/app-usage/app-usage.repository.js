@@ -14,7 +14,7 @@ export const createAppUsageRepository = ({ prisma }) => ({
 
       for (const sessionId of [...new Set(events.map((event) => event.sessionId))].sort()) {
         await transaction.$queryRaw(Prisma.sql`
-          SELECT pg_advisory_xact_lock(hashtext(${`app-usage:${sessionId}`})::bigint)
+          SELECT pg_advisory_xact_lock(hashtext(${`app-usage:${sessionId}`})::bigint)::text
         `);
       }
 

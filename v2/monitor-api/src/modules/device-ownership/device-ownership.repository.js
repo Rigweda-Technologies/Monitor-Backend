@@ -3,7 +3,7 @@ import { DeviceOwnershipConflictError } from "../../errors.js";
 
 export const lockAndAssertDeviceOwner = async ({ transaction, deviceId, organizationId, employeeId }) => {
   await transaction.$queryRaw(Prisma.sql`
-    SELECT pg_advisory_xact_lock(hashtext(${deviceId})::bigint)
+    SELECT pg_advisory_xact_lock(hashtext(${deviceId})::bigint)::text
   `);
 
   const conflicts = await transaction.$queryRaw(Prisma.sql`
