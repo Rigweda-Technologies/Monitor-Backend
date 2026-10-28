@@ -1,5 +1,10 @@
+const fs = require("node:fs");
+const path = require("node:path");
+
 const DEFAULT_V2_OPENAPI_SOURCE_URL = "http://127.0.0.1:3002/docs/json";
-const FALLBACK_V2_OPENAPI_DOCUMENT = require("../openapi/monitor-v2.json");
+const FALLBACK_V2_OPENAPI_DOCUMENT = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "../openapi/monitor-v2.json"), "utf8"),
+);
 
 const createSwaggerCatalogOptions = ({
   v2OpenApiUrl = "/openapi/v2.json",
