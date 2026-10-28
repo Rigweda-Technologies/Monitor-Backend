@@ -58,6 +58,8 @@ test("activity repository reports inserts and duplicate events atomically", asyn
   const activitySql = prisma.queries.find((query) => query.sql.includes("INSERT INTO monitor_activity_events")).sql;
   const presenceSql = prisma.queries.find((query) => query.sql.includes("INSERT INTO monitor_device_presence")).sql;
   assert.match(prisma.queries[0].sql, /pg_advisory_xact_lock/);
+  assert.match(prisma.queries[0].sql, /MATERIALIZED/);
+  assert.match(prisma.queries[0].sql, /TRUE AS lock_acquired/);
   assert.match(activitySql, /ON CONFLICT/);
   assert.match(activitySql, /event_ids/);
   assert.match(presenceSql, /IS NOT DISTINCT FROM/);

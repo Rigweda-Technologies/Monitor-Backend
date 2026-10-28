@@ -1,0 +1,136 @@
+import gzip
+import json
+import os
+from pathlib import Path
+import subprocess
+import tempfile
+import unittest
+
+ROOT = Path(__file__).resolve().parents[1]
+IMAGE = "monitor-v2:" + "b" * 40
+REVISION = "b" * 40
+
+MOCK = '''#!/usr/bin/env python3
+import json, os, sys
+from pathlib import Path
+args=sys.argv[1:]
+cmd=Path(sys.argv[0]).name
+state_path=Path(os.environ["MOCK_STATE"])
+state=json.loads(state_path.read_text())
+code=0
+if cmd in ("flock", "sleep"):
+    pass
+elif cmd == "curl":
+    if os.environ.get("FAIL_HEALTH") == "1" and state.get("monitor-v2") == "new": code=1
+elif cmd == "docker":
+    if args[:3] == ["image", "inspect", "--format"]: print(os.environ["MOCK_REVISION"])
+    elif args[0] == "image": pass
+    elif args[0] == "inspect":
+        name=args[-1]
+        if name not in state: code=1
+        else: print(state[name])
+    elif args[0] == "rm": state.pop(args[-1], None)
+    elif args[0] == "stop": pass
+    elif args[0] == "rename": state[args[2]]=state.pop(args[1])
+    elif args[0] == "start": pass
+    elif args[0] == "run":
+        state[args[args.index("--name")+1]]="new"
+        if os.environ.get("FAIL_RUN") == "1": code=1
+    elif args[0] == "load": sys.stdin.buffer.read()
+    else: raise RuntimeError(args)
+state_path.write_text(json.dumps(state))
+sys.exit(code)
+'''
+
+
+class MonitorDeploymentTests(unittest.TestCase):
+    def setup_bin(self, root):
+        bin_dir = root / "bin"
+        bin_dir.mkdir()
+        for name in ["docker", "curl", "sleep", "flock"]:
+            path = bin_dir / name
+            path.write_text(MOCK)
+            path.chmod(0o755)
+        return bin_dir
+
+    def run_deploy(self, initial=None, **overrides):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            bin_dir = self.setup_bin(root)
+            state_file = root / "state.json"
+            state_file.write_text(json.dumps(initial or {}))
+            env_file = root / "runtime.env"
+            env_file.write_text("DATABASE_URL=postgresql://test\n")
+            env = {
+                **os.environ,
+                "PATH": str(bin_dir) + os.pathsep + os.environ["PATH"],
+                "MOCK_STATE": str(state_file),
+                "MOCK_REVISION": REVISION,
+                "MONITOR_V2_ENV_FILE": str(env_file),
+                "MONITOR_V2_LOCK_FILE": str(root / "lock"),
+                "MONITOR_V2_HEALTH_ATTEMPTS": "2",
+                **overrides,
+            }
+            result = subprocess.run(["bash", str(ROOT / "deploy.sh"), IMAGE, REVISION], env=env, capture_output=True, text=True)
+            return result, json.loads(state_file.read_text())
+
+    def test_deploy_replaces_container_and_retains_rollback(self):
+        result, state = self.run_deploy({"monitor-v2": "old"})
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(state, {"monitor-v2": "new", "monitor-v2-previous": "old"})
+
+    def test_readiness_failure_restores_previous_container(self):
+        result, state = self.run_deploy({"monitor-v2": "old"}, FAIL_HEALTH="1")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(state, {"monitor-v2": "old"})
+
+    def test_invalid_or_mismatched_revision_is_rejected_before_deploy(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            bin_dir = self.setup_bin(root)
+            state_file = root / "state.json"
+            state_file.write_text("{}")
+            env = {**os.environ, "PATH": str(bin_dir) + os.pathsep + os.environ["PATH"], "MOCK_STATE": str(state_file)}
+            result = subprocess.run(["bash", str(ROOT / "deploy.sh"), IMAGE, "c" * 40], env=env, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 2)
+            self.assertEqual(json.loads(state_file.read_text()), {})
+
+    def test_receiver_rejects_arbitrary_commands_and_revision_mismatch(self):
+        for command in ["whoami", f"deploy-monitor {IMAGE} {'c' * 40}", f"deploy-monitor {IMAGE} {REVISION};id"]:
+            result = subprocess.run(["bash", str(ROOT / "receive.sh"), command], capture_output=True)
+            self.assertEqual(result.returncode, 2)
+
+    def test_receiver_loads_only_commit_tagged_archive_and_invokes_fixed_deployer(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            bin_dir = root / "bin"
+            bin_dir.mkdir()
+            for name in ["docker", "flock"]:
+                command = bin_dir / name
+                command.write_text(MOCK)
+                command.chmod(0o755)
+            state_file = root / "state.json"
+            state_file.write_text("{}")
+            deploy = bin_dir / "deploy"
+            deploy.write_text(f"#!/bin/sh\nprintf '%s\\n' \"$@\" > {state_file}\n")
+            deploy.chmod(0o755)
+            env = {
+                **os.environ,
+                "PATH": str(bin_dir) + os.pathsep + os.environ["PATH"],
+                "MOCK_STATE": str(state_file),
+                "MONITOR_V2_DEPLOY_COMMAND": str(deploy),
+                "MONITOR_V2_RECEIVE_LOCK_FILE": str(root / "receive.lock"),
+            }
+            archive = gzip.compress(b"validated docker archive")
+            result = subprocess.run(
+                ["bash", str(ROOT / "receive.sh"), f"deploy-monitor {IMAGE} {REVISION}"],
+                input=archive,
+                capture_output=True,
+                env=env,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr.decode())
+            self.assertEqual(state_file.read_text().splitlines(), [IMAGE, REVISION])
+
+
+if __name__ == "__main__":
+    unittest.main()
