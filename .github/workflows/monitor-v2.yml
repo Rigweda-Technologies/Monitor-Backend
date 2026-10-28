@@ -12,6 +12,7 @@ permissions:
 env:
   NODE_VERSION: '24'
   AWS_REGION: ap-south-2
+  AWS_DEFAULT_REGION: ap-south-2
 
 jobs:
   quality:
