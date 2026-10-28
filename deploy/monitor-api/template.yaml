@@ -43,14 +43,30 @@ Resources:
         Variables:
           MONITOR_RUNTIME_SECRET_ARN: !Ref MonitorRuntimeSecretArn
           PUBLIC_API_URL: !Sub 'https://${MonitorHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}'
-      Events:
-        MonitorPostRoutes:
-          Type: HttpApi
-          Properties:
-            ApiId: !Ref MonitorHttpApi
-            Path: /api/v2/{proxy+}
-            Method: POST
-            PayloadFormatVersion: '2.0'
+
+  MonitorPostIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref MonitorHttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationMethod: POST
+      IntegrationUri: !GetAtt MonitorLambda.Arn
+      PayloadFormatVersion: '2.0'
+
+  MonitorPostRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref MonitorHttpApi
+      RouteKey: 'POST /api/v2/{proxy+}'
+      Target: !Join ['', ['integrations/', !Ref MonitorPostIntegration]]
+
+  MonitorPostLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref MonitorLambda
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${MonitorHttpApi}/*/POST/api/v2/*'
 
   MonitorLambdaRuntimeRole:
     Type: AWS::IAM::Role
