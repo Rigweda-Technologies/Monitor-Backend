@@ -204,4 +204,4 @@ See [service-specific v2 guidance](docs/engineering/README.md) for architecture,
 
 ## CI/CD to AWS
 
-The [HRMS v1 pipeline](../../.github/workflows/hrms-production.yml) checks lint, JavaScript type diagnostics, production dependencies, tests and Docker packaging. Green `production` runs deploy a validated Docker image to Ubuntu EC2 through restricted SSH after infrastructure configuration. See the [setup and recovery runbook](../../deploy/hrms/README.md) and [development specification](docs/engineering/CICD-AWS.md).
+The [HRMS v1 pipeline](../../.github/workflows/hrms-production.yml) checks lint, JavaScript type diagnostics, production dependencies, tests and Docker packaging. Successful pushes to `development` deploy the validated Docker image to the existing production Ubuntu EC2 environment through the restricted self-hosted runner. See the [setup and recovery runbook](../../deploy/hrms/README.md) and [development specification](docs/engineering/CICD-AWS.md).

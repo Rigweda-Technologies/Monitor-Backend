@@ -1,22 +1,22 @@
 # HRMS v1 deployment to Ubuntu EC2
 
-This pipeline deploys the **existing Express HRMS API**, not v2. The user selected `production`, Ubuntu and Docker. Development specification: [CICD-AWS.md](../../hrms/back-end/docs/engineering/CICD-AWS.md).
+This pipeline deploys the **existing Express HRMS API**, not v2. The deployment source branch is `development`; the destination remains the existing production EC2 instance running Ubuntu and Docker. Development specification: [CICD-AWS.md](../../hrms/back-end/docs/engineering/CICD-AWS.md).
 
 ## What runs
 
-Every PR runs the required `HRMS quality gates` job, without deployment credentials. Pushes to `production` and manual runs on `production` also deploy after that job succeeds. Other manual branches only validate. There are no path filters that silently omit a required check.
+Every PR runs the `HRMS quality gates` job, without deployment credentials. Pushes and manual runs on `development` deploy after the quality job succeeds. Runs on other branches only validate. There are no path filters that silently omit a required check.
 
-Gates: locked install, ESLint, JavaScript type checking, production npm audit (high/critical block), HRMS and coupled desktop tests with isolated PostgreSQL and zero skips, deployment regression tests, and Docker build. The deploy job runs on the EC2 self-hosted runner, consumes the exact image archive built by the quality job and invokes the root-owned receiver through a narrow sudo rule. A superseded production commit is rejected before publishing. GitHub serializes deploy jobs; the instance script also takes a lock.
+Gates: locked install, ESLint, JavaScript type checking, production npm audit (high/critical block), HRMS and coupled desktop tests with isolated PostgreSQL and zero skips, deployment regression tests, and Docker build. The deploy job runs on the EC2 self-hosted runner, consumes the exact image archive built by the quality job and invokes the root-owned receiver through a narrow sudo rule. A superseded development commit is rejected before deployment. GitHub serializes deploy jobs; the instance script also takes a lock.
 
 Type checking currently records 243 known legacy diagnostics across 248 source files. `npm run typecheck` rejects changes to this baseline; `npm run typecheck:strict` exposes all debt and currently fails. CI never regenerates the baseline. Adding/removing entries requires code review; fix diagnostics and remove their entries rather than suppressing new errors. The existing overwritten Swagger `paths` key has one documented lint exception to preserve the current exported contract. Formatting and full TypeScript strictness are not claimed.
 
 ## Configured deployment
 
-- Repository: `Rigweda-Technologies/Monitor-Backend`; deployment branch: `production`.
+- Repository: `Rigweda-Technologies/Monitor-Backend`; deployment source branch: `development` (target: the existing production EC2 environment).
 - EC2: `i-09702b28362fdda43`, Hyderabad (`ap-south-2`), Ubuntu x86_64, `16.113.19.189`.
 - Runner: dedicated systemd self-hosted runner on this EC2 instance, registered to the organization group `hrms-production-deployment`.
-- Runner group: selected repository `Monitor-Backend`, restricted to `.github/workflows/hrms-production.yml@refs/heads/production`. The runner is not available to other repositories or workflows.
-- GitHub environment: `hrms-production`, restricted to the `production` branch.
+- Runner group: selected repository `Monitor-Backend`, restricted to `.github/workflows/hrms-production.yml@refs/heads/development`. The runner is not available to other repositories or workflows.
+- GitHub environment: `hrms-production`, restricted to the `development` branch.
 - No EC2 SSH key or AWS credential is used by the active deployment workflow. GitHub-hosted quality jobs still produce the image artifact; the runner downloads it over outbound HTTPS.
 - Runner software: GitHub Actions runner `2.338.2`, installed under `/opt/actions-runner`; runner registration is organization scoped and assigned to the restricted group above.
 - Service account: `actions-runner` (no login shell, not in the Docker group). Its only sudo permission is `/usr/local/sbin/hrms-ci-receive` through `/etc/sudoers.d/actions-runner`.
@@ -35,9 +35,9 @@ Firebase's multiline private key is represented as escaped newlines in Docker's 
 
 The container forces `NODE_ENV=production` and `PORT=8000`; no `.env` enters the image. V1 bootstrap and permission synchronization can write on startup. Verify existing accounts and data; the pipeline does not automatically run migration/cleanup commands. Existing v1 PostgreSQL `require` mode encrypts transport but does not validate the server certificate; verified Aiven CA handling is separate hardening, not claimed here.
 
-The runner runs as its dedicated unprivileged `actions-runner` account, which is not a Docker-group member. Its sudo rule permits only the root-owned receiver. The receiver validates arguments, locks transfer, loads the image, verifies the source commit in its tag and invokes the root-owned deployment script, which checks the image revision label. GitHub's organization runner group limits which repository and workflow can schedule jobs on the instance. Review production changes and keep this group restricted. The old `hrms-deploy` user is an inactive fallback; its previous GitHub private-key secret was deleted and its public key revoked. Install a new restricted key before any fallback use.
+The runner runs as its dedicated unprivileged `actions-runner` account, which is not a Docker-group member. Its sudo rule permits only the root-owned receiver. The receiver validates arguments, locks transfer, loads the image, verifies the source commit in its tag and invokes the root-owned deployment script, which checks the image revision label. GitHub's organization runner group limits which repository and workflow can schedule jobs on the instance. Review deployment changes and keep this group restricted. The old `hrms-deploy` user is an inactive fallback; its previous GitHub private-key secret was deleted and its public key revoked. Install a new restricted key before any fallback use.
 
-The organization group is named `hrms-production-deployment`, allows only repository `Rigweda-Technologies/Monitor-Backend`, and restricts workflow access to `.github/workflows/hrms-production.yml@refs/heads/production`. The deploy job must select that group and the `hrms-production` runner label. If the workflow path or production ref changes, update the group restriction before merging; otherwise the deploy job remains queued. Pull request tests continue on GitHub-hosted runners. Do not add the production runner group to other workflows.
+The organization group is named `hrms-production-deployment`, allows only repository `Rigweda-Technologies/Monitor-Backend`, and restricts workflow access to `.github/workflows/hrms-production.yml@refs/heads/development`. The deploy job must select that group and the `hrms-production` runner label. If the workflow path or development ref changes, update the group restriction before merging; otherwise the deploy job remains queued. Pull request tests continue on GitHub-hosted runners. Do not add the production runner group to other workflows.
 
 The runner service connects outbound to GitHub; no inbound runner port is opened. To inspect it, use `systemctl status actions.runner.Rigweda-Technologies.hrms-ec2-ap-south-2.service` and `journalctl -u actions.runner.Rigweda-Technologies.hrms-ec2-ap-south-2.service`. Re-register with a fresh short-lived organization runner token if GitHub removes it. Remove the runner from the organization and group before uninstalling the service or deleting `/opt/actions-runner`.
 
@@ -58,7 +58,7 @@ The host firewall is checked separately from AWS security groups. SSH access doe
 
 ## GitHub protection
 
-The `hrms-production` environment has a production-only deployment branch policy. Configure branch protection for `production` with independent review and required status `HRMS quality gates`; repository billing/organization policies may constrain this feature. No review identities or bypass policy are invented. Require review for workflow, deployment, dependencies and diagnostic-baseline changes. The workflow itself rejects non-production deployments, does not expose the deployment key to PR jobs, and pins third-party actions to commit SHAs.
+The `hrms-production` environment has a deployment branch policy for `development`. Branch protection for this private repository is unavailable under its current GitHub plan (the API returned 403 requiring GitHub Pro). The deployment still requires the `HRMS quality gates` job to succeed. No review identities or bypass policy are invented. Require review for workflow, deployment, dependencies and diagnostic-baseline changes. The workflow itself rejects deployments from branches other than `development`, does not expose the deployment key to PR jobs, and pins third-party actions to commit SHAs.
 
 ## Deployment and recovery
 
@@ -66,7 +66,7 @@ The quality job builds the Linux amd64 Docker image and saves it as an immutable
 
 The instance loads the new image before stopping the current container. It keeps the old container as `hrms-backend-previous`, starts the replacement and polls `/ready` for up to 30 attempts (3-second request timeout, 2-second spacing). A failed start/readiness check removes the replacement, restores the previous container if present, checks recovery and exits nonzero. First deployment has no previous container. This single-instance design has a short interruption; it is not zero-downtime deployment.
 
-A source commit that is no longer the production head is rejected before transfer. GitHub serializes production jobs and instance locks prevent concurrent replacement. A lost SSH connection fails the workflow; inspect actual container state before retrying because remote execution may already have completed. Infrastructure failure and database/provider effects cannot be fully repaired by container rollback.
+A source commit that is no longer the development head is rejected before transfer. GitHub serializes deployment jobs and instance locks prevent concurrent replacement. A lost SSH connection fails the workflow; inspect actual container state before retrying because remote execution may already have completed. Infrastructure failure and database/provider effects cannot be fully repaired by container rollback.
 
 For manual recovery, pause deployments, inspect container state and restore the retained container with operator access. Verify readiness, critical login/API behavior and data compatibility. Routing back does not undo database writes or notifications. Runtime configuration is fixed when a container is created; rollback containers retain their previous environment.
 
