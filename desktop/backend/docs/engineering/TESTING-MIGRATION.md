@@ -1,6 +1,6 @@
 # Desktop v2 testing and migration evidence
 
-All scenarios below are required where relevant to changed behavior. No v2 tests have run and no implementation completion is claimed.
+All scenarios below are required where relevant to changed behavior. All registered desktop V2 route contracts and repositories are covered by `npm test --prefix v2/monitor-api`; isolated PostgreSQL tests skip when no dedicated test URL is configured. Prisma schema validation/client generation and OpenAPI export are required checks. No real database integration, deployment, client migration or production verification is claimed.
 
 ## Existing evidence sources
 

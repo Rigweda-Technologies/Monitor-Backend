@@ -1,14 +1,14 @@
 # V2 API migration specification
 
-Status: requirements recorded; implementation not started. Date: 26 October 2026.
+Status: all registered desktop monitor business routes implemented in the independent V2 service; HRMS V2 migration remains in progress. Updated: 27 October 2026.
 
 ## User-selected requirements
 
 - Create a separate v2 implementation of all backend API capabilities using Node.js and Fastify, following the engineering standards.
 - Use Prisma for PostgreSQL and preserve the existing databases and data.
-- Leave v1 untouched. The user will migrate clients to v2; creating v2 does not authorize switching traffic, retiring v1 or deploying.
+- Leave v1 behavior and implementation otherwise untouched. Existing HRMS Express APIs are explicitly namespaced under `/api/v1`; the desktop Fastify v1 API retains its existing route paths. The user will migrate clients to v2; creating v2 does not authorize switching traffic, retiring v1 or deploying.
 
-This document updates the code-generation target. It is not evidence that any endpoints, Prisma schemas or deployment resources already exist.
+This document defines the code-generation target. The current implementation includes all eight business routes listed in `desktop/backend/docs/engineering/API-INVENTORY.md` in `v2/monitor-api`. Unit, repository and HTTP behavior are tested, and every API has an OpenAPI schema. Real isolated-PostgreSQL integration, deployment resources and client migration are not complete.
 
 ## Implementation defaults
 
@@ -48,15 +48,17 @@ This tree is a documentation proposal, not scaffolding. Define the packaging and
 
 ## V1 isolation
 
-Treat `hrms/back-end`, `desktop/backend`, their manifests/lockfiles, environment files, launchers and existing API paths as immutable migration references. Do not upgrade their dependencies, convert their imports, mount v2 inside their servers or change root scripts to redirect their execution. New launch/configuration/test files belong under `v2/`.
+Treat `hrms/back-end` and `desktop/backend` as v1 migration references. HRMS Express routes use `/api/v1`; desktop Fastify routes retain their existing paths. Do not upgrade v1 dependencies, convert imports, mount v2 inside v1 servers or change root scripts to redirect execution. New launch/configuration/test files belong under `v2/`.
 
-V2 must have independent dependency installation, configuration validation, ports and process lifecycle. Assign non-conflicting ports and document them when implementing; do not assume hosted routing exists. Use `/api/v2` as the proposed v2 API namespace and maintain an explicit route mapping. “V1” means the existing APIs even if their URLs do not literally contain `/v1`.
+V2 must have independent dependency installation, configuration validation, ports and process lifecycle. Assign non-conflicting ports and document them when implementing; do not assume hosted routing exists. Use `/api/v2` as the proposed v2 API namespace and maintain an explicit route mapping. HRMS Express v1 uses `/api/v1`; desktop Fastify v1 retains its existing paths.
 
 Keep existing callers, agent endpoints, scheduled tasks, workers and webhook destinations on v1 until explicitly migrated. During coexistence, prevent v1 and v2 from independently running the same scheduled job or processing the same effect twice. Define worker ownership before enabling v2 background processing.
 
 ## Functional scope and endpoint inventory
 
 “All APIs” includes HRMS modules, authentication/session flows, organization/employee permissions, monitor reads, payroll APIs and monitor ingestion. Include uploads/downloads, webhooks, realtime integration, scheduled jobs and administrative scripts in the dependency inventory where they support API behavior. Do not interpret a health endpoint or partial scaffold as completion.
+
+Use the repository [V1 module inventory](V1-MODULE-INVENTORY.md) as the module-level checklist: 26 HRMS Express route groups (including nested agent and FCM handlers) and 6 desktop Fastify route groups. It also records HRMS modules without standalone route mounts and supporting system behavior. Expand each group into individual endpoints and contracts before implementation; these counts are not endpoint coverage.
 
 Before implementation, enumerate every mounted route and middleware chain from both v1 services. Create a v2 endpoint matrix containing:
 
@@ -75,6 +77,8 @@ The inventory is an implementation deliverable, not completed by this document. 
 ## Fastify implementation requirements
 
 Use function-first route plugins, controllers, services and repositories with explicit dependency injection. Separate application construction from listening so tests can instantiate the application independently. Adapt authentication, validation, error mapping, rate limiting, CORS, multipart uploads, OpenAPI and realtime integration to Fastify while preserving behavior.
+
+Every v2 HTTP route, including health/readiness and other operational routes, MUST include an OpenAPI schema so it appears with a useful summary, tags, request/response contracts and applicable authentication/error details in the generated Swagger documentation. Add or extend an automated OpenAPI test whenever a route is added. Serve the documentation from each independent service and keep its source document scoped to that service's routes. The HRMS Swagger UI may provide a catalog selector for the independent service documents without mounting V2 business routes in HRMS.
 
 Validate and bound untrusted inputs. Verify that response serialization does not omit required fields or leak internal data. Preserve cookie/header behavior, authentication failures, revoked sessions, ownership checks and safe error correlation. Keep secrets out of responses and diagnostic artifacts. Release database clients and background resources during graceful shutdown.
 

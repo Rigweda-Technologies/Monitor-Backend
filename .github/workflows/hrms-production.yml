@@ -1,9 +1,9 @@
-name: HRMS v1 quality and production
+name: HRMS v1 quality and deployment
 
 on:
   pull_request:
   push:
-    branches: [production]
+    branches: [development]
   workflow_dispatch:
 
 permissions:
@@ -61,10 +61,10 @@ jobs:
       - name: Build deployable image (Linux amd64)
         run: docker build --pull --label org.opencontainers.image.revision=${{ github.sha }} --tag hrms-backend:${{ github.sha }} hrms/back-end
       - name: Save validated production image
-        if: github.ref == 'refs/heads/production' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/development' && github.event_name != 'pull_request'
         run: docker save hrms-backend:${{ github.sha }} | gzip > "$RUNNER_TEMP/hrms-image.tar.gz"
       - name: Store immutable image artifact
-        if: github.ref == 'refs/heads/production' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/development' && github.event_name != 'pull_request'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: hrms-image-${{ github.sha }}
@@ -84,7 +84,7 @@ jobs:
   deploy:
     name: Deploy HRMS to EC2
     needs: quality
-    if: github.ref == 'refs/heads/production' && github.event_name != 'pull_request' && needs.quality.result == 'success'
+    if: github.ref == 'refs/heads/development' && github.event_name != 'pull_request' && needs.quality.result == 'success'
     runs-on:
       group: hrms-production-deployment
       labels: [self-hosted, linux, x64, hrms-production]
@@ -101,14 +101,14 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
-      - name: Refuse superseded production commits
+      - name: Refuse superseded development commits
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           latest=$(curl --fail --silent --show-error \
             --header "Authorization: Bearer $GH_TOKEN" \
             --header 'Accept: application/vnd.github+json' \
-            "https://api.github.com/repos/$GITHUB_REPOSITORY/git/ref/heads/production" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/git/ref/heads/development" \
             | python3 -c 'import json,sys; print(json.load(sys.stdin)["object"]["sha"])')
           test "$latest" = "$SOURCE_SHA"
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4

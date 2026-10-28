@@ -1,0 +1,160 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model MonitorActivityEvent {
+  id             String    @id @db.Text
+  dailyKey       String?   @unique(map: "monitor_activity_events_daily_key_key") @map("daily_key") @db.Text
+  organizationId String?   @map("organization_id") @db.Text
+  employeeId     String    @map("employee_id") @db.Text
+  employeeName   String?   @map("employee_name") @db.Text
+  employeeCode   String?   @map("employee_code") @db.Text
+  deviceId       String    @map("device_id") @db.Text
+  activityDate   DateTime? @map("activity_date") @db.Date
+  observedAt     DateTime  @map("observed_at") @db.Timestamptz(6)
+  status         String    @db.Text
+  activeSeconds  Int       @default(0) @map("active_seconds")
+  idleSeconds    Int       @default(0) @map("idle_seconds")
+  eventIds       String[]  @default([]) @map("event_ids") @db.Text
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@unique([deviceId, id], map: "monitor_activity_events_device_id_id_key")
+  @@index([organizationId, employeeId, observedAt(sort: Desc)], map: "idx_monitor_activity_events_employee_time")
+  @@map("monitor_activity_events")
+}
+
+model MonitorDevicePresence {
+  deviceId       String   @id @map("device_id") @db.Text
+  organizationId String?  @map("organization_id") @db.Text
+  employeeId     String   @map("employee_id") @db.Text
+  employeeName   String?  @map("employee_name") @db.Text
+  status         String   @db.Text
+  lastSeenAt     DateTime @map("last_seen_at") @db.Timestamptz(6)
+  updatedAt      DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@index([organizationId, lastSeenAt(sort: Desc)], map: "idx_monitor_device_presence_organization_seen")
+  @@map("monitor_device_presence")
+}
+
+model MonitorBrowserHistory {
+  entryId          String   @id @map("entry_id") @db.Text
+  organizationId   String?  @map("organization_id") @db.Text
+  employeeId       String   @map("employee_id") @db.Text
+  employeeName     String?  @map("employee_name") @db.Text
+  deviceId         String   @map("device_id") @db.Text
+  observedAt       DateTime @map("observed_at") @db.Timestamptz(6)
+  browser          String   @db.Text
+  url              String   @db.Text
+  title            String   @default("") @db.Text
+  activeWindowTitle String? @map("active_window_title") @db.Text
+  durationMs       Int      @default(0) @map("duration_ms")
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@unique([deviceId, entryId], map: "monitor_browser_history_device_id_entry_id_key")
+  @@index([organizationId, employeeId, observedAt(sort: Desc)], map: "idx_monitor_browser_history_employee_time")
+  @@index([organizationId, browser, observedAt(sort: Desc)], map: "idx_monitor_browser_history_browser_time")
+  @@map("monitor_browser_history")
+}
+
+model MonitorAppUsageSession {
+  sessionId       String   @id @map("session_id") @db.Text
+  organizationId  String?  @map("organization_id") @db.Text
+  employeeId      String   @map("employee_id") @db.Text
+  employeeName    String?  @map("employee_name") @db.Text
+  employeeCode    String?  @map("employee_code") @db.Text
+  deviceId        String   @map("device_id") @db.Text
+  observedAt      DateTime @map("observed_at") @db.Timestamptz(6)
+  appName         String   @map("app_name") @db.Text
+  processName     String   @map("process_name") @db.Text
+  startedAt       DateTime @map("started_at") @db.Timestamptz(6)
+  endedAt         DateTime @map("ended_at") @db.Timestamptz(6)
+  activeSeconds   Int      @default(0) @map("active_seconds")
+  keyPressCount   Int      @default(0) @map("key_press_count")
+  keyNames        Json     @default("[]") @map("key_names") @db.JsonB
+  typedText       String   @default("") @map("typed_text") @db.Text
+  keyStreamText   String   @default("") @map("key_stream_text") @db.Text
+  uploadStatus    String   @default("uploaded") @map("upload_status") @db.Text
+  retryCount      Int      @default(0) @map("retry_count")
+  lastError       String?  @map("last_error") @db.Text
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  uploadedAt      DateTime? @map("uploaded_at") @db.Timestamptz(6)
+
+  @@unique([deviceId, sessionId], map: "monitor_app_usage_sessions_device_id_session_id_key")
+  @@index([organizationId, employeeId, startedAt(sort: Desc)], map: "idx_monitor_app_usage_sessions_employee_time")
+  @@map("monitor_app_usage_sessions")
+}
+
+model MonitorCloudinarySetting {
+  organizationId    String   @id @map("organization_id") @db.Text
+  cloudName         String   @map("cloud_name") @db.Text
+  apiKey            String   @map("api_key") @db.Text
+  apiSecretCiphertext String @map("api_secret_ciphertext") @db.Text
+  apiSecretIv       String   @map("api_secret_iv") @db.Text
+  apiSecretAuthTag  String   @map("api_secret_auth_tag") @db.Text
+  uploadFolderRoot  String   @default("rigweda-monitor") @map("upload_folder_root") @db.Text
+  screenshotsEnabled Boolean @default(true) @map("screenshots_enabled")
+  mouseEnabled       Boolean @default(true) @map("mouse_enabled")
+  keyboardEnabled    Boolean @default(true) @map("keyboard_enabled")
+  updatedAt         DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@map("monitor_cloudinary_settings")
+}
+
+model MonitorScreenshotBatch {
+  id             String   @id @db.Text
+  organizationId String?  @map("organization_id") @db.Text
+  employeeId     String   @map("employee_id") @db.Text
+  deviceId       String   @map("device_id") @db.Text
+  status         String   @default("pending") @db.Text
+  expectedCount  Int      @default(0) @map("expected_count")
+  uploadedCount  Int      @default(0) @map("uploaded_count")
+  duplicateCount Int      @default(0) @map("duplicate_count")
+  expectedBytes  BigInt   @default(0) @map("expected_bytes")
+  uploadedBytes  BigInt   @default(0) @map("uploaded_bytes")
+  firstCapturedAt DateTime? @map("first_captured_at") @db.Timestamptz(6)
+  lastCapturedAt DateTime? @map("last_captured_at") @db.Timestamptz(6)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  completedAt    DateTime? @map("completed_at") @db.Timestamptz(6)
+  screenshots    MonitorScreenshot[]
+
+  @@unique([deviceId, id], map: "monitor_screenshot_batches_device_id_id_key")
+  @@map("monitor_screenshot_batches")
+}
+
+model MonitorScreenshot {
+  id                   String   @id @db.Text
+  batchId              String?  @map("batch_id") @db.Text
+  organizationId       String?  @map("organization_id") @db.Text
+  employeeId           String   @map("employee_id") @db.Text
+  deviceId             String   @map("device_id") @db.Text
+  clientScreenshotId   String   @map("client_screenshot_id") @db.Text
+  capturedAt           DateTime @map("captured_at") @db.Timestamptz(6)
+  originalFileName     String   @map("original_file_name") @db.Text
+  mimeType             String   @map("mime_type") @db.Text
+  width                Int?
+  height               Int?
+  sha256               String   @db.Text
+  sizeBytes            BigInt   @default(0) @map("size_bytes")
+  cloudinaryFolder     String?  @map("cloudinary_folder") @db.Text
+  cloudinaryPublicId   String?  @map("cloudinary_public_id") @db.Text
+  cloudinaryAssetId    String?  @map("cloudinary_asset_id") @db.Text
+  cloudinaryVersion    BigInt?  @map("cloudinary_version")
+  cloudinaryFormat     String?  @map("cloudinary_format") @db.Text
+  cloudinaryUrl        String?  @map("cloudinary_url") @db.Text
+  duplicateOf          String?  @map("duplicate_of") @db.Text
+  uploadStatus         String   @default("pending") @map("upload_status") @db.Text
+  processingStatus     String   @default("pending") @map("processing_status") @db.Text
+  errorMessage         String?  @map("error_message") @db.Text
+  createdAt            DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  uploadedAt           DateTime? @map("uploaded_at") @db.Timestamptz(6)
+  batch                MonitorScreenshotBatch? @relation(fields: [batchId], references: [id], onDelete: SetNull)
+
+  @@unique([deviceId, clientScreenshotId], map: "monitor_screenshots_device_id_client_screenshot_id_key")
+  @@index([employeeId, capturedAt(sort: Desc)], map: "idx_monitor_screenshots_employee_time")
+  @@index([organizationId, employeeId, sha256], map: "idx_monitor_screenshots_sha")
+  @@map("monitor_screenshots")
+}

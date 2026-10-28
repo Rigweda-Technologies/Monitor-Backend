@@ -1,10 +1,12 @@
 # Repository context for generation
 
-Observed from tracked files on 26 October 2026. This is a structural snapshot, not a runtime health or compliance assessment. Recheck package scripts and nearby code before implementation.
+Observed from tracked files on 27 October 2026. This is a structural snapshot, not a runtime health or compliance assessment. Recheck package scripts and nearby code before implementation.
 
 ## Selected v2 target
 
-The existing code described below is v1 and MUST remain unchanged. The user selected a separate Node.js/Fastify v2 using Prisma for PostgreSQL and preserving existing databases. MongoDB continues through Mongoose. See [V2-API-SPEC.md](V2-API-SPEC.md) for isolation, compatibility, migration gates and proposed directories. V2 is specified, not implemented. Existing commands below run v1 only.
+The existing code described below is v1. HRMS Express routes use `/api/v1`; desktop Fastify v1 route paths retain their existing paths. Keep v1 behavior and service lifecycle stable. The user selected a separate Node.js/Fastify v2 using Prisma for PostgreSQL and preserving existing databases. MongoDB continues through Mongoose. See [V2-API-SPEC.md](V2-API-SPEC.md) for isolation, compatibility and migration gates. All eight registered desktop business route paths have independent implementations under `v2/monitor-api`, with OpenAPI and unit/repository/HTTP coverage. Real PostgreSQL integration remains unverified unless an isolated test URL is configured. Existing commands below run v1 only.
+
+Use the [V1 module inventory](V1-MODULE-INVENTORY.md) as the module-level V2 migration checklist. It distinguishes registered business route groups, nested HRMS agent/FCM routes, non-route HRMS modules and desktop Fastify modules.
 
 ## Current v1 services and boundaries
 

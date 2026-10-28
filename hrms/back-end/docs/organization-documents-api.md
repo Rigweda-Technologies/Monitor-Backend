@@ -20,15 +20,15 @@ Existing `ORG_SETTINGS_*`, `PAYROLL_CONFIG_MANAGE`, and `PAYROLL_REPORT_VIEW` pe
 
 ## Endpoints
 
-- `GET /api/organization-documents/catalog`
-- `GET /api/organization-documents`
-- `GET /api/organization-documents/summary`
-- `GET /api/organization-documents/reports/missing`
-- `GET /api/organization-documents/reports/expiring-soon?days=30`
-- `POST /api/organization-documents/upload`
-- `PATCH /api/organization-documents/:id`
-- `GET /api/organization-documents/:id/access`
-- `DELETE /api/organization-documents/:id`
+- `GET /api/v1/organization-documents/catalog`
+- `GET /api/v1/organization-documents`
+- `GET /api/v1/organization-documents/summary`
+- `GET /api/v1/organization-documents/reports/missing`
+- `GET /api/v1/organization-documents/reports/expiring-soon?days=30`
+- `POST /api/v1/organization-documents/upload`
+- `PATCH /api/v1/organization-documents/:id`
+- `GET /api/v1/organization-documents/:id/access`
+- `DELETE /api/v1/organization-documents/:id`
 
 ## Upload Payload
 
