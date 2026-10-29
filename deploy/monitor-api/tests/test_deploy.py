@@ -172,6 +172,5 @@ class MonitorDeploymentTests(unittest.TestCase):
         workflow = (ROOT.parents[1] / ".github/workflows/monitor-v2.yml").read_text()
         self.assertIn("--capabilities CAPABILITY_NAMED_IAM", workflow)
 
-
 if __name__ == "__main__":
     unittest.main()
