@@ -147,10 +147,30 @@ class MonitorDeploymentTests(unittest.TestCase):
             "arn:${AWS::Partition}:cloudformation:${AWS::Region}:aws:transform/Serverless-2016-10-31",
             template,
         )
+
+    def test_lambda_post_route_uses_explicit_api_gateway_v2_proxy_resources(self):
+        template = (ROOT / "template.yaml").read_text()
+        lambda_resource = template.split("  MonitorLambda:\n", 1)[1].split(
+            "  MonitorPostIntegration:\n", 1
+        )[0]
+        self.assertNotIn("Events:", lambda_resource)
+        self.assertIn("Type: AWS::ApiGatewayV2::Integration", template)
+        self.assertIn("IntegrationType: AWS_PROXY", template)
+        self.assertIn("PayloadFormatVersion: '2.0'", template)
+        self.assertIn("RouteKey: 'POST /api/v2/{proxy+}'", template)
+        self.assertIn("Type: AWS::Lambda::Permission", template)
+        self.assertIn(
+            "/*/POST/api/v2/*'",
+            template,
+        )
         self.assertNotIn(
             "repo:Rigweda-Technologies/Monitor-Backend:ref:refs/heads/development",
             template,
         )
+
+    def test_lambda_deployment_acknowledges_named_iam_resources(self):
+        workflow = (ROOT.parents[1] / ".github/workflows/monitor-v2.yml").read_text()
+        self.assertIn("--capabilities CAPABILITY_NAMED_IAM", workflow)
 
 
 if __name__ == "__main__":
