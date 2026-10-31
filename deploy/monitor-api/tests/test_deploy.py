@@ -206,6 +206,10 @@ class MonitorDeploymentTests(unittest.TestCase):
         workflow = (ROOT.parents[1] / ".github/workflows/monitor-v2.yml").read_text()
         self.assertIn("--capabilities CAPABILITY_NAMED_IAM", workflow)
 
+    def test_monitor_ec2_origin_default_uses_current_instance_address(self):
+        template = (ROOT / "template.yaml").read_text()
+        self.assertIn("Default: http://16.112.12.20", template)
+
     def test_monitor_only_changes_do_not_trigger_hrms_dependency_audit_or_deploy(self):
         workflow = (ROOT.parents[1] / ".github/workflows/hrms-production.yml").read_text()
         self.assertIn("git diff --quiet \"$BASE_SHA\" \"$HEAD_SHA\" --", workflow)
