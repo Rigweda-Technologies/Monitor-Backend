@@ -71,6 +71,19 @@ CloudFormation also tags the API Gateway stage. If the bootstrap stack predates 
 
 This permits tag updates only on Monitor API Gateway resources under `/apis/`.
 
+The Lambda resource's code package is stored in the private SAM artifact bucket. CloudFormation assumes its execution role when creating the function, so that role also needs `s3:GetObject` on objects in that bucket. If the bootstrap stack predates this permission, add this statement to IAM → Roles → `monitor-v2-development-cfn-execution` → Permissions → `MonitorV2StackResources`, retaining existing statements:
+
+```json
+{
+  "Sid": "ReadMonitorLambdaDeploymentArtifact",
+  "Effect": "Allow",
+  "Action": "s3:GetObject",
+  "Resource": "arn:aws:s3:::monitor-v2-sam-647949734900-ap-south-2/*"
+}
+```
+
+After a failed initial deployment leaves `monitor-v2-development` in `ROLLBACK_COMPLETE`, delete that failed stack after confirming its resources are deleted, then retry the workflow. Keep `monitor-v2-bootstrap`.
+
 Set these non-secret **repository variables** after the stack completes:
 
 | Variable | Value |
