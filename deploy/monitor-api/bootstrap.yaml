@@ -152,6 +152,10 @@ Resources:
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                 Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/monitor-v2-development*:*'
+              - Sid: ReadMonitorLambdaDeploymentArtifact
+                Effect: Allow
+                Action: s3:GetObject
+                Resource: !Sub 'arn:${AWS::Partition}:s3:::monitor-v2-sam-${AWS::AccountId}-${AWS::Region}/*'
 
   MonitorGithubDeployRole:
     Type: AWS::IAM::Role
