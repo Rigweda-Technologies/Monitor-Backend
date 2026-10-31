@@ -62,6 +62,7 @@ jobs:
         run: |
           sam validate --template-file deploy/monitor-api/template.yaml
           sam build --template-file deploy/monitor-api/template.yaml --build-dir "$RUNNER_TEMP/monitor-sam-build"
+          python3 deploy/monitor-api/check_lambda_package_size.py "$RUNNER_TEMP/monitor-sam-build/MonitorLambda"
       - name: Build EC2 Monitor image
         run: >-
           docker build --pull
