@@ -182,6 +182,18 @@ class MonitorDeploymentTests(unittest.TestCase):
             r"Resource: !Sub 'arn:\$\{AWS::Partition\}:apigateway:\$\{AWS::Region\}::/apis/\*'",
         )
 
+    def test_bootstrap_execution_role_can_read_only_monitor_deployment_objects(self):
+        template = (ROOT / "bootstrap.yaml").read_text()
+        execution_role = template.split("  MonitorStackExecutionRole:", 1)[1].split(
+            "  MonitorGithubDeployRole:", 1
+        )[0]
+        self.assertIn("Sid: ReadMonitorLambdaDeploymentArtifact", execution_role)
+        self.assertIn("Action: s3:GetObject", execution_role)
+        self.assertIn(
+            "Resource: !Sub 'arn:${AWS::Partition}:s3:::monitor-v2-sam-${AWS::AccountId}-${AWS::Region}/*'",
+            execution_role,
+        )
+
     def test_lambda_post_route_uses_explicit_api_gateway_v2_proxy_resources(self):
         template = (ROOT / "template.yaml").read_text()
         lambda_resource = template.split("  MonitorLambda:\n", 1)[1].split(
