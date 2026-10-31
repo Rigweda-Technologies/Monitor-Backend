@@ -23,6 +23,8 @@ If the account already has the GitHub OIDC provider, set `ExistingGithubOidcProv
 
 The CloudFormation execution role grants `cloudformation:CreateChangeSet` on the AWS-owned `Serverless-2016-10-31` transform ARN so CloudFormation can process the SAM template. This permission is limited to that transform resource.
 
+The GitHub deployment role can call `cloudformation:GetTemplateSummary` on the Monitor V2 stack. SAM uses this operation before it creates the stack change set. If the bootstrap stack was created before this permission was added, update IAM → Roles → `monitor-v2-development-github-deploy` → Permissions → `DeployMonitorV2Stack` → Edit JSON. Add `"cloudformation:GetTemplateSummary"` to the `Action` array in the `ManageMonitorStack` statement, retaining its existing stack-scoped `Resource` entries.
+
 The execution role also manages API Gateway v2 tags on resources whose ARN is under `/v2/apis/`. API Gateway uses a separate `/v2/tags/{resource-arn}` endpoint for tags, so the bootstrap policy scopes those tag operations to Monitor HTTP APIs only. If the bootstrap stack was created before this permission was added, updating this file does not change the existing role automatically. Before retrying Lambda deployment, update IAM → Roles → `monitor-v2-development-cfn-execution` → Permissions → `MonitorV2StackResources` and add this statement to its `Statement` array, retaining the existing statements:
 
 ```json
