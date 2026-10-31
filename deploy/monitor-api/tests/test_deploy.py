@@ -173,6 +173,15 @@ class MonitorDeploymentTests(unittest.TestCase):
             r"Resource: !Sub 'arn:\$\{AWS::Partition\}:apigateway:\$\{AWS::Region\}::/apis'",
         )
 
+    def test_bootstrap_execution_role_can_tag_monitor_http_api_resources(self):
+        template = (ROOT / "bootstrap.yaml").read_text()
+        self.assertRegex(
+            template,
+            r"Sid: ManageMonitorHttpApiResourceTags\s+Effect: Allow\s+Action:\s+"
+            r"- apigateway:TagResource\s+- apigateway:UntagResource\s+"
+            r"Resource: !Sub 'arn:\$\{AWS::Partition\}:apigateway:\$\{AWS::Region\}::/apis/\*'",
+        )
+
     def test_lambda_post_route_uses_explicit_api_gateway_v2_proxy_resources(self):
         template = (ROOT / "template.yaml").read_text()
         lambda_resource = template.split("  MonitorLambda:\n", 1)[1].split(
