@@ -13,6 +13,7 @@
     "openapi:export": "node scripts/export-openapi.js",
     "prisma:generate": "npm exec --yes --package=prisma@7.10.1 -- prisma generate",
     "prisma:validate": "npm exec --yes --package=prisma@7.10.1 -- prisma validate",
+    "prisma:push": "npm exec --yes --package=prisma@7.10.1 -- prisma db push",
     "postinstall": "npm run prisma:generate"
   },
   "dependencies": {
