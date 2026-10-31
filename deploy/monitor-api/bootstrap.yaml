@@ -117,6 +117,12 @@ Resources:
                   - apigateway:GET
                   - apigateway:POST
                 Resource: !Sub 'arn:${AWS::Partition}:apigateway:${AWS::Region}::/tags/arn%3A${AWS::Partition}%3Aapigateway%3A${AWS::Region}%3A%3A%2Fv2%2Fapis%2F*'
+              - Sid: ManageMonitorHttpApiResourceTags
+                Effect: Allow
+                Action:
+                  - apigateway:TagResource
+                  - apigateway:UntagResource
+                Resource: !Sub 'arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/*'
               - Sid: ManageMonitorLambdaRole
                 Effect: Allow
                 Action:
