@@ -225,6 +225,11 @@ class MonitorDeploymentTests(unittest.TestCase):
             workflow.index("check_lambda_package_size.py"),
         )
 
+    def test_ci_database_provisioning_uses_pinned_prisma_cli_script(self):
+        workflow = (ROOT.parents[1] / ".github/workflows/monitor-v2.yml").read_text()
+        self.assertIn('DATABASE_URL="$V2_MONITOR_ISOLATED_TEST_DATABASE_URL" npm run prisma:push', workflow)
+        self.assertNotIn("npx prisma db push", workflow)
+
     def test_lambda_package_size_checker_rejects_packages_over_its_configured_limit(self):
         checker = ROOT / "check_lambda_package_size.py"
         with tempfile.TemporaryDirectory() as temp:
