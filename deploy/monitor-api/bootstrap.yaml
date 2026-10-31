@@ -91,6 +91,7 @@ Resources:
                   - lambda:GetPolicy
                   - lambda:ListVersionsByFunction
                   - lambda:PublishVersion
+                  - lambda:PutFunctionConcurrency
                   - lambda:RemovePermission
                   - lambda:TagResource
                   - lambda:UntagResource

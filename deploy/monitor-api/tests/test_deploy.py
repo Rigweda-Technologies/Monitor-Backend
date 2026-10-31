@@ -194,6 +194,14 @@ class MonitorDeploymentTests(unittest.TestCase):
             execution_role,
         )
 
+    def test_bootstrap_execution_role_can_set_monitor_lambda_reserved_concurrency(self):
+        template = (ROOT / "bootstrap.yaml").read_text()
+        lambda_policy = template.split("Sid: ManageMonitorLambda", 1)[1].split(
+            "Sid: CreateMonitorHttpApi", 1
+        )[0]
+        self.assertIn("- lambda:PutFunctionConcurrency", lambda_policy)
+        self.assertIn("- lambda:DeleteFunctionConcurrency", lambda_policy)
+
     def test_lambda_post_route_uses_explicit_api_gateway_v2_proxy_resources(self):
         template = (ROOT / "template.yaml").read_text()
         lambda_resource = template.split("  MonitorLambda:\n", 1)[1].split(
