@@ -165,6 +165,14 @@ class MonitorDeploymentTests(unittest.TestCase):
             template,
         )
 
+    def test_bootstrap_execution_role_can_create_monitor_http_api_at_collection_path(self):
+        template = (ROOT / "bootstrap.yaml").read_text()
+        self.assertRegex(
+            template,
+            r"Sid: CreateMonitorHttpApi\s+Effect: Allow\s+Action: apigateway:PUT\s+"
+            r"Resource: !Sub 'arn:\$\{AWS::Partition\}:apigateway:\$\{AWS::Region\}::/apis'",
+        )
+
     def test_lambda_post_route_uses_explicit_api_gateway_v2_proxy_resources(self):
         template = (ROOT / "template.yaml").read_text()
         lambda_resource = template.split("  MonitorLambda:\n", 1)[1].split(
