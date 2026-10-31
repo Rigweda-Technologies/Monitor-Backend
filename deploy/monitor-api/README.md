@@ -55,6 +55,22 @@ The execution role also needs `apigateway:PUT` on the API Gateway v2 `/apis` col
 
 This updates the existing execution role without recreating the bootstrap stack or changing runtime secrets.
 
+CloudFormation also tags the API Gateway stage. If the bootstrap stack predates this permission, add the following statement to IAM → Roles → `monitor-v2-development-cfn-execution` → Permissions → `MonitorV2StackResources`, retaining the existing statements:
+
+```json
+{
+  "Sid": "ManageMonitorHttpApiResourceTags",
+  "Effect": "Allow",
+  "Action": [
+    "apigateway:TagResource",
+    "apigateway:UntagResource"
+  ],
+  "Resource": "arn:aws:apigateway:ap-south-2::/apis/*"
+}
+```
+
+This permits tag updates only on Monitor API Gateway resources under `/apis/`.
+
 Set these non-secret **repository variables** after the stack completes:
 
 | Variable | Value |
