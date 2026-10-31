@@ -97,6 +97,10 @@ Resources:
                   - lambda:UpdateFunctionCode
                   - lambda:UpdateFunctionConfiguration
                 Resource: !Sub 'arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:monitor-v2-development*'
+              - Sid: CreateMonitorHttpApi
+                Effect: Allow
+                Action: apigateway:PUT
+                Resource: !Sub 'arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis'
               - Sid: ManageMonitorHttpApi
                 Effect: Allow
                 Action:
