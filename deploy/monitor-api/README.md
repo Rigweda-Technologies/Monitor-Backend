@@ -1,6 +1,6 @@
 # Monitor V2 deployment
 
-The development pipeline deploys HRMS to the existing EC2 Docker app, the Monitor V2 Fastify app to EC2 for GET requests, and the same V2 app through Lambda for POST requests. API Gateway exposes one HTTPS base URL for Monitor V2 and routes `GET /api/v2/{proxy+}` to the EC2 Nginx origin and `POST /api/v2/{proxy+}` to Lambda. Nginx only exposes GET for the EC2 V2 origin; direct POST requests there receive 403. HRMS V1 remains on EC2 under `/api/v1`.
+The development pipeline deploys HRMS changes to the existing EC2 Docker app. For Monitor V2 changes, it deploys the Fastify app to EC2 for GET requests and the same V2 app through Lambda for POST requests; Monitor-only changes do not rebuild or redeploy HRMS. The HRMS workflow still runs its tests, while its HRMS production dependency audit, image build and deployment run only when HRMS, desktop integration, shared root package, or HRMS deployment paths change. API Gateway exposes one HTTPS base URL for Monitor V2 and routes `GET /api/v2/{proxy+}` to the EC2 Nginx origin and `POST /api/v2/{proxy+}` to Lambda. Nginx only exposes GET for the EC2 V2 origin; direct POST requests there receive 403. HRMS V1 remains on EC2 under `/api/v1`.
 
 V2 request schemas and response handlers are shared between the EC2 and Lambda processes. The Lambda entry point uses `@fastify/aws-lambda`; it does not start an HTTP listener. Prisma is generated during CI and the Lambda process loads its allowlisted runtime configuration from Secrets Manager.
 
