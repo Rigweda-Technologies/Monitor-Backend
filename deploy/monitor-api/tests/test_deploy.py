@@ -218,6 +218,34 @@ class MonitorDeploymentTests(unittest.TestCase):
         workflow = (ROOT.parents[1] / ".github/workflows/monitor-v2.yml").read_text()
         self.assertIn("--capabilities CAPABILITY_NAMED_IAM", workflow)
 
+    def test_lambda_package_is_size_checked_after_sam_build_and_before_deployment(self):
+        workflow = (ROOT.parents[1] / ".github/workflows/monitor-v2.yml").read_text()
+        self.assertLess(
+            workflow.index("sam build --template-file deploy/monitor-api/template.yaml"),
+            workflow.index("check_lambda_package_size.py"),
+        )
+
+    def test_lambda_package_size_checker_rejects_packages_over_its_configured_limit(self):
+        checker = ROOT / "check_lambda_package_size.py"
+        with tempfile.TemporaryDirectory() as temp:
+            package = Path(temp) / "MonitorLambda"
+            package.mkdir()
+            (package / "small.js").write_text("ok")
+            passed = subprocess.run(
+                ["python3", str(checker), str(package), "--max-bytes", "2"],
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(passed.returncode, 0, passed.stderr)
+
+            (package / "large.js").write_text("too large")
+            failed = subprocess.run(
+                ["python3", str(checker), str(package), "--max-bytes", "2"],
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(failed.returncode, 1)
+
     def test_monitor_ec2_origin_default_uses_current_instance_address(self):
         template = (ROOT / "template.yaml").read_text()
         self.assertIn("Default: http://16.112.12.20", template)
