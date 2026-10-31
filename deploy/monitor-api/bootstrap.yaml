@@ -180,6 +180,7 @@ Resources:
                   - cloudformation:DescribeStacks
                   - cloudformation:ExecuteChangeSet
                   - cloudformation:GetTemplate
+                  - cloudformation:GetTemplateSummary
                   - cloudformation:ListStackResources
                   - cloudformation:UpdateStack
                   - cloudformation:ValidateTemplate

@@ -148,6 +148,14 @@ class MonitorDeploymentTests(unittest.TestCase):
             template,
         )
 
+    def test_bootstrap_deploy_role_can_read_monitor_stack_template_summary(self):
+        template = (ROOT / "bootstrap.yaml").read_text()
+        deploy_policy = template.split("Sid: ManageMonitorStack", 1)[1].split(
+            "Sid: ReadDeploymentRole", 1
+        )[0]
+        self.assertIn("- cloudformation:GetTemplateSummary", deploy_policy)
+        self.assertIn("stack/monitor-v2-development/*", deploy_policy)
+
     def test_bootstrap_execution_role_can_tag_only_monitor_v2_api_gateway_apis(self):
         template = (ROOT / "bootstrap.yaml").read_text()
         self.assertIn("Sid: ManageMonitorHttpApiTags", template)
