@@ -42,6 +42,19 @@ The execution role also manages API Gateway v2 tags on resources whose ARN is un
 
 This updates the already-created role without recreating the bootstrap stack or changing runtime secrets.
 
+The execution role also needs `apigateway:PUT` on the API Gateway v2 `/apis` collection path to create the HTTP API. The API resource operations remain scoped to `/apis/*`; this additional permission is only for the collection path. If the bootstrap stack predates this permission, add the following statement to IAM → Roles → `monitor-v2-development-cfn-execution` → Permissions → `MonitorV2StackResources`, retaining the current statements:
+
+```json
+{
+  "Sid": "CreateMonitorHttpApi",
+  "Effect": "Allow",
+  "Action": "apigateway:PUT",
+  "Resource": "arn:aws:apigateway:ap-south-2::/apis"
+}
+```
+
+This updates the existing execution role without recreating the bootstrap stack or changing runtime secrets.
+
 Set these non-secret **repository variables** after the stack completes:
 
 | Variable | Value |
