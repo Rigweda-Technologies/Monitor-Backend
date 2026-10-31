@@ -106,6 +106,13 @@ Resources:
                   - apigateway:POST
                   - apigateway:PUT
                 Resource: !Sub 'arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/*'
+              - Sid: ManageMonitorHttpApiTags
+                Effect: Allow
+                Action:
+                  - apigateway:DELETE
+                  - apigateway:GET
+                  - apigateway:POST
+                Resource: !Sub 'arn:${AWS::Partition}:apigateway:${AWS::Region}::/tags/arn%3A${AWS::Partition}%3Aapigateway%3A${AWS::Region}%3A%3A%2Fv2%2Fapis%2F*'
               - Sid: ManageMonitorLambdaRole
                 Effect: Allow
                 Action:
