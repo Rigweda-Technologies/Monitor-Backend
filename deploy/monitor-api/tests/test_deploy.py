@@ -230,6 +230,11 @@ class MonitorDeploymentTests(unittest.TestCase):
         self.assertIn('DATABASE_URL="$V2_MONITOR_ISOLATED_TEST_DATABASE_URL" npm run prisma:push', workflow)
         self.assertNotIn("npx prisma db push", workflow)
 
+    def test_monitor_image_copies_prisma_schema_before_install_lifecycle_runs(self):
+        dockerfile = (ROOT.parents[1] / "v2/monitor-api/Dockerfile").read_text()
+        self.assertLess(dockerfile.index("COPY prisma ./prisma"), dockerfile.index("RUN npm ci"))
+        self.assertLess(dockerfile.index("COPY prisma.config.js"), dockerfile.index("RUN npm ci"))
+
     def test_lambda_package_size_checker_rejects_packages_over_its_configured_limit(self):
         checker = ROOT / "check_lambda_package_size.py"
         with tempfile.TemporaryDirectory() as temp:
