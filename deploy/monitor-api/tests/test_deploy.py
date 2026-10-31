@@ -148,6 +148,15 @@ class MonitorDeploymentTests(unittest.TestCase):
             template,
         )
 
+    def test_bootstrap_execution_role_can_tag_only_monitor_v2_api_gateway_apis(self):
+        template = (ROOT / "bootstrap.yaml").read_text()
+        self.assertIn("Sid: ManageMonitorHttpApiTags", template)
+        self.assertIn("- apigateway:POST", template)
+        self.assertIn(
+            "::/tags/arn%3A${AWS::Partition}%3Aapigateway%3A${AWS::Region}%3A%3A%2Fv2%2Fapis%2F*'",
+            template,
+        )
+
     def test_lambda_post_route_uses_explicit_api_gateway_v2_proxy_resources(self):
         template = (ROOT / "template.yaml").read_text()
         lambda_resource = template.split("  MonitorLambda:\n", 1)[1].split(
