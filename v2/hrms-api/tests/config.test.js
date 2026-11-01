@@ -9,6 +9,11 @@ test('configuration requires independent database and signing settings', () => {
   assert.equal(loadConfig(env()).port, 8002);
   assert.throws(() => loadConfig({ ...env(), PORT: 'not-a-port' }), /PORT/);
 });
+test('configuration accepts the existing HRMS MONGO_URI setting', () => {
+  const values = env();
+  const config = loadConfig({ MONGO_URI: values.MONGODB_URI, JWT_SECRET: values.JWT_SECRET });
+  assert.equal(config.mongoUri, values.MONGODB_URI);
+});
 test('PostgreSQL config preserves the monitor aliases, payroll opt-in, pool bounds and SSL mode', () => {
   const monitor = loadConfig({ ...env(), MONITOR_TOOL_DATABASE_URL:'postgresql://monitor:synthetic@localhost:5432/monitor', MONITOR_PG_SSL_MODE:'require' });
   assert.equal(monitor.postgres.monitor.url, 'postgresql://monitor:synthetic@localhost:5432/monitor');

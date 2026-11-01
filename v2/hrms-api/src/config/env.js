@@ -21,7 +21,8 @@ const pgUrl = (explicitUrl, env, keys) => {
   return url.toString();
 };
 export const loadConfig = (env = process.env) => {
-  if (!/^mongodb(?:\+srv)?:\/\//.test(env.MONGODB_URI || '')) throw new Error('MONGODB_URI is required.');
+  const mongoUri = env.MONGODB_URI || env.MONGO_URI;
+  if (!/^mongodb(?:\+srv)?:\/\//.test(mongoUri || '')) throw new Error('MONGODB_URI is required.');
   if (!env.JWT_SECRET?.trim()) throw new Error('JWT_SECRET is required.');
   const payrollEnabled = env.PAYROLL_DB_ENABLED === 'true'
     ? true
@@ -33,7 +34,7 @@ export const loadConfig = (env = process.env) => {
   const payrollUrl = pgUrl(env.PAYROLL_DATABASE_URL, env, ['PGHOST', 'PGPORT', 'PGDATABASE', 'PGUSER', 'PGPASSWORD']);
   if (payrollEnabled && !payrollUrl) throw new Error('PAYROLL DB is enabled but Postgres config is missing.');
   return {
-    mongoUri: env.MONGODB_URI, jwtSecret: env.JWT_SECRET, jwtExpiresIn: env.JWT_EXPIRES_IN || '1d',
+    mongoUri, jwtSecret: env.JWT_SECRET, jwtExpiresIn: env.JWT_EXPIRES_IN || '1d',
     port: integer(env, 'PORT', 8002, 1, 65535), host: env.HOST || '127.0.0.1',
     poolMax: integer(env, 'MONGODB_POOL_MAX', 5), timeoutMs: integer(env, 'DEPENDENCY_TIMEOUT_MS', 10000),
     corsOrigins: [...new Set([...['http://localhost:3000','http://localhost:8080','http://localhost:8081','http://localhost:3002','http://localhost:3001','https://rigweda-hrms-frontend.vercel.app'], ...(env.CORS_ALLOWED_ORIGINS || '').split(',').map(s => s.trim().replace(/\/$/, '')).filter(Boolean)])],
