@@ -32,6 +32,9 @@ tmp=state_path.with_name(state_path.name+'.tmp');tmp.write_text(json.dumps(state
 '''
 
 class DeploymentTests(unittest.TestCase):
+    def test_container_can_resolve_the_ec2_host_database_gateway(self):
+        self.assertIn('--add-host host.docker.internal:host-gateway', SCRIPT.read_text())
+
     def run_deploy(self, state=None, image=IMAGE, **overrides):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp)

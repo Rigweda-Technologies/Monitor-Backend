@@ -62,6 +62,7 @@ fi
 candidate_attempted=1
 docker run -d --name "$current" --restart unless-stopped --init \
   --env-file "$env_file" --env NODE_ENV=production --env PORT=8002 --env HOST=0.0.0.0 \
+  --add-host host.docker.internal:host-gateway \
   --publish 127.0.0.1:8002:8002 \
   --log-driver json-file --log-opt max-size=10m --log-opt max-file=3 \
   --label "org.opencontainers.image.revision=$revision" \
