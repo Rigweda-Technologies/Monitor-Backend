@@ -16,7 +16,16 @@ requireIsolatedUrl('V2_HRMS_ISOLATED_TEST_DATABASE_URL', 'mongodb');
 requireIsolatedUrl('V2_HRMS_ISOLATED_MONITOR_TEST_DATABASE_URL', 'postgres');
 requireIsolatedUrl('V2_HRMS_ISOLATED_PAYROLL_TEST_DATABASE_URL', 'postgres');
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const result = spawnSync(process.execPath, ['--test', '--test-reporter=tap'], { cwd: root, encoding: 'utf8', env: process.env, maxBuffer: 40 * 1024 * 1024 });
+// Bound hosted-runner resource use and do not let a leaked provider/socket handle
+// keep a fully completed suite alive indefinitely. Test failures and timeouts still
+// produce a non-zero status and the TAP summary remains the zero-skip authority.
+const result = spawnSync(process.execPath, [
+  '--test',
+  '--test-concurrency=2',
+  '--test-timeout=120000',
+  '--test-force-exit',
+  '--test-reporter=tap'
+], { cwd: root, encoding: 'utf8', env: process.env, maxBuffer: 40 * 1024 * 1024, timeout: 20 * 60 * 1000 });
 const output = `${result.stdout || ''}${result.stderr || ''}`;
 mkdirSync(path.join(root, 'ci/reports'), { recursive: true });
 writeFileSync(path.join(root, 'ci/reports/tests.tap'), output);
