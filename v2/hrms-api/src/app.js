@@ -62,7 +62,8 @@ export const buildApp = async ({ config, authService, authenticate, authorize, d
   app.decorate('applicationRoutes', []);
   app.decorateRequest('user', null);
   app.addHook('onRoute', route => {
-    if (route.url === '/' || route.url.startsWith('/api/v2/')) for (const method of [route.method].flat()) if (method !== 'HEAD') app.applicationRoutes.push({ method, url: route.url, schema: route.schema });
+    const applicationRoute = route.url === '/' || (route.url.startsWith('/api/v2/') && !route.url.startsWith('/api/v2/docs'));
+    if (applicationRoute) for (const method of [route.method].flat()) if (method !== 'HEAD') app.applicationRoutes.push({ method, url: route.url, schema: route.schema });
   });
   // JSON.stringify retains legacy ObjectId/date serialization and nullable/optional data.
   app.setSerializerCompiler(() => data => JSON.stringify(data));

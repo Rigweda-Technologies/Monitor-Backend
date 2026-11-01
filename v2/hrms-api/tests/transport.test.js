@@ -20,6 +20,7 @@ test('Swagger documents login token header and validation/limiting response cont
   assert.equal(css.statusCode, 200);
   assert.match(css.headers['content-type'], /text\/css/);
   const spec=(await app.inject('/api/v2/docs/json')).json();
+  assert.equal(app.applicationRoutes.some(route => route.url.startsWith('/api/v2/docs')), false);
   assert.ok(spec.paths['/api/v2/users/login'].post.responses['200'].headers?.Authorization);
   assert.ok(spec.paths['/api/v2/users/login'].post.responses['429'].content['application/json'].schema.oneOf);
 });
