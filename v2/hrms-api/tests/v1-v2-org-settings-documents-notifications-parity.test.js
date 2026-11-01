@@ -19,8 +19,7 @@ import { createOrganizationDocumentModels } from '../src/modules/organization-do
 import { createOrganizationDocumentService } from '../src/modules/organization-documents/organization-document.service.js';
 import { errorHandler, httpError } from '../src/plugins/errors.js';
 
-const root='/Users/kasarlamahesh/Desktop/MyPc/DriveD/RIGWEDA/projects/Monitor-Backend';
-const legacyRequire=createRequire(`${root}/hrms/back-end/package.json`);
+const legacyRequire=createRequire(new URL('../../../hrms/back-end/package.json',import.meta.url));
 const userId='507f1f77bcf86cd799439011',organizationId='507f1f77bcf86cd799439012',documentId='507f1f77bcf86cd799439013',notificationId='507f1f77bcf86cd799439014';
 const identity={userId,organizationId,activeOrganizationId:organizationId,activeRoleId:'superadmin',roleKey:'superadmin'};
 const failure=(code,message,error=null)=>({success:false,code,message,data:null,error});
