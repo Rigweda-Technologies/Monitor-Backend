@@ -20,7 +20,8 @@
     "org:hard-delete": "node scripts/hard-delete-organization.js",
     "prisma:generate": "prisma generate --schema prisma/monitor/schema.prisma && prisma generate --schema prisma/payroll/schema.prisma",
     "prisma:validate": "prisma validate --schema prisma/monitor/schema.prisma && prisma validate --schema prisma/payroll/schema.prisma",
-    "postinstall": "npm run prisma:generate"
+    "postinstall": "npm run prisma:generate",
+    "seed:payroll-tenants": "node scripts/seed-payroll-tenants.js"
   },
   "dependencies": {
     "@fastify/cors": "11.3.1",
