@@ -1,0 +1,51 @@
+{
+  "name": "@rigweda/hrms-api-v2",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^22.12.0 || ^24.0.0"
+  },
+  "scripts": {
+    "test": "node --test",
+    "test:ci": "node ci/run-tests.js",
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "lint": "eslint src scripts tests ci --max-warnings 0",
+    "typecheck": "node ci/typecheck.cjs",
+    "typecheck:strict": "tsc --project tsconfig.check.json",
+    "audit:production": "npm audit --omit=dev --audit-level=high",
+    "bootstrap:system": "node scripts/bootstrap-system.js",
+    "seed:organization-roles": "node scripts/seed-organization-roles.js",
+    "org:hard-delete": "node scripts/hard-delete-organization.js",
+    "prisma:generate": "prisma generate --schema prisma/monitor/schema.prisma && prisma generate --schema prisma/payroll/schema.prisma",
+    "prisma:validate": "prisma validate --schema prisma/monitor/schema.prisma && prisma validate --schema prisma/payroll/schema.prisma",
+    "postinstall": "npm run prisma:generate"
+  },
+  "dependencies": {
+    "@fastify/cors": "11.3.1",
+    "@fastify/swagger": "9.9.2",
+    "@fastify/swagger-ui": "6.1.2",
+    "@prisma/adapter-pg": "7.10.1",
+    "@prisma/client": "7.10.1",
+    "bcryptjs": "3.0.3",
+    "cloudinary": "2.9.0",
+    "dotenv": "18.0.9",
+    "fastify": "5.12.7",
+    "firebase-admin": "14.5.0",
+    "joi": "18.3.1",
+    "jsonwebtoken": "9.0.3",
+    "mongoose": "9.11.4",
+    "nodemailer": "10.2.1",
+    "prisma": "7.10.1",
+    "qs": "6.16.1"
+  },
+  "overrides": {
+    "glob": "14.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.0",
+    "eslint": "10.13.0",
+    "typescript": "5.9.3"
+  }
+}
