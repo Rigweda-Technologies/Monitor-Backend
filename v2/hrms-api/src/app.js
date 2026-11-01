@@ -69,9 +69,9 @@ export const buildApp = async ({ config, authService, authenticate, authorize, d
   app.setErrorHandler(errorHandler);
   await app.register(cors, { origin: (origin, callback) => callback(null, !origin || config.corsOrigins.includes(origin)), credentials: true, exposedHeaders: ['Content-Type','Authorization','Access-Control-Allow-Credentials'], optionsSuccessStatus: 200 });
   await app.register(swagger, { openapi: { info: { title: 'Rigweda HRMS API V2', version: '2.0.0' }, components: { securitySchemes: { bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' } } } } });
-  await app.register(swaggerUi, { routePrefix: '/docs' });
+  await app.register(swaggerUi, { routePrefix: '/api/v2/docs' });
   const status = value => ({ type: 'object', properties: { status: { type: 'string', const: value } }, required: ['status'] });
-  app.get('/', { schema: { tags: ['Operations'], summary: 'Get service information', response: { 200: { type: 'object', properties: { message: { type: 'string' }, docs: { type: 'string' } } } } } }, async () => ({ message: 'Rigweda HRMS API V2', docs: '/docs' }));
+  app.get('/', { schema: { tags: ['Operations'], summary: 'Get service information', response: { 200: { type: 'object', properties: { message: { type: 'string' }, docs: { type: 'string' } } } } } }, async () => ({ message: 'Rigweda HRMS API V2', docs: '/api/v2/docs' }));
   app.get('/api/v2/health', { schema: { tags: ['Operations'], summary: 'Check process liveness', response: { 200: status('healthy') } } }, async () => ({ status: 'healthy' }));
   app.get('/api/v2/ready', { schema: { tags: ['Operations'], summary: 'Check MongoDB readiness', response: { 200: status('ready'), 503: status('not_ready') } } }, async (_request, reply) => {
     try { await isReady(); return { status: 'ready' }; } catch { return reply.code(503).send({ status: 'not_ready' }); }

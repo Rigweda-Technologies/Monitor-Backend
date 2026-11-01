@@ -15,11 +15,11 @@ test('legacy form-encoded auth payloads and empty-body validation are preserved'
 });
 test('Swagger documents login token header and validation/limiting response contracts',async t=>{
   const app=await buildApp({config,logger:false,authService:{},authenticate:async()=>{},isReady:async()=>{}});t.after(()=>app.close());
-  assert.equal((await app.inject('/docs/')).statusCode, 200);
-  const css = await app.inject('/docs/static/swagger-ui.css');
+  assert.equal((await app.inject('/api/v2/docs/')).statusCode, 200);
+  const css = await app.inject('/api/v2/docs/static/swagger-ui.css');
   assert.equal(css.statusCode, 200);
   assert.match(css.headers['content-type'], /text\/css/);
-  const spec=(await app.inject('/docs/json')).json();
+  const spec=(await app.inject('/api/v2/docs/json')).json();
   assert.ok(spec.paths['/api/v2/users/login'].post.responses['200'].headers?.Authorization);
   assert.ok(spec.paths['/api/v2/users/login'].post.responses['429'].content['application/json'].schema.oneOf);
 });

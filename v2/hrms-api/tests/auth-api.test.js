@@ -143,7 +143,7 @@ test('complete auth HTTP contracts and persistence in isolated MongoDB', { skip:
     assert.equal(res.json().message, 'Session expired. Please login again.');
   });
   await t.test('OpenAPI covers every registered application route', async () => {
-    const spec = (await app.inject('/docs/json')).json();
+    const spec = (await app.inject('/api/v2/docs/json')).json();
     assert.equal(Object.keys(spec.paths).length, 198);
     for (const route of app.applicationRoutes) {
       const openApiPath = route.url.replace(/:([^/]+)/g, '{$1}');
