@@ -27,6 +27,7 @@ try {
   if (apply && !config.postgres.payroll?.url) throw new Error('Payroll PostgreSQL URL is required when applying tenant synchronization.');
   connection = await connectDatabase(config);
   const Organization = createModels(connection).Organization;
+  /** @type {(organization: any) => Promise<any>} */
   let upsertOrganizationTenant = async () => { throw new Error('Payroll tenant synchronization is read-only in dry-run mode.'); };
   if (apply) {
     clients = await connectPrismaClients({ monitor: null, payroll: config.postgres.payroll });
