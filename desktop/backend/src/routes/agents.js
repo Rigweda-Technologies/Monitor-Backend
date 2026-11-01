@@ -1,3 +1,5 @@
+import { activityModel } from "../modules/activity/activity.model.js";
+
 const locationReportBodySchema = {
   type: "object",
   additionalProperties: false,
@@ -88,25 +90,34 @@ const validateLocationReportMetadata = async (request, reply) => {
   }
 };
 
-const postAgentLocationHandler = async (request, reply) => {
+const postAgentLocationHandler = (locationModel) => async (request, reply) => {
   const payload = request.body;
+  const auth = request.auth;
+
+  if (!auth?.userId || !auth?.organizationId) {
+    return reply.code(401).send({
+      success: false,
+      message: "An authenticated organization user is required.",
+      errorCode: "UNAUTHORIZED",
+    });
+  }
+
+  const storedReport = await locationModel.saveLocationReport({
+    organizationId: String(auth.organizationId),
+    employeeId: String(auth.userId),
+    deviceId: payload.device_id,
+    observedAt: payload.timestamp,
+    latitude: payload.latitude,
+    longitude: payload.longitude,
+    source: payload.source,
+    metadata: payload.metadata ?? {},
+  });
 
   request.log.info(
     {
-      device_id: payload.device_id,
-      timestamp: payload.timestamp,
-      latitude: payload.latitude,
-      longitude: payload.longitude,
-      source: payload.source,
-      metadata: payload.metadata || null,
-      auth: request.auth
-        ? {
-            userId: request.auth.userId || null,
-            organizationId: request.auth.organizationId || null,
-          }
-        : null,
+      device_id: storedReport.id,
     },
-    "Received employee location report"
+    "Stored employee location report"
   );
 
   return reply.code(200).send({
@@ -114,13 +125,13 @@ const postAgentLocationHandler = async (request, reply) => {
     message: "Location report received",
     data: {
       device_id: payload.device_id,
-      receivedAt: new Date().toISOString(),
+      receivedAt: storedReport.receivedAt,
       source: payload.source,
     },
   });
 };
 
-export const registerAgentRoutes = async (fastify) => {
+export const registerAgentRoutes = async (fastify, { locationModel = activityModel } = {}) => {
   fastify.post(
     "/location",
     {
@@ -133,6 +144,10 @@ export const registerAgentRoutes = async (fastify) => {
           request.log.info(
             "Development Mode: Bypassing external session authentication for local agent diagnostic verification."
           );
+          request.auth = {
+            userId: "local-diagnostic-employee",
+            organizationId: "local-diagnostic-organization",
+          };
           return;
         }
 
@@ -148,6 +163,6 @@ export const registerAgentRoutes = async (fastify) => {
         },
       },
     },
-    postAgentLocationHandler
+    postAgentLocationHandler(locationModel)
   );
 };

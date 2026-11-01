@@ -5,7 +5,7 @@ import { registerCloudinaryRoutes } from "./modules/cloudinary/cloudinary.routes
 import { registerBrowserHistoryRoutes } from "./modules/browserHistory/browserHistory.routes.js";
 import { registerAgentRoutes } from "./routes/agents.js";
 
-export const registerRoutes = async (fastify) => {
+export const registerRoutes = async (fastify, { locationModel } = {}) => {
   fastify.get("/", async () => ({
     message: "Rigweda Monitor API is running",
     docs: "/docs",
@@ -22,5 +22,5 @@ export const registerRoutes = async (fastify) => {
   await fastify.register(registerAppUsageRoutes, { prefix: "/api" });
   await fastify.register(registerBrowserHistoryRoutes, { prefix: "/api" });
   await fastify.register(registerCloudinaryRoutes, { prefix: "/api" });
-  await fastify.register(registerAgentRoutes, { prefix: "/api/agents" });
+  await fastify.register(registerAgentRoutes, { prefix: "/api/agents", locationModel });
 };
