@@ -14,7 +14,7 @@ import { errorHandler } from '../src/plugins/errors.js';
 
 const databaseUrl = process.env.V2_HRMS_ISOLATED_PAYROLL_TEST_DATABASE_URL;
 const require = createRequire(import.meta.url);
-const { Client } = require('../../../desktop/backend/node_modules/pg');
+const { Client } = require('../../../hrms/back-end/node_modules/pg');
 const identityOrganization = `payroll-parity-${randomUUID()}`;
 const actorId = `payroll-test-${randomUUID()}`;
 const actorRoleId = `payroll-role-${randomUUID()}`;

@@ -13,8 +13,7 @@ import { createRoleService } from '../src/modules/roles/role.service.js';
 import { createTokens } from '../src/integrations/tokens.js';
 import { errorHandler } from '../src/plugins/errors.js';
 
-const root='/Users/kasarlamahesh/Desktop/MyPc/DriveD/RIGWEDA/projects/Monitor-Backend';
-const legacyRequire=createRequire(`${root}/hrms/back-end/package.json`);
+const legacyRequire=createRequire(new URL('../../../hrms/back-end/package.json',import.meta.url));
 const organizationId='507f1f77bcf86cd799439011',userId='507f1f77bcf86cd799439012',permissionId='507f1f77bcf86cd799439013',adminRoleId='507f1f77bcf86cd799439014',employeeRoleId='507f1f77bcf86cd799439015',customRoleId='507f1f77bcf86cd799439016';
 const identity={userId,email:'roles@example.test',organizationId,activeOrganizationId:organizationId,activeRoleId:'507f1f77bcf86cd799439099',roleIds:[adminRoleId],roleKey:'superadmin'};
 const normalize=value=>JSON.parse(JSON.stringify(value,(key,item)=>key==='_id'&&item?'<id>':key==='token'&&item?'<token>':['createdAt','updatedAt','loginTimestamp','lastLoginAt'].includes(key)&&item?'<timestamp>':item));
