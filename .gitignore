@@ -349,6 +349,8 @@ dump-*.sql
 .monitor_runtime/
 .verification/
 .superpowers/
+v2/hrms-api/generated/
+v2/hrms-api/ci/reports/
 
 !package-lock.json
 

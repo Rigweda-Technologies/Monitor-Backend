@@ -1,0 +1,167 @@
+name: HRMS API v2 quality and development deployment
+
+on:
+  pull_request:
+  push:
+    branches: [development]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '24'
+
+jobs:
+  scope:
+    name: Detect HRMS v2 scope
+    runs-on: ubuntu-24.04
+    outputs:
+      changed: ${{ steps.detect.outputs.changed }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: detect
+        name: Detect runtime or deployment changes
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" == workflow_dispatch || -z "$BASE_SHA" || "$BASE_SHA" =~ ^0+$ ]]; then
+            changed=true
+          elif git diff --quiet "$BASE_SHA" "$HEAD_SHA" -- v2/hrms-api deploy/hrms-v2 .github/workflows/hrms-v2-development.yml; then
+            changed=false
+          else
+            changed=true
+          fi
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
+          echo "HRMS v2 runtime or deployment changed: **$changed**" >> "$GITHUB_STEP_SUMMARY"
+
+  quality:
+    name: HRMS v2 quality gates
+    needs: scope
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    services:
+      mongo:
+        image: mongo:8.0
+        ports: ['27017:27017']
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.runCommand({ping:1}).ok'"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci-only-password
+          POSTGRES_DB: hrms_v2_ci
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres -d hrms_v2_ci"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      NODE_ENV: test
+      V2_HRMS_ISOLATED_TEST_DATABASE_URL: mongodb://127.0.0.1:27017/hrms_v2_ci
+      V2_HRMS_ISOLATED_MONITOR_TEST_DATABASE_URL: postgresql://postgres:ci-only-password@127.0.0.1:5432/hrms_v2_ci
+      V2_HRMS_ISOLATED_PAYROLL_TEST_DATABASE_URL: postgresql://postgres:ci-only-password@127.0.0.1:5432/hrms_v2_ci
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: |
+            v2/hrms-api/package-lock.json
+            hrms/back-end/package-lock.json
+      - name: Locked dependency installs
+        run: |
+          npm ci --prefix hrms/back-end
+          npm ci --prefix v2/hrms-api
+      - name: Lint with zero warnings
+        run: npm run lint --prefix v2/hrms-api
+      - name: Typecheck with reviewed diagnostic baseline
+        run: npm run typecheck --prefix v2/hrms-api
+      - name: Validate Prisma schemas
+        run: npm run prisma:validate --prefix v2/hrms-api
+      - name: Production dependency audit
+        run: npm run audit:production --prefix v2/hrms-api
+      - name: Tests with isolated databases and zero skips
+        run: npm run test:ci --prefix v2/hrms-api
+      - name: Deployment regression tests
+        run: |
+          bash -n deploy/hrms-v2/deploy.sh
+          bash -n deploy/hrms-v2/receive.sh
+          python3 -m unittest discover -s deploy/hrms-v2/tests -v
+      - name: Build deployable Linux amd64 image
+        if: needs.scope.outputs.changed == 'true'
+        run: docker build --pull --platform linux/amd64 --label org.opencontainers.image.revision=${{ github.sha }} --tag hrms-api-v2:${{ github.sha }} v2/hrms-api
+      - name: Save validated image
+        if: needs.scope.outputs.changed == 'true' && github.ref == 'refs/heads/development' && github.event_name != 'pull_request'
+        run: docker save hrms-api-v2:${{ github.sha }} | gzip > "$RUNNER_TEMP/hrms-api-v2-image.tar.gz"
+      - name: Store immutable image artifact
+        if: needs.scope.outputs.changed == 'true' && github.ref == 'refs/heads/development' && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: hrms-api-v2-image-${{ github.sha }}
+          path: ${{ runner.temp }}/hrms-api-v2-image.tar.gz
+          retention-days: 3
+          compression-level: 0
+          if-no-files-found: error
+      - name: Retain test evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: hrms-api-v2-test-results-${{ github.run_id }}-${{ github.run_attempt }}
+          path: v2/hrms-api/ci/reports/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  deploy:
+    name: Deploy HRMS API v2 to development EC2
+    needs: [scope, quality]
+    if: github.ref == 'refs/heads/development' && github.event_name != 'pull_request' && needs.scope.outputs.changed == 'true' && needs.quality.result == 'success'
+    runs-on:
+      group: hrms-production-deployment
+      labels: [self-hosted, linux, x64, hrms-production]
+    timeout-minutes: 30
+    environment: hrms-v2-development
+    concurrency:
+      group: hrms-v2-development
+      cancel-in-progress: false
+    permissions:
+      contents: read
+    env:
+      SOURCE_SHA: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Refuse superseded development commits
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          latest=$(curl --fail --silent --show-error \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/git/ref/heads/development" \
+            | python3 -c 'import json,sys; print(json.load(sys.stdin)["object"]["sha"])')
+          test "$latest" = "$SOURCE_SHA"
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: hrms-api-v2-image-${{ github.sha }}
+          path: ${{ runner.temp }}/hrms-api-v2-image
+      - name: Deploy validated image and verify readiness
+        run: |
+          archive="$RUNNER_TEMP/hrms-api-v2-image/hrms-api-v2-image.tar.gz"
+          image_ref="hrms-api-v2:$SOURCE_SHA"
+          cat "$archive" | sudo -n /usr/local/sbin/hrms-api-v2-receive "deploy $image_ref $SOURCE_SHA"
+          {
+            echo "Source: $SOURCE_SHA"
+            echo "Docker image reference: $image_ref"
+            echo "Runner: $RUNNER_NAME"
+            echo "Readiness: http://127.0.0.1:8002/api/v2/ready"
+          } >> "$GITHUB_STEP_SUMMARY"
