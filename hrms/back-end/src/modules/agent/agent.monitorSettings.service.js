@@ -129,12 +129,6 @@ const getPoolOrThrow = async () => {
   return pool;
 };
 
-const maskSecret = (value) => {
-  if (!value) return "";
-  if (value.length <= 6) return "******";
-  return `${value.slice(0, 3)}******${value.slice(-3)}`;
-};
-
 const normalizeFolderRoot = (value) =>
   String(value || "rigweda-monitor")
     .trim()
@@ -147,10 +141,10 @@ const normalizeMinutes = (value, fallback = 1, min = 1, max = 240) => {
   return Math.min(Math.max(Math.trunc(parsed), min), max);
 };
 
-const toPublicSettings = (row, secret) => row && ({
+const toPublicSettings = (row) => row && ({
   cloudName: row.cloud_name,
   apiKey: row.api_key,
-  apiSecretMasked: maskSecret(secret),
+  apiSecretMasked: row.api_secret_ciphertext ? "******" : "",
   uploadFolderRoot: row.upload_folder_root || "rigweda-monitor",
   screenshotsEnabled: row.screenshots_enabled ?? true,
   mouseEnabled: row.mouse_enabled ?? true,
@@ -204,7 +198,7 @@ const getPublicSettings = async (organizationId) => {
   );
   const row = result.rows[0] || null;
   if (!row) return null;
-  return toPublicSettings(row, decryptSecret(row));
+  return toPublicSettings(row);
 };
 
 const saveSettings = async (organizationId, payload) => {
@@ -274,7 +268,7 @@ const saveSettings = async (organizationId, payload) => {
       normalizeMinutes(payload.browserHistorySyncMinutes, 1)
     ]
   );
-  return toPublicSettings(result.rows[0], resolvedSecret);
+  return toPublicSettings(result.rows[0]);
 };
 
 const getUsbControlConfig = async (organizationId) => {
@@ -308,5 +302,6 @@ module.exports = {
   getPublicSettings,
   getUsbControlConfig,
   saveSettings,
-  testSettings
+  testSettings,
+  __test: { toPublicSettings }
 };
