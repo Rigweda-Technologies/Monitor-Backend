@@ -5,12 +5,13 @@ const Organization = require("../modules/organizations/organization.model");
 const OrgUser = require("../modules/organizations/org-user.model");
 const { genHashedPassword } = require("./bcryptUtils");
 
-const SUPERADMIN_EMAIL = "superadmin@luvetha.com";
-const SUPERADMIN_PASSWORD = "SuperAdmin@123";
+const SUPERADMIN_EMAIL = process.env.SYSTEM_BOOTSTRAP_EMAIL || "superadmin@luvetha.com";
 
 const ensureSystemBootstrap = async () => {
+  let created = false;
   let systemOrg = await Organization.findOne({ code: "SYSTEM" });
   if (!systemOrg) {
+    created = true;
     systemOrg = await Organization.create({
       name: "SYSTEM",
       code: "SYSTEM",
@@ -25,6 +26,7 @@ const ensureSystemBootstrap = async () => {
     code: "*"
   });
   if (!systemPermission) {
+    created = true;
     systemPermission = await Permission.create({
       name: "ALL_ACCESS",
       code: "*",
@@ -38,6 +40,7 @@ const ensureSystemBootstrap = async () => {
     slug: "superadmin"
   });
   if (!superAdminRole) {
+    created = true;
     superAdminRole = await Role.create({
       name: "SuperAdmin",
       slug: "superadmin",
@@ -49,9 +52,16 @@ const ensureSystemBootstrap = async () => {
 
   let superAdmin = await User.findOne({ email: SUPERADMIN_EMAIL });
   if (!superAdmin) {
+    const bootstrapPassword = process.env.SYSTEM_BOOTSTRAP_PASSWORD;
+    if (!bootstrapPassword) {
+      throw new Error(
+        "SYSTEM_BOOTSTRAP_PASSWORD is required when creating the initial super admin"
+      );
+    }
+    created = true;
     superAdmin = await User.create({
       email: SUPERADMIN_EMAIL,
-      password: await genHashedPassword(SUPERADMIN_PASSWORD),
+      password: await genHashedPassword(bootstrapPassword),
       organizationIds: [systemOrg._id],
       activeOrganizationId: systemOrg._id,
       status: "active"
@@ -74,10 +84,9 @@ const ensureSystemBootstrap = async () => {
   );
 
   return {
-    created: true,
+    created,
     systemOrgId: systemOrg._id.toString(),
-    email: SUPERADMIN_EMAIL,
-    password: SUPERADMIN_PASSWORD
+    email: SUPERADMIN_EMAIL
   };
 };
 

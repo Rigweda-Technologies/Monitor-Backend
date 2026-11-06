@@ -68,6 +68,13 @@ const uploadSchema = Joi.object({
   base64Data: Joi.string().required()
 });
 
+exports.employeeIdParamsSchema = Joi.object({
+  id: objectId.required().messages({
+    "any.invalid": "Employee id is invalid",
+    "any.required": "Employee id is required"
+  })
+});
+
 /* ------------------------------------------------------------------ */
 /* HR CREATES EMPLOYEE (MINIMUM REQUIRED DATA)                         */
 /* ------------------------------------------------------------------ */

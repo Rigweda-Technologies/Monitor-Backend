@@ -11,7 +11,8 @@ const {
   listEmployeesQuerySchema,
   updateEmployeeSchema,
   lifecycleActionSchema,
-  bulkUpdateEmployeesSchema
+  bulkUpdateEmployeesSchema,
+  employeeIdParamsSchema
 } = require("./employee.validation");
 
 const controller = require("./employee.controller");
@@ -89,6 +90,7 @@ router.get(
   "/:id",
   auth,
   authorize("EMP_VIEW"),
+  validate(employeeIdParamsSchema, "params"),
   asyncHandler(controller.getById)
 );
 
@@ -96,6 +98,7 @@ router.put(
   "/:id",
   auth,
   authorize("EMP_UPDATE"),
+  validate(employeeIdParamsSchema, "params"),
   validate(updateEmployeeSchema),
   asyncHandler(controller.updateByHr)
 );
@@ -104,6 +107,7 @@ router.put(
   "/:id/lifecycle-action",
   auth,
   authorize(["EMP_UPDATE", "EMP_VIEW"]),
+  validate(employeeIdParamsSchema, "params"),
   validate(lifecycleActionSchema),
   asyncHandler(controller.lifecycleAction)
 );
@@ -112,6 +116,7 @@ router.put(
   "/:id/reopen-profile",
   auth,
   authorize("EMP_UPDATE"),
+  validate(employeeIdParamsSchema, "params"),
   asyncHandler(controller.reopenProfileCompletion)
 );
 
@@ -119,6 +124,7 @@ router.delete(
   "/:id",
   auth,
   authorize("EMP_DELETE"),
+  validate(employeeIdParamsSchema, "params"),
   asyncHandler(controller.remove)
 );
 

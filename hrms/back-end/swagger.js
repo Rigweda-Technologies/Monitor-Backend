@@ -8,8 +8,8 @@ module.exports = {
 
   servers: [
     {
-      url: "http://localhost:8000/api/v1",
-      description: "Local server"
+      url: "/api/v1",
+      description: "Current HRMS V1 server"
     }
   ],
 
