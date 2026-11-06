@@ -1,6 +1,6 @@
 const crypto = require("crypto");
 const { v2: cloudinary } = require("cloudinary");
-const { getMonitorPgPool } = require("../../config/monitorDb");
+const monitorDb = require("../../config/monitorDb");
 
 const TABLE_SQL = `
   CREATE TABLE IF NOT EXISTS monitor_cloudinary_settings (
@@ -78,7 +78,7 @@ const normalizeBoolean = (value, fallback = true) => {
 };
 
 const getPoolOrThrow = async () => {
-  const pool = await getMonitorPgPool();
+  const pool = await monitorDb.getMonitorPgPool();
   await pool.query(TABLE_SQL);
 
   const columnsResult = await pool.query(
@@ -129,10 +129,22 @@ const getPoolOrThrow = async () => {
   return pool;
 };
 
-const maskSecret = (value) => {
-  if (!value) return "";
-  if (value.length <= 6) return "******";
-  return `${value.slice(0, 3)}******${value.slice(-3)}`;
+const storedByteLength = (value) => typeof value === "string" ? Buffer.from(value, "base64").length : 0;
+
+const decryptStoredSecret = (organizationId, row) => {
+  try {
+    return decryptSecret(row);
+  } catch (error) {
+    console.warn("Monitor Cloudinary secret decrypt failed", {
+      organizationId: String(organizationId),
+      storedByteLengths: {
+        iv: storedByteLength(row.api_secret_iv),
+        authTag: storedByteLength(row.api_secret_auth_tag),
+        ciphertext: storedByteLength(row.api_secret_ciphertext)
+      }
+    });
+    throw error;
+  }
 };
 
 const normalizeFolderRoot = (value) =>
@@ -147,10 +159,10 @@ const normalizeMinutes = (value, fallback = 1, min = 1, max = 240) => {
   return Math.min(Math.max(Math.trunc(parsed), min), max);
 };
 
-const toPublicSettings = (row, secret) => row && ({
+const toPublicSettings = (row) => row && ({
   cloudName: row.cloud_name,
   apiKey: row.api_key,
-  apiSecretMasked: maskSecret(secret),
+  apiSecretMasked: row.api_secret_ciphertext ? "******" : "",
   uploadFolderRoot: row.upload_folder_root || "rigweda-monitor",
   screenshotsEnabled: row.screenshots_enabled ?? true,
   mouseEnabled: row.mouse_enabled ?? true,
@@ -178,7 +190,7 @@ const getRawSettings = async (organizationId) => {
   return {
     cloudName: row.cloud_name,
     apiKey: row.api_key,
-    apiSecret: decryptSecret(row),
+    apiSecret: decryptStoredSecret(organizationId, row),
     uploadFolderRoot: row.upload_folder_root || "rigweda-monitor",
     screenshotsEnabled: row.screenshots_enabled ?? true,
     mouseEnabled: row.mouse_enabled ?? true,
@@ -204,7 +216,7 @@ const getPublicSettings = async (organizationId) => {
   );
   const row = result.rows[0] || null;
   if (!row) return null;
-  return toPublicSettings(row, decryptSecret(row));
+  return toPublicSettings(row);
 };
 
 const saveSettings = async (organizationId, payload) => {
@@ -214,11 +226,33 @@ const saveSettings = async (organizationId, payload) => {
     [String(organizationId)]
   );
   const existing = existingResult.rows[0] || null;
-  const resolvedSecret = String(payload.apiSecret || "").trim() || (existing ? decryptSecret(existing) : "");
-  if (!resolvedSecret) {
+  const providedSecret = String(payload.apiSecret || "").trim();
+  if (!providedSecret && !existing) {
     throw { code: 400, message: "API secret is required when creating monitor settings." };
   }
-  const encrypted = encryptSecret(resolvedSecret);
+  let resolvedSecret = providedSecret;
+  let encrypted;
+  if (providedSecret) {
+    // A replacement secret does not depend on the old ciphertext being readable.
+    encrypted = encryptSecret(providedSecret);
+  } else {
+    const credentialsChanged =
+      String(payload.cloudName || "").trim() !== existing.cloud_name ||
+      String(payload.apiKey || "").trim() !== existing.api_key;
+    if (credentialsChanged) {
+      try {
+        resolvedSecret = decryptStoredSecret(organizationId, existing);
+      } catch {
+        throw { code: 400, message: "Saved secret is unreadable; enter the API secret again" };
+      }
+    }
+    // Settings-only saves preserve the encrypted fields without trying to decrypt them.
+    encrypted = {
+      ciphertext: existing.api_secret_ciphertext,
+      iv: existing.api_secret_iv,
+      authTag: existing.api_secret_auth_tag
+    };
+  }
   const result = await pool.query(
     `
       INSERT INTO monitor_cloudinary_settings (
@@ -274,7 +308,7 @@ const saveSettings = async (organizationId, payload) => {
       normalizeMinutes(payload.browserHistorySyncMinutes, 1)
     ]
   );
-  return toPublicSettings(result.rows[0], resolvedSecret);
+  return toPublicSettings(result.rows[0]);
 };
 
 const getUsbControlConfig = async (organizationId) => {
@@ -308,5 +342,6 @@ module.exports = {
   getPublicSettings,
   getUsbControlConfig,
   saveSettings,
-  testSettings
+  testSettings,
+  __test: { toPublicSettings }
 };

@@ -2,9 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import Fastify from 'fastify';
 import { registerRoutes } from '../src/routes.js';
+import { createLocationSaver } from '../src/modules/activity/activity.model.js';
 
 const LOCATION_ENDPOINT = '/api/agents/location';
 const AUTH_TOKEN = 'location-test-token';
+const RECEIVED_AT = '2026-11-01T12:00:00.000Z';
 
 const validPayload = () => ({
   device_id: 'dev_location_test_001',
@@ -18,10 +20,21 @@ const validPayload = () => ({
   },
 });
 
-const createApp = async ({ requireAuth = false } = {}) => {
+const createApp = async ({ requireAuth = false, authenticate = true, locationModel } = {}) => {
   const app = Fastify({ logger: false });
+  const savedReports = [];
+  const model = locationModel || {
+    async saveLocationReport(report) {
+      savedReports.push(report);
+      return { id: 'location-report-test-id', receivedAt: RECEIVED_AT };
+    },
+  };
 
   app.decorate('authenticateRequest', async (request, reply) => {
+    if (!authenticate) {
+      return;
+    }
+
     if (!requireAuth) {
       request.auth = {
         userId: 'employee-test',
@@ -66,8 +79,9 @@ const createApp = async ({ requireAuth = false } = {}) => {
     });
   });
 
-  await registerRoutes(app);
+  await registerRoutes(app, { locationModel: model });
   await app.ready();
+  app.savedReports = savedReports;
   return app;
 };
 
@@ -87,6 +101,86 @@ test('POST /agents/location accepts a complete employee location report', async 
   assert.strictEqual(body.success, true);
   assert.ok(typeof body.message === 'string');
   assert.ok(body.message.length > 0);
+  assert.deepStrictEqual(app.savedReports, [{
+    organizationId: 'organization-test',
+    employeeId: 'employee-test',
+    deviceId: 'dev_location_test_001',
+    observedAt: '2026-09-28T12:34:56Z',
+    latitude: 17.385,
+    longitude: 78.4867,
+    source: 'windows_native',
+    metadata: { city: 'Hyderabad', region: 'Telangana' },
+  }]);
+  assert.strictEqual(body.data.receivedAt, RECEIVED_AT);
+});
+
+test('location persistence upserts the latest coordinates into monitor_device_health', async () => {
+  let capturedQuery;
+  let capturedValues;
+  const saveLocationReport = createLocationSaver(async (query, values) => {
+    capturedQuery = query;
+    capturedValues = values;
+    return { rows: [{ device_id: values[2], updated_at: new Date(RECEIVED_AT) }] };
+  });
+
+  const result = await saveLocationReport({
+    organizationId: 'organization-test',
+    employeeId: 'employee-test',
+    deviceId: 'dev_location_test_001',
+    observedAt: validPayload().timestamp,
+    latitude: validPayload().latitude,
+    longitude: validPayload().longitude,
+    source: validPayload().source,
+    metadata: validPayload().metadata,
+  });
+
+  assert.match(capturedQuery, /INSERT INTO monitor_device_health/);
+  assert.match(capturedQuery, /ON CONFLICT \(organization_id, device_id\) DO UPDATE/);
+  assert.match(capturedQuery, /jsonb_agg\(entry ORDER BY \(entry->>'timestamp'\)::timestamptz DESC\)/);
+  assert.match(capturedQuery, /jsonb_array_elements/);
+  assert.doesNotMatch(capturedQuery, /monitor_location_reports/);
+  assert.strictEqual(capturedValues[0], 'organization-test');
+  assert.deepStrictEqual(JSON.parse(capturedValues[3]), [{
+    latitude: 17.385,
+    longitude: 78.4867,
+    source: 'windows_native',
+    timestamp: '2026-09-28T12:34:56Z',
+  }]);
+  assert.strictEqual(result.id, 'dev_location_test_001');
+  assert.strictEqual(result.receivedAt, RECEIVED_AT);
+});
+
+test('POST /agents/location rejects reports when authenticated ownership is missing', async (t) => {
+  const app = await createApp({
+    authenticate: false,
+    locationModel: { async saveLocationReport() { throw new Error('must not persist'); } },
+  });
+  t.after(() => app.close());
+
+  const response = await app.inject({
+    method: 'POST',
+    url: LOCATION_ENDPOINT,
+    payload: validPayload(),
+  });
+
+  assert.strictEqual(response.statusCode, 401);
+  assert.strictEqual(response.json().errorCode, 'UNAUTHORIZED');
+});
+
+test('POST /agents/location reports persistence failures instead of acknowledging the report', async (t) => {
+  const app = await createApp({
+    locationModel: { async saveLocationReport() { throw new Error('database unavailable'); } },
+  });
+  t.after(() => app.close());
+
+  const response = await app.inject({
+    method: 'POST',
+    url: LOCATION_ENDPOINT,
+    payload: validPayload(),
+  });
+
+  assert.strictEqual(response.statusCode, 500);
+  assert.strictEqual(response.json().success, false);
 });
 
 test('POST /agents/location rejects missing mandatory properties with 400', async (t) => {

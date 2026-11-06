@@ -808,7 +808,6 @@ exports.generateMonthlyAttendanceSnapshots = async (req) => {
           dayDate: dayKey,
           dayKey,
           dayOfWeek: weekday,
-          dayStatus,
           payableUnits,
           lopUnits,
           attendanceMinutes,

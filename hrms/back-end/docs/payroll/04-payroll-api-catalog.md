@@ -1,6 +1,6 @@
 # 04. Payroll API Catalog
 
-Base path: `/api/payroll`
+Base path: `/api/v1/payroll`
 
 All routes require `auth.middleware` and permission authorization.
 

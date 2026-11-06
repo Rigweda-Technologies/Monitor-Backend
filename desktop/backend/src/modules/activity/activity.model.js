@@ -31,7 +31,62 @@ const toDateKeyInTimeZone = (dateValue, timeZone = DEFAULT_ACTIVITY_TIMEZONE) =>
 const buildDailyKey = ({ organizationId, employeeId, activityDate }) =>
   `${organizationId || ""}:${employeeId}:${activityDate}`;
 
+export const createLocationSaver = (query) => async ({
+  organizationId,
+  employeeId,
+  deviceId,
+  observedAt,
+  latitude,
+  longitude,
+  source,
+}) => {
+  const receivedAt = new Date().toISOString();
+  const location = {
+    latitude,
+    longitude,
+    source,
+    timestamp: observedAt,
+  };
+  const { rows } = await query(
+    `INSERT INTO monitor_device_health (
+      organization_id, employee_id, device_id, location,
+      last_seen_at, reported_at, updated_at
+    ) VALUES ($1, $2, $3, $4::jsonb, $5, $5, NOW())
+    ON CONFLICT (organization_id, device_id) DO UPDATE SET
+      employee_id = EXCLUDED.employee_id,
+      location = (
+        SELECT COALESCE(
+          jsonb_agg(entry ORDER BY (entry->>'timestamp')::timestamptz DESC),
+          '[]'::jsonb
+        )
+        FROM jsonb_array_elements(
+          COALESCE(monitor_device_health.location, '[]'::jsonb) || EXCLUDED.location
+        ) AS locations(entry)
+      ),
+      updated_at = NOW()
+    RETURNING device_id, updated_at`,
+    [
+      organizationId,
+      employeeId,
+      deviceId,
+      JSON.stringify([location]),
+      observedAt,
+    ]
+  );
+
+  return {
+    id: rows[0]?.device_id ?? deviceId,
+    receivedAt: rows[0]?.updated_at?.toISOString?.() ?? receivedAt,
+  };
+};
+
+const saveLocationReport = createLocationSaver((...args) => getPool().query(...args));
+
 export const activityModel = {
+  async saveLocationReport(report) {
+    return saveLocationReport(report);
+  },
+
   async saveEvents({ organizationId, employeeId, employeeName, events, activityTimeZone }) {
     const pool = getPool();
     const client = await pool.connect();

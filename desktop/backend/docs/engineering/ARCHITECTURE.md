@@ -12,7 +12,7 @@ Current reference: `desktop/backend/src/server.js`, `routes.js`, `middleware/aut
 - `src/integrations/`: HRMS session/profile verification and Cloudinary provider calls with bounded timeouts and explicit failure behavior.
 - `tests/`: isolated contract, unit and database integration tests.
 
-These are proposed paths under `v2/monitor-api`, not existing files. Keep dependencies and generated Prisma clients deployable independently. Do not expose a database client to route handlers or create a client per request. Preserve ESM conventions; classes need a documented benefit.
+The app, server, plugins, all registered desktop business route modules, device-ownership helper, Prisma mappings, provider adapters and tests exist under `v2/monitor-api`. Keep dependencies and generated Prisma clients deployable independently. Do not expose a database client to route handlers or create a client per request. Preserve ESM conventions; classes need a documented benefit.
 
 ## Authentication and ownership
 

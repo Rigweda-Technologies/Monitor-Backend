@@ -215,10 +215,10 @@ const createRoutes = () => {
   return router;
 };
 
-const mount = (app) => {
+const mount = (app, apiPrefix = "/api/v1") => {
   ensureUserPushTokenField();
   patchNotificationService();
-  app.use("/api/notifications", createRoutes());
+  app.use(`${apiPrefix}/notifications`, createRoutes());
 };
 
 module.exports = {

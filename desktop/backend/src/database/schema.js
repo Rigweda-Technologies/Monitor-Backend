@@ -331,6 +331,7 @@ export const initializeDatabase = async () => {
       battery_percent NUMERIC,
       battery_charging BOOLEAN,
       uptime_seconds BIGINT,
+      location JSONB NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(location) = 'array'),
       last_seen_at TIMESTAMPTZ NOT NULL,
       reported_at TIMESTAMPTZ NOT NULL,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -347,6 +348,68 @@ export const initializeDatabase = async () => {
   await pool.query(`
     ALTER TABLE monitor_device_health
     ADD COLUMN IF NOT EXISTS cpu_core_count INTEGER
+  `);
+
+  await pool.query(`
+    ALTER TABLE monitor_device_health
+    ADD COLUMN IF NOT EXISTS location JSONB NOT NULL DEFAULT '[]'::jsonb
+      CHECK (jsonb_typeof(location) = 'array')
+  `);
+
+  await pool.query(`
+    DO $$
+    BEGIN
+      IF EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_schema = 'public' AND table_name = 'monitor_device_health'
+          AND column_name = 'latitude'
+      ) AND EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_schema = 'public' AND table_name = 'monitor_device_health'
+          AND column_name = 'longitude'
+      ) AND EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_schema = 'public' AND table_name = 'monitor_device_health'
+          AND column_name = 'metadata'
+      ) THEN
+        UPDATE monitor_device_health
+        SET location = jsonb_build_array(
+          COALESCE(metadata, '{}'::jsonb) || jsonb_build_object(
+            'latitude', latitude,
+            'longitude', longitude,
+            'source', COALESCE(metadata->'source', 'null'::jsonb),
+            'timestamp', COALESCE(
+              NULLIF(metadata->>'timestamp', ''),
+              to_char(reported_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"')
+            )
+          )
+        )
+        WHERE location = '[]'::jsonb AND latitude IS NOT NULL AND longitude IS NOT NULL;
+      END IF;
+    END $$
+  `);
+
+  await pool.query(`
+    ALTER TABLE monitor_device_health
+    DROP COLUMN IF EXISTS metadata,
+    DROP COLUMN IF EXISTS latitude,
+    DROP COLUMN IF EXISTS longitude
+  `);
+
+  await pool.query(`
+    UPDATE monitor_device_health AS health
+    SET location = (
+      SELECT COALESCE(
+        jsonb_agg(entry - 'city' - 'region' ORDER BY (entry->>'timestamp')::timestamptz DESC),
+        '[]'::jsonb
+      )
+      FROM jsonb_array_elements(health.location) AS locations(entry)
+    )
+    WHERE EXISTS (
+      SELECT 1
+      FROM jsonb_array_elements(health.location) AS locations(entry)
+      WHERE entry ?| ARRAY['city', 'region']
+    )
   `);
 
   await pool.query(`

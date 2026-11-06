@@ -1,0 +1,15 @@
+**
+!package.json
+!package-lock.json
+!app.js
+!swagger.js
+!src/
+!src/**
+# Defense in depth for accidental secrets beneath src.
+**/.env
+**/.env.*
+**/env.text
+**/env.txt
+**/*.pem
+**/*.key
+**/node_modules/**
