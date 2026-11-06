@@ -1,6 +1,6 @@
 # V2 API migration specification
 
-Status: all registered desktop monitor business routes implemented in the independent V2 service; HRMS V2 migration remains in progress. Updated: 27 October 2026.
+Status: HRMS V2 now registers all 250 unique operations in the live V1 route manifest (251 registrations including one duplicate) and every operation appears in generated OpenAPI. Implemented groups include auth/session, user administration, organizations, workforce, attendance/timesheets, dashboard/activity, business modules and payroll. Automated route/OpenAPI coverage and the full V2 suite pass against isolated MongoDB fixtures. Full V1 payload/status parity for every business route, isolated payroll PostgreSQL integration, live queue/socket/provider checks and client cutover remain unverified. V1 remains unchanged and clients remain on V1. Updated: 1 November 2026.
 
 ## User-selected requirements
 
@@ -8,13 +8,13 @@ Status: all registered desktop monitor business routes implemented in the indepe
 - Use Prisma for PostgreSQL and preserve the existing databases and data.
 - Leave v1 behavior and implementation otherwise untouched. Existing HRMS Express APIs are explicitly namespaced under `/api/v1`; the desktop Fastify v1 API retains its existing route paths. The user will migrate clients to v2; creating v2 does not authorize switching traffic, retiring v1 or deploying.
 
-This document defines the code-generation target. The current implementation includes all eight business routes listed in `desktop/backend/docs/engineering/API-INVENTORY.md` in `v2/monitor-api`. Unit, repository and HTTP behavior are tested, and every API has an OpenAPI schema. Real isolated-PostgreSQL integration, deployment resources and client migration are not complete.
+This document defines the code-generation target. The independent services are implemented under `v2/monitor-api` and `v2/hrms-api`. HRMS V2's generated source manifest is `v2/hrms-api/tests/fixtures/v1-api-route-manifest.json`; `tests/v1-route-completeness.test.js` checks every unique manifest operation against registered Fastify routes and generated OpenAPI. The full V2 test suite was run with the dedicated isolated MongoDB test URL. Auth responses are directly compared with V1 on isolated MongoDB fixtures. Payroll PostgreSQL behavior has not been exercised against an isolated representative database; business-route response parity beyond the tests present in each module is not established. Full coexistence verification and client migration are not complete.
 
 ## Implementation defaults
 
 Retain JavaScript and the two independently deployable service responsibilities: HRMS and monitor ingestion. Retain Mongoose for existing MongoDB collections. These defaults minimize unrelated language, database and deployment changes; they are not additional framework choices made by the user.
 
-Proposed new layout:
+Implemented service layout:
 
 ```text
 v2/
@@ -44,7 +44,7 @@ v2/
     prisma/
 ```
 
-This tree is a documentation proposal, not scaffolding. Define the packaging and generation of Prisma clients per logical database after inspecting actual monitor/payroll database and tenant-schema usage. Each deployable service must contain or install its required generated client without importing files from a running v1 service. The shared database directory establishes a place to document canonical schema ownership; it does not imply one client can represent all database topologies.
+Each service owns its package, lockfile, tests, configuration and process lifecycle. Prisma clients are generated independently for monitor and payroll logical connections. The payroll implementation uses parameterized Prisma raw-query calls against the existing payroll schema; physical schema parity and transaction behavior still need isolated database verification. Generated clients are ignored build output and are created by the v2 package scripts.
 
 ## V1 isolation
 
@@ -72,7 +72,7 @@ Before implementation, enumerate every mounted route and middleware chain from b
 | Test evidence | Contract/parity, authorization and failure tests |
 | Migration state | Inventoried, implemented, verified, client migrated; use actual status |
 
-The inventory is an implementation deliverable, not completed by this document. Record deliberate contract changes explicitly rather than allowing accidental framework differences.
+The HRMS route graph is captured in `v2/hrms-api/tests/fixtures/v1-api-route-manifest.json` and regenerated with `v2/hrms-api/scripts/export-v1-route-manifest.cjs`. It contains 251 registrations and 250 unique method/path operations. Contract/parity evidence remains per-module; the route/OpenAPI completeness test proves documentation and registration only, not response parity or runtime side-effect equivalence. Record deliberate contract changes explicitly rather than allowing accidental framework differences.
 
 ## Fastify implementation requirements
 

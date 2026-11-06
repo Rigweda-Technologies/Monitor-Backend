@@ -293,7 +293,6 @@ const resolveLoginContext = async ({ email, password }) => {
 };
 
 exports.loginUser = async ({ email, password }) => {
-  console.log("Attempting login with email:", email, password);
   const { user, membership, activeRole } = await resolveLoginContext({ email, password });
   const organizationId = membership.organizationId._id;
   const maxActiveLoginsPerUser = await getMaxActiveLoginsPerUser(organizationId);

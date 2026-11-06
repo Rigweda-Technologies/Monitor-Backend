@@ -42,6 +42,48 @@ The execution role also manages API Gateway v2 tags on resources whose ARN is un
 
 This updates the already-created role without recreating the bootstrap stack or changing runtime secrets.
 
+The execution role also needs `apigateway:PUT` on the API Gateway v2 `/apis` collection path to create the HTTP API. The API resource operations remain scoped to `/apis/*`; this additional permission is only for the collection path. If the bootstrap stack predates this permission, add the following statement to IAM → Roles → `monitor-v2-development-cfn-execution` → Permissions → `MonitorV2StackResources`, retaining the current statements:
+
+```json
+{
+  "Sid": "CreateMonitorHttpApi",
+  "Effect": "Allow",
+  "Action": "apigateway:PUT",
+  "Resource": "arn:aws:apigateway:ap-south-2::/apis"
+}
+```
+
+This updates the existing execution role without recreating the bootstrap stack or changing runtime secrets.
+
+CloudFormation also tags the API Gateway stage. If the bootstrap stack predates this permission, add the following statement to IAM → Roles → `monitor-v2-development-cfn-execution` → Permissions → `MonitorV2StackResources`, retaining the existing statements:
+
+```json
+{
+  "Sid": "ManageMonitorHttpApiResourceTags",
+  "Effect": "Allow",
+  "Action": [
+    "apigateway:TagResource",
+    "apigateway:UntagResource"
+  ],
+  "Resource": "arn:aws:apigateway:ap-south-2::/apis/*"
+}
+```
+
+This permits tag updates only on Monitor API Gateway resources under `/apis/`.
+
+The Lambda resource's code package is stored in the private SAM artifact bucket. CloudFormation assumes its execution role when creating the function, so that role also needs `s3:GetObject` on objects in that bucket. If the bootstrap stack predates this permission, add this statement to IAM → Roles → `monitor-v2-development-cfn-execution` → Permissions → `MonitorV2StackResources`, retaining existing statements:
+
+```json
+{
+  "Sid": "ReadMonitorLambdaDeploymentArtifact",
+  "Effect": "Allow",
+  "Action": "s3:GetObject",
+  "Resource": "arn:aws:s3:::monitor-v2-sam-647949734900-ap-south-2/*"
+}
+```
+
+After a failed initial deployment leaves `monitor-v2-development` in `ROLLBACK_COMPLETE`, delete that failed stack after confirming its resources are deleted, then retry the workflow. Keep `monitor-v2-bootstrap`.
+
 Set these non-secret **repository variables** after the stack completes:
 
 | Variable | Value |

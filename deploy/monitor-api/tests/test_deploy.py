@@ -165,6 +165,43 @@ class MonitorDeploymentTests(unittest.TestCase):
             template,
         )
 
+    def test_bootstrap_execution_role_can_create_monitor_http_api_at_collection_path(self):
+        template = (ROOT / "bootstrap.yaml").read_text()
+        self.assertRegex(
+            template,
+            r"Sid: CreateMonitorHttpApi\s+Effect: Allow\s+Action: apigateway:PUT\s+"
+            r"Resource: !Sub 'arn:\$\{AWS::Partition\}:apigateway:\$\{AWS::Region\}::/apis'",
+        )
+
+    def test_bootstrap_execution_role_can_tag_monitor_http_api_resources(self):
+        template = (ROOT / "bootstrap.yaml").read_text()
+        self.assertRegex(
+            template,
+            r"Sid: ManageMonitorHttpApiResourceTags\s+Effect: Allow\s+Action:\s+"
+            r"- apigateway:TagResource\s+- apigateway:UntagResource\s+"
+            r"Resource: !Sub 'arn:\$\{AWS::Partition\}:apigateway:\$\{AWS::Region\}::/apis/\*'",
+        )
+
+    def test_bootstrap_execution_role_can_read_only_monitor_deployment_objects(self):
+        template = (ROOT / "bootstrap.yaml").read_text()
+        execution_role = template.split("  MonitorStackExecutionRole:", 1)[1].split(
+            "  MonitorGithubDeployRole:", 1
+        )[0]
+        self.assertIn("Sid: ReadMonitorLambdaDeploymentArtifact", execution_role)
+        self.assertIn("Action: s3:GetObject", execution_role)
+        self.assertIn(
+            "Resource: !Sub 'arn:${AWS::Partition}:s3:::monitor-v2-sam-${AWS::AccountId}-${AWS::Region}/*'",
+            execution_role,
+        )
+
+    def test_bootstrap_execution_role_can_set_monitor_lambda_reserved_concurrency(self):
+        template = (ROOT / "bootstrap.yaml").read_text()
+        lambda_policy = template.split("Sid: ManageMonitorLambda", 1)[1].split(
+            "Sid: CreateMonitorHttpApi", 1
+        )[0]
+        self.assertIn("- lambda:PutFunctionConcurrency", lambda_policy)
+        self.assertIn("- lambda:DeleteFunctionConcurrency", lambda_policy)
+
     def test_lambda_post_route_uses_explicit_api_gateway_v2_proxy_resources(self):
         template = (ROOT / "template.yaml").read_text()
         lambda_resource = template.split("  MonitorLambda:\n", 1)[1].split(
@@ -188,6 +225,48 @@ class MonitorDeploymentTests(unittest.TestCase):
     def test_lambda_deployment_acknowledges_named_iam_resources(self):
         workflow = (ROOT.parents[1] / ".github/workflows/monitor-v2.yml").read_text()
         self.assertIn("--capabilities CAPABILITY_NAMED_IAM", workflow)
+
+    def test_lambda_package_is_size_checked_after_sam_build_and_before_deployment(self):
+        workflow = (ROOT.parents[1] / ".github/workflows/monitor-v2.yml").read_text()
+        self.assertLess(
+            workflow.index("sam build --template-file deploy/monitor-api/template.yaml"),
+            workflow.index("check_lambda_package_size.py"),
+        )
+
+    def test_ci_database_provisioning_uses_pinned_prisma_cli_script(self):
+        workflow = (ROOT.parents[1] / ".github/workflows/monitor-v2.yml").read_text()
+        self.assertIn('DATABASE_URL="$V2_MONITOR_ISOLATED_TEST_DATABASE_URL" npm run prisma:push', workflow)
+        self.assertNotIn("npx prisma db push", workflow)
+
+    def test_monitor_image_copies_prisma_schema_before_install_lifecycle_runs(self):
+        dockerfile = (ROOT.parents[1] / "v2/monitor-api/Dockerfile").read_text()
+        self.assertLess(dockerfile.index("COPY prisma ./prisma"), dockerfile.index("RUN npm ci"))
+        self.assertLess(dockerfile.index("COPY prisma.config.js"), dockerfile.index("RUN npm ci"))
+
+    def test_lambda_package_size_checker_rejects_packages_over_its_configured_limit(self):
+        checker = ROOT / "check_lambda_package_size.py"
+        with tempfile.TemporaryDirectory() as temp:
+            package = Path(temp) / "MonitorLambda"
+            package.mkdir()
+            (package / "small.js").write_text("ok")
+            passed = subprocess.run(
+                ["python3", str(checker), str(package), "--max-bytes", "2"],
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(passed.returncode, 0, passed.stderr)
+
+            (package / "large.js").write_text("too large")
+            failed = subprocess.run(
+                ["python3", str(checker), str(package), "--max-bytes", "2"],
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(failed.returncode, 1)
+
+    def test_monitor_ec2_origin_default_uses_current_instance_address(self):
+        template = (ROOT / "template.yaml").read_text()
+        self.assertIn("Default: http://16.112.12.20", template)
 
     def test_monitor_only_changes_do_not_trigger_hrms_dependency_audit_or_deploy(self):
         workflow = (ROOT.parents[1] / ".github/workflows/hrms-production.yml").read_text()

@@ -1,6 +1,8 @@
 FROM node:24-bookworm-slim AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
+COPY prisma ./prisma
+COPY prisma.config.js ./prisma.config.js
 RUN npm ci
 COPY . .
 RUN npm run prisma:generate && npm prune --omit=dev && npm cache clean --force

@@ -47,6 +47,7 @@ app.use(express.urlencoded({ extended: true, limit: "25mb" }));
 
 const defaultAllowedOrigins = [
   "http://localhost:3000",
+  "http://127.0.0.1:3000",
   "http://localhost:8080",
   "http://localhost:8081",
   "http://localhost:3002",
@@ -73,8 +74,11 @@ app.use(
       if (!origin) return callback(null, true);
 
       if (allowedOrigins.indexOf(origin) === -1) {
-        const msg = "CORS policy does not allow this origin: " + origin;
-        return callback(new Error(msg), false);
+        const error = Object.assign(
+          new Error("CORS policy does not allow this origin: " + origin),
+          { statusCode: 403 }
+        );
+        return callback(error, false);
       }
       return callback(null, true);
     },
@@ -204,7 +208,7 @@ const startServer = async () => {
       console.log("----------------------------------");
       console.log("SYSTEM ORG ID        :", bootstrapResult.systemOrgId);
       console.log("SuperAdmin Email     :", bootstrapResult.email);
-      console.log("SuperAdmin Password  :", bootstrapResult.password);
+      console.log("SuperAdmin credentials were created; password output is suppressed.");
     }
   } catch (err) {
     console.error("❌ Failed to bootstrap system org:", err);

@@ -91,12 +91,17 @@ Resources:
                   - lambda:GetPolicy
                   - lambda:ListVersionsByFunction
                   - lambda:PublishVersion
+                  - lambda:PutFunctionConcurrency
                   - lambda:RemovePermission
                   - lambda:TagResource
                   - lambda:UntagResource
                   - lambda:UpdateFunctionCode
                   - lambda:UpdateFunctionConfiguration
                 Resource: !Sub 'arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:monitor-v2-development*'
+              - Sid: CreateMonitorHttpApi
+                Effect: Allow
+                Action: apigateway:PUT
+                Resource: !Sub 'arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis'
               - Sid: ManageMonitorHttpApi
                 Effect: Allow
                 Action:
@@ -113,6 +118,12 @@ Resources:
                   - apigateway:GET
                   - apigateway:POST
                 Resource: !Sub 'arn:${AWS::Partition}:apigateway:${AWS::Region}::/tags/arn%3A${AWS::Partition}%3Aapigateway%3A${AWS::Region}%3A%3A%2Fv2%2Fapis%2F*'
+              - Sid: ManageMonitorHttpApiResourceTags
+                Effect: Allow
+                Action:
+                  - apigateway:TagResource
+                  - apigateway:UntagResource
+                Resource: !Sub 'arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/*'
               - Sid: ManageMonitorLambdaRole
                 Effect: Allow
                 Action:
@@ -142,6 +153,10 @@ Resources:
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                 Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/monitor-v2-development*:*'
+              - Sid: ReadMonitorLambdaDeploymentArtifact
+                Effect: Allow
+                Action: s3:GetObject
+                Resource: !Sub 'arn:${AWS::Partition}:s3:::monitor-v2-sam-${AWS::AccountId}-${AWS::Region}/*'
 
   MonitorGithubDeployRole:
     Type: AWS::IAM::Role

@@ -19,7 +19,7 @@ const { ensureSystemBootstrap } = require("../utils/bootstrapSystem");
       console.log("----------------------------------");
       console.log("SYSTEM ORG ID        :", bootstrapResult.systemOrgId);
       console.log("SuperAdmin Email     :", bootstrapResult.email);
-      console.log("SuperAdmin Password  :", bootstrapResult.password);
+      console.log("SuperAdmin credentials were created; password output is suppressed.");
     } else {
       console.log("⚠️ SuperAdmin already exists. Bootstrap skipped.");
     }

@@ -1,6 +1,4 @@
-import { defineConfig } from "prisma/config";
-
-export default defineConfig({
+export default {
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations"
@@ -10,4 +8,4 @@ export default defineConfig({
     // Database commands must use an explicitly isolated target and are not part of this slice.
     url: process.env.DATABASE_URL || "postgresql://localhost:5432/monitor_v2_schema_only"
   }
-});
+};

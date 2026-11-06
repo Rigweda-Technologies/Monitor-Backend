@@ -40,3 +40,7 @@ When guidance and existing implementation differ, identify the gap and scope a c
 - [Desktop backend v2](../../desktop/backend/docs/engineering/README.md): architecture, endpoint inventory, Prisma mapping requirements, testing and migration.
 
 - [HRMS backend v2](../../hrms/back-end/docs/engineering/README.md): architecture, mount inventory, persistence requirements, testing and migration.
+
+## HRMS v2 implementation status
+
+The independent [HRMS v2 service](../../v2/hrms-api/README.md) registers all 250 unique operations in the mounted V1 route graph and documents them in OpenAPI; route completeness is automated. Direct V1/V2 parity suites now exercise targeted success, failure, authorization and persistence paths across auth, payroll, organizations, users, roles, employees, timesheets, leaves, supporting domains, notifications, agent monitoring and business modules. These suites are not exhaustive for every path and payload of every operation. Payroll PostgreSQL and live provider/queue/realtime integration have isolated or injected-provider coverage with the boundaries recorded in the verification notes; production integration remains unverified. See the [migration tracker](../../v2/hrms-api/MIGRATION-TRACKER.md), [verification evidence](../../v2/hrms-api/VERIFICATION.md) and [supporting-runtime parity](../../v2/hrms-api/SUPPORTING-RUNTIME-PARITY.md). This does not authorize or establish client cutover.

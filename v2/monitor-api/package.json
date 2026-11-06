@@ -11,8 +11,10 @@
     "dev": "node --watch src/server.js",
     "test": "node --test",
     "openapi:export": "node scripts/export-openapi.js",
-    "prisma:generate": "prisma generate",
-    "prisma:validate": "prisma validate"
+    "prisma:generate": "npm exec --yes --package=prisma@7.10.1 -- prisma generate",
+    "prisma:validate": "npm exec --yes --package=prisma@7.10.1 -- prisma validate",
+    "prisma:push": "npm exec --yes --package=prisma@7.10.1 -- prisma db push",
+    "postinstall": "npm run prisma:generate"
   },
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.1158.0",
@@ -29,8 +31,5 @@
     "joi": "17.13.8",
     "jsonwebtoken": "9.0.3",
     "pg": "8.23.1"
-  },
-  "devDependencies": {
-    "prisma": "7.10.1"
   }
 }
