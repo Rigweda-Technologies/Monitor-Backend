@@ -8,8 +8,8 @@ module.exports = {
 
   servers: [
     {
-      url: "http://localhost:8000/api",
-      description: "Local server"
+      url: String(process.env.HRMS_BACKEND_URL || "").replace(/\/+$/, ""),
+      description: "Configured HRMS server"
     }
   ],
 

@@ -51,7 +51,6 @@ const defaultAllowedOrigins = [
   "http://localhost:8080",
   "http://localhost:8081",
   "http://localhost:3002",
-  "http://localhost:3001",
   "https://rigweda-hrms-frontend.vercel.app"
 ];
 const configuredAllowedOrigins = String(process.env.CORS_ALLOWED_ORIGINS || "http://localhost:3000")
@@ -255,7 +254,7 @@ const startServer = async () => {
   server.listen(PORT, "0.0.0.0", () => {
     console.log(`🚀 Server running on port ${PORT}`);
     if (shouldExposeSwagger) {
-      console.log(`📄 Swagger docs: http://localhost:${PORT}/swagger-ui`);
+      console.log(`📄 Swagger docs: ${String(process.env.HRMS_BACKEND_URL || "").replace(/\/+$/, "")}/swagger-ui`);
     }
   });
 };

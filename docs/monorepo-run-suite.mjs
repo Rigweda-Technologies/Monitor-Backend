@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -7,6 +7,24 @@ const workspaceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)),
 const [suite, mode] = process.argv.slice(2);
 const frontendVenvPython = path.join(workspaceRoot, "desktop", "frontend", ".venv", "Scripts", "python.exe");
 const frontendPython = process.env.PYTHON || (existsSync(frontendVenvPython) ? frontendVenvPython : "python");
+
+const readServiceEnv = (servicePath) => {
+  const values = {};
+  for (const fileName of [".env", `.env.${mode}`]) {
+    const envPath = path.join(workspaceRoot, servicePath, fileName);
+    if (!existsSync(envPath)) continue;
+    for (const line of readFileSync(envPath, "utf8").split(/\r?\n/)) {
+      const match = line.match(/^\s*([^#=]+?)\s*=\s*(.*)\s*$/);
+      if (match) values[match[1]] = match[2].replace(/^(["'])(.*)\1$/, "$2");
+    }
+  }
+  return values;
+};
+
+const hrmsEnv = readServiceEnv("hrms/back-end");
+const desktopEnv = readServiceEnv("desktop/backend");
+const hrmsBackendUrl = process.env.HRMS_BACKEND_URL || hrmsEnv.HRMS_BACKEND_URL || desktopEnv.HRMS_BACKEND_URL || "";
+const desktopBackendUrl = process.env.DESKTOP_BACKEND_URL || desktopEnv.DESKTOP_BACKEND_URL || "";
 
 const commands = {
   // Local mode starts the local API plus its UI/agent.  Server mode starts
@@ -33,20 +51,20 @@ if (!commands[suite] || !["local", "server"].includes(mode)) {
 const activeUrls = {
   desktop: mode === "local"
     ? [
-        "Desktop monitor API: http://localhost:3001/api",
+        `Desktop monitor API: ${desktopBackendUrl}`,
       ]
     : [
-        "Desktop monitor API: https://rigweda-monitor-backend.vercel.app/api",
+        `Desktop monitor API: ${desktopBackendUrl}`,
       ],
   hrms: mode === "local"
     ? [
         "HRMS web app:        http://localhost:3000",
-        "HRMS API:            http://localhost:8000/api",
-        "Desktop monitor API: http://localhost:3001/api",
+        `HRMS API:            ${hrmsBackendUrl}`,
+        `Desktop monitor API: ${desktopBackendUrl}`,
       ]
     : [
-        "HRMS API:            https://rigweda-hrms-backend.vercel.app/api",
-        "Desktop monitor API: https://rigweda-monitor-backend.vercel.app/api",
+        `HRMS API:            ${hrmsBackendUrl}`,
+        `Desktop monitor API: ${desktopBackendUrl}`,
       ],
 };
 

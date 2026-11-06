@@ -32,6 +32,16 @@ function ensurePositiveInt(value, fallback = 0) {
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : fallback;
 }
 
+function normalizeArtifactType(value, fileName = "", fileBuffer = null) {
+  const normalized = String(value || "").trim().toLowerCase();
+  const hasZipSignature = Buffer.isBuffer(fileBuffer) && fileBuffer.length >= 4 &&
+    fileBuffer[0] === 0x50 && fileBuffer[1] === 0x4b && [0x03, 0x05, 0x07].includes(fileBuffer[2]);
+  if (normalized === "package" || normalized === "zip" || String(fileName).toLowerCase().endsWith(".zip") || hasZipSignature) {
+    return "package";
+  }
+  return "executable";
+}
+
 function releaseSortRank(release) {
   const statusWeight = {
     active: 3,
@@ -109,6 +119,7 @@ exports.getLatestRelease = async ({ deviceId, appVersion }) => {
     downloadUrl: resolveDownloadUrl(latestRelease),
     sha256: latestRelease.sha256,
     size: latestRelease.fileSize,
+    artifactType: latestRelease.artifactType || "executable",
     releaseId: String(latestRelease._id),
     releasedAt: latestRelease.releasedAt
   };
@@ -231,7 +242,9 @@ exports.createRelease = async (payload) => {
   const useR2 = Boolean(bucket && accountId && accessKeyId && secretAccessKey);
   const fileSize = fileBuffer.length;
   const sha = sha256(fileBuffer);
-  const objectKey = `stable/${version}/RigwedaMonitor-${version}.exe`;
+  const artifactType = normalizeArtifactType(payload.artifactType, payload.fileName, fileBuffer);
+  const extension = artifactType === "package" ? "zip" : "exe";
+  const objectKey = `stable/${version}/RigwedaMonitor-${version}.${extension}`;
 
   let signedDownloadUrl = "";
   if (useR2) {
@@ -256,7 +269,7 @@ exports.createRelease = async (payload) => {
   }
 
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "rigweda-release-"));
-  const tempFile = path.join(tempDir, `RigwedaMonitor-${version}.exe`);
+  const tempFile = path.join(tempDir, `RigwedaMonitor-${version}.${extension}`);
   fs.writeFileSync(tempFile, fileBuffer);
 
   const release = await MonitorRelease.create({
@@ -266,6 +279,7 @@ exports.createRelease = async (payload) => {
     r2ObjectKey: objectKey,
     sha256: payload.sha256 || sha,
     fileSize,
+    artifactType,
     mandatory: Boolean(payload.mandatory),
     status: payload.status || "draft",
     rolloutPercentage: ensurePositiveInt(payload.rolloutPercentage, 100),
@@ -288,3 +302,5 @@ exports.activateRelease = async ({ releaseId, status, rolloutPercentage }) => {
   if (["testing", "active"].includes(status) && !update.releasedAt) update.releasedAt = new Date();
   return MonitorRelease.findByIdAndUpdate(releaseId, { $set: update }, { new: true }).lean();
 };
+
+exports.normalizeArtifactType = normalizeArtifactType;
