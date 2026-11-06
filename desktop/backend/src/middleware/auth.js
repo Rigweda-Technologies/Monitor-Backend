@@ -14,7 +14,7 @@ const getBearerToken = (request) => {
 
 const verifyRemoteToken = async (token) => {
   const hrmsBackendUrl = getEnv().hrmsBackendUrl;
-  const profileUrl = hrmsBackendUrl.endsWith("/api")
+  const profileUrl = ["/api", "/api/v1"].some(prefix => hrmsBackendUrl.endsWith(prefix))
     ? `${hrmsBackendUrl}/users/me/profile`
     : `${hrmsBackendUrl}/api/users/me/profile`;
 

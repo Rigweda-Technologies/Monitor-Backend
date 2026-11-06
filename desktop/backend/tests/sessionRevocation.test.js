@@ -26,9 +26,12 @@ test('HRMS outage fails closed', async t => {
   assert.equal(req.auth, undefined);
 });
 
-test('session validation uses the configured HRMS API without duplicating the prefix', async t => {
+for (const [configuredUrl, expectedUrl] of [
+  ['http://localhost:8000/api', 'http://localhost:8000/api/users/me/profile'],
+  ['https://hrms.example/api/v1', 'https://hrms.example/api/v1/users/me/profile'],
+]) test(`session validation preserves configured HRMS prefix: ${configuredUrl}`, async t => {
   const previousUrl = process.env.HRMS_BACKEND_URL;
-  process.env.HRMS_BACKEND_URL = 'http://localhost:8000/api';
+  process.env.HRMS_BACKEND_URL = configuredUrl;
   t.after(() => {
     if (previousUrl === undefined) delete process.env.HRMS_BACKEND_URL;
     else process.env.HRMS_BACKEND_URL = previousUrl;
@@ -43,7 +46,7 @@ test('session validation uses the configured HRMS API without duplicating the pr
   const req = { headers: { authorization: `Bearer ${token}` } };
   await authenticateRequest(req, { code() { return this; }, send() {} });
 
-  assert.equal(requestedUrl, 'http://localhost:8000/api/users/me/profile');
+  assert.equal(requestedUrl, expectedUrl);
   assert.equal(req.auth.organizationId, 'org');
 });
 
