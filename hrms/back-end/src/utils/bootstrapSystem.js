@@ -5,7 +5,7 @@ const Organization = require("../modules/organizations/organization.model");
 const OrgUser = require("../modules/organizations/org-user.model");
 const { genHashedPassword } = require("./bcryptUtils");
 
-const SUPERADMIN_EMAIL = "superadmin@luvetha.com";
+const SUPERADMIN_EMAIL = "superadmin@rigweda.com";
 const SUPERADMIN_PASSWORD = "SuperAdmin@123";
 
 const ensureSystemBootstrap = async () => {

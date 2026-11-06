@@ -49,3 +49,25 @@ test('unconfigured organization cannot reuse another tenant credentials', async 
   t.mock.method(getPool(), 'query', async () => ({ rows: [] }));
   assert.equal(await resolveCloudinarySettings({ organizationId: 'unconfigured', allowMissing: true }), null);
 });
+
+test('corrupted encrypted tenant secret fails closed without using environment credentials', async (t) => {
+  const row = {
+    ...encryptedRow(),
+    api_secret_auth_tag: Buffer.alloc(16, 0).toString('base64'),
+  };
+  t.mock.method(getPool(), 'query', async sql => {
+    if (sql.startsWith('SELECT *')) return { rows: [row] };
+    return { rows: ['screenshots_enabled', 'mouse_enabled', 'keyboard_enabled'].map(column_name => ({ column_name })) };
+  });
+  const previousSecret = process.env.CLOUDINARY_API_SECRET;
+  process.env.CLOUDINARY_API_SECRET = 'must-not-be-used-as-a-fallback';
+  t.after(() => {
+    if (previousSecret === undefined) delete process.env.CLOUDINARY_API_SECRET;
+    else process.env.CLOUDINARY_API_SECRET = previousSecret;
+  });
+
+  await assert.rejects(
+    resolveCloudinarySettings({ organizationId: 'tenant-a' }),
+    error => error instanceof Error && /authenticate data|Unsupported state/i.test(error.message),
+  );
+});

@@ -65,6 +65,12 @@ const validateTestPayload = (body) => {
   return payload;
 };
 
+const buildMonitorSettingsSignal = (data) => ({
+  version: data?.updatedAt || null,
+  updatedAt: data?.updatedAt || null,
+  source: "cloudinary-settings-save"
+});
+
 exports.getCloudinarySettings = async (req, res) => {
   const data = await service.getPublicSettings(req.user.organizationId);
   return res.status(200).json(buildSuccessResponse({
@@ -77,11 +83,10 @@ exports.getCloudinarySettings = async (req, res) => {
 exports.saveCloudinarySettings = async (req, res) => {
   const payload = validatePayload(req.body || {});
   const data = await service.saveSettings(req.user.organizationId, payload);
-  emitMonitorSettingsUpdate({ organizationId: req.user.organizationId }, {
-    settings: data,
-    updatedAt: data.updatedAt,
-    source: "cloudinary-settings-save"
-  });
+  emitMonitorSettingsUpdate(
+    { organizationId: req.user.organizationId },
+    buildMonitorSettingsSignal(data)
+  );
   return res.status(200).json(buildSuccessResponse({
     code: 200,
     message: "Cloudinary settings saved successfully",
@@ -123,3 +128,5 @@ exports.getUsbControlConfig = async (req, res) => {
     data
   }));
 };
+
+exports.buildMonitorSettingsSignal = buildMonitorSettingsSignal;
