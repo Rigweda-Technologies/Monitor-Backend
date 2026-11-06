@@ -46,7 +46,6 @@ const shouldExposeMetrics = process.env.ENABLE_HTTP_METRICS === "true" || proces
 const requestBodyLimit = getRequestBodyLimit();
 app.use(express.json({ limit: requestBodyLimit }));
 app.use(express.urlencoded({ extended: true, limit: requestBodyLimit }));
-require("./src/integrations/fcm").mount(app);
 
 const defaultAllowedOrigins = [
   "http://localhost:3000",
