@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../modules/users/user.model");
+const { API_V1_PREFIX } = require("../config/api");
 
 module.exports = async (req, res, next) => {
   try {
@@ -93,11 +94,11 @@ module.exports = async (req, res, next) => {
 
     if (user.passwordChangeRequired) {
       const allowedRoutePrefixes = [
-        "/api/users/change-password/send-otp",
-        "/api/users/change-password/verify-otp",
-        "/api/users/change-password/update",
-        "/api/users/me/profile",
-        "/api/users/me/permissions"
+        `${API_V1_PREFIX}/users/change-password/send-otp`,
+        `${API_V1_PREFIX}/users/change-password/verify-otp`,
+        `${API_V1_PREFIX}/users/change-password/update`,
+        `${API_V1_PREFIX}/users/me/profile`,
+        `${API_V1_PREFIX}/users/me/permissions`
       ];
       const requestPath = req.originalUrl.split("?")[0];
 

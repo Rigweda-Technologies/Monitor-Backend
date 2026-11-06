@@ -1,7 +1,10 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
 
-const { listEmployeesQuerySchema } = require("../src/modules/employees/employee.validation");
+const {
+  employeeIdParamsSchema,
+  listEmployeesQuerySchema
+} = require("../src/modules/employees/employee.validation");
 
 test("listEmployeesQuerySchema accepts supported filters", () => {
   const { error, value } = listEmployeesQuerySchema.validate({
@@ -47,4 +50,16 @@ test("listEmployeesQuerySchema rejects unsupported sortBy", () => {
   });
 
   assert.ok(error);
+});
+
+test("employeeIdParamsSchema rejects malformed ids before a database query", () => {
+  const { error } = employeeIdParamsSchema.validate({ id: "not-an-object-id" });
+  assert.ok(error);
+});
+
+test("employeeIdParamsSchema accepts MongoDB object ids", () => {
+  const { error } = employeeIdParamsSchema.validate({
+    id: "507f1f77bcf86cd799439011"
+  });
+  assert.equal(error, undefined);
 });

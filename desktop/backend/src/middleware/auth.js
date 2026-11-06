@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { getEnv } from "../config/env.js";
+import { buildHrmsApiUrl } from "../integrations/hrmsApiUrl.js";
 
 const getBearerToken = (request) => {
   const header = request.headers.authorization || "";
@@ -13,12 +13,7 @@ const getBearerToken = (request) => {
 };
 
 const verifyRemoteToken = async (token) => {
-  const hrmsBackendUrl = getEnv().hrmsBackendUrl;
-  const profileUrl = ["/api", "/api/v1"].some(prefix => hrmsBackendUrl.endsWith(prefix))
-    ? `${hrmsBackendUrl}/users/me/profile`
-    : `${hrmsBackendUrl}/api/users/me/profile`;
-
-  const response = await fetch(profileUrl, {
+  const response = await fetch(buildHrmsApiUrl("/users/me/profile"), {
     signal: AbortSignal.timeout(10000),
     headers: {
       Authorization: `Bearer ${token}`,

@@ -8,8 +8,8 @@ module.exports = {
 
   servers: [
     {
-      url: String(process.env.HRMS_BACKEND_URL || "").replace(/\/+$/, ""),
-      description: "Configured HRMS server"
+      url: "/api/v1",
+      description: "Current HRMS V1 server"
     }
   ],
 
@@ -507,6 +507,8 @@ module.exports = {
     }
   },
 
+  // Preserve the legacy exported contract; consolidating the earlier paths requires a separate API-doc review.
+  // eslint-disable-next-line no-dupe-keys
   paths: {
     /* ===================== AUTH ===================== */
 
@@ -2601,3 +2603,16 @@ module.exports = {
     }
   }
 };
+
+const v1RouteCatalog = JSON.parse(
+  require("node:fs").readFileSync(
+    require("node:path").join(__dirname, "src/openapi/v1-route-catalog.json"),
+    "utf8",
+  ),
+);
+for (const [routePath, methods] of Object.entries(v1RouteCatalog)) {
+  module.exports.paths[routePath] ||= {};
+  for (const [method, operation] of Object.entries(methods)) {
+    module.exports.paths[routePath][method] ||= operation;
+  }
+}

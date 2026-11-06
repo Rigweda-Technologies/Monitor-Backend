@@ -4,7 +4,6 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "../../../..");
-
 export const loadEnvFiles = () => {
   // The HRMS payroll database is the shared Postgres store in local development.
   // Desktop-specific values loaded below always take precedence.
