@@ -134,7 +134,7 @@ exports.recordUpdateStatus = async (payload) => {
       },
       $inc: payload.status === "FAILED" ? { failureCount: 1 } : { failureCount: 0 }
     },
-    { upsert: true, new: true, setDefaultsOnInsert: true }
+    { upsert: true, returnDocument: "after", setDefaultsOnInsert: true }
   );
   return update;
 };
@@ -286,5 +286,5 @@ exports.activateRelease = async ({ releaseId, status, rolloutPercentage }) => {
   if (status) update.status = status;
   if (typeof rolloutPercentage !== "undefined") update.rolloutPercentage = ensurePositiveInt(rolloutPercentage, 100);
   if (["testing", "active"].includes(status) && !update.releasedAt) update.releasedAt = new Date();
-  return MonitorRelease.findByIdAndUpdate(releaseId, { $set: update }, { new: true }).lean();
+  return MonitorRelease.findByIdAndUpdate(releaseId, { $set: update }, { returnDocument: "after" }).lean();
 };
