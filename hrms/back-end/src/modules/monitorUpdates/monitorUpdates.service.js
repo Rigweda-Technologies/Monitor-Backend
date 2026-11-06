@@ -3,7 +3,9 @@ const fs = require("fs");
 const path = require("path");
 const os = require("os");
 const https = require("https");
+/** @type {import("mongoose").Model<any>} */
 const MonitorRelease = require("./monitorRelease.model");
+/** @type {import("mongoose").Model<any>} */
 const MonitorDeviceUpdate = require("./monitorDeviceUpdate.model");
 
 function parseVersion(version) {
