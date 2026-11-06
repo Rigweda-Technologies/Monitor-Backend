@@ -17,6 +17,7 @@ const {
   metricsHandler,
   getMetricsSnapshot
 } = require("./src/observability/httpMetrics");
+const { getRequestBodyLimit } = require("./src/config/requestLimits");
 
 // Load the common settings first. `npm run local` and `npm run server` set
 // APP_ENV and can override only the values that differ in .env.<mode>.
@@ -41,9 +42,10 @@ const shouldExposeMetrics = process.env.ENABLE_HTTP_METRICS === "true" || proces
 /*                               MIDDLEWARES                                  */
 /* -------------------------------------------------------------------------- */
 
-// Parse JSON. Document uploads are sent as base64 JSON, which is larger than the original file.
-app.use(express.json({ limit: "25mb" }));
-app.use(express.urlencoded({ extended: true, limit: "25mb" }));
+// Release and document uploads are base64 JSON, roughly 33% larger than their source files.
+const requestBodyLimit = getRequestBodyLimit();
+app.use(express.json({ limit: requestBodyLimit }));
+app.use(express.urlencoded({ extended: true, limit: requestBodyLimit }));
 
 const defaultAllowedOrigins = [
   "http://localhost:3000",
