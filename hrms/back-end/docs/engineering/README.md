@@ -18,3 +18,7 @@ Also read the root [AGENTS.md](../../../../AGENTS.md), [v2 specification](../../
 The existing HRMS [payroll documentation](../payroll/README.md) and [organization documents API](../organization-documents-api.md) provide domain context; recheck implementation before assuming historical descriptions match current behavior.
 
 All applicable backend standards cover this service. Flutter implementation and selectors are client responsibilities; client contract compatibility remains part of HRMS handoff. Device-ingestion requirements apply to agent APIs. No framework migration, database migration, deployment or client cutover has been performed by creating these files.
+
+## Current v1 CI/CD work
+
+The user authorized CI/CD for the existing v1 HRMS API before migrating to v2. Read [the development specification](CICD-AWS.md) and [AWS deployment runbook](../../../../deploy/hrms/README.md). This is a scoped exception to v1 preservation; no v2 migration is included.

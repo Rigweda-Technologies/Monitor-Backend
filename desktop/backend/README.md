@@ -68,12 +68,12 @@ Required desktop agent env:
 SCREENSHOT_INTERVAL_MS=60000
 SCREENSHOT_UPLOAD_BATCH_SIZE=30
 SCREENSHOT_UPLOAD_CONCURRENCY=4
-HRMS_BACKEND_URL=http://127.0.0.1:8000/api
+HRMS_BACKEND_URL=http://127.0.0.1:8000/api/v1
 DESKTOP_BACKEND_URL=http://127.0.0.1:3000/api
 MONITOR_ACCESS_TOKEN=<rigweda access token>
 ```
 
-`HRMS_BACKEND_URL` should point to the HRMS backend `/api`; the agent code derives `/api/agents` for monitor uploads and settings. Activity events still post to the desktop backend.
+`HRMS_BACKEND_URL` can point to the HRMS host, `/api`, or `/api/v1`; HRMS Express routes use `/api/v1`. The desktop integration normalizes this base for HRMS profile and session lookups. Activity events still post to the desktop backend.
 
 ## Run
 

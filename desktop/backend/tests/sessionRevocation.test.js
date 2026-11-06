@@ -27,7 +27,7 @@ test('HRMS outage fails closed', async t => {
 });
 
 for (const [configuredUrl, expectedUrl] of [
-  ['http://localhost:8000/api', 'http://localhost:8000/api/users/me/profile'],
+  ['http://localhost:8000/api', 'http://localhost:8000/api/v1/users/me/profile'],
   ['https://hrms.example/api/v1', 'https://hrms.example/api/v1/users/me/profile'],
 ]) test(`session validation preserves configured HRMS prefix: ${configuredUrl}`, async t => {
   const previousUrl = process.env.HRMS_BACKEND_URL;

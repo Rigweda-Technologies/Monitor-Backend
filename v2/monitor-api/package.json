@@ -1,0 +1,35 @@
+{
+  "name": "@rigweda/monitor-api-v2",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^22.12.0 || ^24.0.0"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test",
+    "openapi:export": "node scripts/export-openapi.js",
+    "prisma:generate": "npm exec --yes --package=prisma@7.10.1 -- prisma generate",
+    "prisma:validate": "npm exec --yes --package=prisma@7.10.1 -- prisma validate",
+    "prisma:push": "npm exec --yes --package=prisma@7.10.1 -- prisma db push",
+    "postinstall": "npm run prisma:generate"
+  },
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.1158.0",
+    "@fastify/aws-lambda": "^6.4.2",
+    "@fastify/cors": "11.3.1",
+    "@fastify/multipart": "10.1.6",
+    "@fastify/swagger": "9.9.2",
+    "@fastify/swagger-ui": "6.1.2",
+    "@prisma/adapter-pg": "7.10.1",
+    "@prisma/client": "7.10.1",
+    "cloudinary": "2.10.0",
+    "dotenv": "18.0.9",
+    "fastify": "5.12.7",
+    "joi": "17.13.8",
+    "jsonwebtoken": "9.0.3",
+    "pg": "8.23.1"
+  }
+}

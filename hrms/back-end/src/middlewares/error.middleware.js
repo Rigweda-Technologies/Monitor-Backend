@@ -24,8 +24,6 @@ module.exports = (err, req, res, next) => {
       : Object.keys(keyValue);
     const duplicateMessage = String(err.message || "").toLowerCase();
 
-    console.log(duplicateFields,"-------");
-    
     if (duplicateFields.includes("email")) {
       return "Email already exists";
     }
@@ -56,6 +54,11 @@ module.exports = (err, req, res, next) => {
   if (err.name === "ValidationError") {
     statusCode = 400;
     message = err.message;
+  }
+
+  if (err.name === "CastError") {
+    statusCode = 400;
+    message = `Invalid ${err.path || "identifier"}`;
   }
 
   // PostgreSQL errors (e.g. 42P01 undefined_table, 23505 unique_violation)

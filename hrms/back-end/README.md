@@ -7,10 +7,10 @@ Express API for the multi-tenant HRMS and monitor administration app.
 - Authentication, JWT sessions, role switching, permissions, and active-login limits
 - Organization, role, permission, employee, department, designation, shift, week-off, holiday, leave, attendance, timesheet, document, notification, expense, project, hiring, and dashboard APIs
 - Organization settings, tenant theme, and logo storage
-- Agent APIs under `/api/agents`
-- Monitor read APIs under `/api/activity`
-- Monitor update distribution under `/api/monitor`
-- Optional payroll APIs under `/api/payroll`
+- Agent APIs under `/api/v1/agents`
+- Monitor read APIs under `/api/v1/activity`
+- Monitor update distribution under `/api/v1/monitor`
+- Optional payroll APIs under `/api/v1/payroll`
 - Realtime notifications through Socket.IO
 
 ## Data Stores
@@ -114,7 +114,7 @@ GET /ready
 GET /metrics
 ```
 
-Swagger is available at `/swagger-ui` unless disabled by production settings.
+Swagger is available at `/swagger-ui` unless disabled by production settings. The UI includes an API selector for HRMS V1 and Monitor V2. HRMS V1 Swagger now includes every registered Express route method and path; newly cataloged operations explicitly note where field-level request/response schemas are not yet declared. Regenerate that route catalog with `npm run openapi:v1:export --prefix hrms/back-end`; the Swagger coverage test detects route drift. HRMS serves its own document at `/openapi/v1.json` and loads the Monitor V2 document from `V2_OPENAPI_SOURCE_URL` (default `http://127.0.0.1:3002/docs/json`), falling back to the generated `src/openapi/monitor-v2.json` snapshot when V2 is stopped. Regenerate the snapshot from `v2/monitor-api` with `npm run openapi:export` after changing V2 routes. For Swagger “Try it out” on V2 routes, start the V2 service and allow the HRMS UI origin in the V2 service's `CORS_ORIGINS` (for local HRMS on port 8000, `http://localhost:8000`).
 
 ## Local Bootstrap
 
@@ -135,10 +135,10 @@ The startup log prints local superadmin credentials when bootstrap runs.
 Settings route:
 
 ```text
-GET  /api/org-settings
-POST /api/org-settings
-GET  /api/org-settings/theme
-POST /api/org-settings/theme
+GET  /api/v1/org-settings
+POST /api/v1/org-settings
+GET  /api/v1/org-settings/theme
+POST /api/v1/org-settings/theme
 ```
 
 Important fields:
@@ -201,3 +201,7 @@ node --test tests/screenshotAssetVerification.test.js
 ## V2 engineering guidance
 
 See [service-specific v2 guidance](docs/engineering/README.md) for architecture, API inventory, database requirements, testing and migration. V2 is planned as a separate implementation; existing application code and commands are unchanged.
+
+## CI/CD to AWS
+
+The [HRMS v1 pipeline](../../.github/workflows/hrms-production.yml) checks lint, JavaScript type diagnostics, production dependencies, tests and Docker packaging. Successful pushes to `development` deploy the validated Docker image to the existing production Ubuntu EC2 environment through the restricted self-hosted runner. See the [setup and recovery runbook](../../deploy/hrms/README.md) and [development specification](docs/engineering/CICD-AWS.md).

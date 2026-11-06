@@ -1,0 +1,1512 @@
+{
+  "generatedFrom": "hrms/back-end/src/routes/apiV1.js",
+  "registeredRouteCount": 251,
+  "endpoints": [
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/users/login",
+      "v2Path": "/api/v2/users/login",
+      "source": "hrms/back-end/src/modules/users/user.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/users/login/selfie",
+      "v2Path": "/api/v2/users/login/selfie",
+      "source": "hrms/back-end/src/modules/users/user.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/users",
+      "v2Path": "/api/v2/users",
+      "source": "hrms/back-end/src/modules/users/user.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/users/org-user",
+      "v2Path": "/api/v2/users/org-user",
+      "source": "hrms/back-end/src/modules/users/user.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/users/switch-org",
+      "v2Path": "/api/v2/users/switch-org",
+      "source": "hrms/back-end/src/modules/users/user.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/users/me/permissions",
+      "v2Path": "/api/v2/users/me/permissions",
+      "source": "hrms/back-end/src/modules/users/user.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/users/me/profile",
+      "v2Path": "/api/v2/users/me/profile",
+      "source": "hrms/back-end/src/modules/users/user.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/users/send-otp",
+      "v2Path": "/api/v2/users/send-otp",
+      "source": "hrms/back-end/src/modules/users/user.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/users/verify-otp",
+      "v2Path": "/api/v2/users/verify-otp",
+      "source": "hrms/back-end/src/modules/users/user.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/users/forgot-password/send-otp",
+      "v2Path": "/api/v2/users/forgot-password/send-otp",
+      "source": "hrms/back-end/src/modules/users/user.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/users/forgot-password/verify-otp",
+      "v2Path": "/api/v2/users/forgot-password/verify-otp",
+      "source": "hrms/back-end/src/modules/users/user.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/users/forgot-password/reset-password",
+      "v2Path": "/api/v2/users/forgot-password/reset-password",
+      "source": "hrms/back-end/src/modules/users/user.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/users/change-password/send-otp",
+      "v2Path": "/api/v2/users/change-password/send-otp",
+      "source": "hrms/back-end/src/modules/users/user.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/users/change-password/verify-otp",
+      "v2Path": "/api/v2/users/change-password/verify-otp",
+      "source": "hrms/back-end/src/modules/users/user.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/users/change-password/update",
+      "v2Path": "/api/v2/users/change-password/update",
+      "source": "hrms/back-end/src/modules/users/user.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/organizations",
+      "v2Path": "/api/v2/organizations",
+      "source": "hrms/back-end/src/modules/organizations/organization.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/organizations/:id",
+      "v2Path": "/api/v2/organizations/:id",
+      "source": "hrms/back-end/src/modules/organizations/organization.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/organizations/:id",
+      "v2Path": "/api/v2/organizations/:id",
+      "source": "hrms/back-end/src/modules/organizations/organization.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/organizations",
+      "v2Path": "/api/v2/organizations",
+      "source": "hrms/back-end/src/modules/organizations/organization.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/organizations/:id",
+      "v2Path": "/api/v2/organizations/:id",
+      "source": "hrms/back-end/src/modules/organizations/organization.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/organizations/:id/lifecycle",
+      "v2Path": "/api/v2/organizations/:id/lifecycle",
+      "source": "hrms/back-end/src/modules/organizations/organization.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/organizations/:id/payroll-clear",
+      "v2Path": "/api/v2/organizations/:id/payroll-clear",
+      "source": "hrms/back-end/src/modules/organizations/organization.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/roles",
+      "v2Path": "/api/v2/roles",
+      "source": "hrms/back-end/src/modules/roles/role.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/roles/:id",
+      "v2Path": "/api/v2/roles/:id",
+      "source": "hrms/back-end/src/modules/roles/role.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/roles/:id",
+      "v2Path": "/api/v2/roles/:id",
+      "source": "hrms/back-end/src/modules/roles/role.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/roles",
+      "v2Path": "/api/v2/roles",
+      "source": "hrms/back-end/src/modules/roles/role.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/roles/:id",
+      "v2Path": "/api/v2/roles/:id",
+      "source": "hrms/back-end/src/modules/roles/role.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/roles/switch",
+      "v2Path": "/api/v2/roles/switch",
+      "source": "hrms/back-end/src/modules/roles/role.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/permissions",
+      "v2Path": "/api/v2/permissions",
+      "source": "hrms/back-end/src/modules/permissions/permission.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/employees",
+      "v2Path": "/api/v2/employees",
+      "source": "hrms/back-end/src/modules/employees/employee.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/employees/me/profile",
+      "v2Path": "/api/v2/employees/me/profile",
+      "source": "hrms/back-end/src/modules/employees/employee.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/employees",
+      "v2Path": "/api/v2/employees",
+      "source": "hrms/back-end/src/modules/employees/employee.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/employees/export",
+      "v2Path": "/api/v2/employees/export",
+      "source": "hrms/back-end/src/modules/employees/employee.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/employees/next-code",
+      "v2Path": "/api/v2/employees/next-code",
+      "source": "hrms/back-end/src/modules/employees/employee.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/employees/leave-types",
+      "v2Path": "/api/v2/employees/leave-types",
+      "source": "hrms/back-end/src/modules/employees/employee.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/employees/upcoming-events",
+      "v2Path": "/api/v2/employees/upcoming-events",
+      "source": "hrms/back-end/src/modules/employees/employee.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/employees/me",
+      "v2Path": "/api/v2/employees/me",
+      "source": "hrms/back-end/src/modules/employees/employee.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/employees/bulk-update",
+      "v2Path": "/api/v2/employees/bulk-update",
+      "source": "hrms/back-end/src/modules/employees/employee.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/employees/:id",
+      "v2Path": "/api/v2/employees/:id",
+      "source": "hrms/back-end/src/modules/employees/employee.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/employees/:id",
+      "v2Path": "/api/v2/employees/:id",
+      "source": "hrms/back-end/src/modules/employees/employee.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/employees/:id/lifecycle-action",
+      "v2Path": "/api/v2/employees/:id/lifecycle-action",
+      "source": "hrms/back-end/src/modules/employees/employee.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/employees/:id/reopen-profile",
+      "v2Path": "/api/v2/employees/:id/reopen-profile",
+      "source": "hrms/back-end/src/modules/employees/employee.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/employees/:id",
+      "v2Path": "/api/v2/employees/:id",
+      "source": "hrms/back-end/src/modules/employees/employee.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/agents/me",
+      "v2Path": "/api/v2/agents/me",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/agents/screenshots",
+      "v2Path": "/api/v2/agents/screenshots",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/agents/monitor-settings/cloudinary",
+      "v2Path": "/api/v2/agents/monitor-settings/cloudinary",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/agents/cloudinary",
+      "v2Path": "/api/v2/agents/cloudinary",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/agents/monitor-settings/cloudinary",
+      "v2Path": "/api/v2/agents/monitor-settings/cloudinary",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/agents/cloudinary",
+      "v2Path": "/api/v2/agents/cloudinary",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/agents/cloudinary",
+      "v2Path": "/api/v2/agents/cloudinary",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/agents/monitor-settings/cloudinary/test",
+      "v2Path": "/api/v2/agents/monitor-settings/cloudinary/test",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/agents/cloudinary/test",
+      "v2Path": "/api/v2/agents/cloudinary/test",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/agents/monitor-settings/cloudinary/upload-config",
+      "v2Path": "/api/v2/agents/monitor-settings/cloudinary/upload-config",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/agents/cloudinary/upload-config",
+      "v2Path": "/api/v2/agents/cloudinary/upload-config",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/agents/monitor-settings/usb/control-config",
+      "v2Path": "/api/v2/agents/monitor-settings/usb/control-config",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/agents/usb/control-config",
+      "v2Path": "/api/v2/agents/usb/control-config",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/agents/cloudinary/upload-config",
+      "v2Path": "/api/v2/agents/cloudinary/upload-config",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/agents/screenshot-batches/uploads",
+      "v2Path": "/api/v2/agents/screenshot-batches/uploads",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/agents/screenshot-batches/:batchId/complete",
+      "v2Path": "/api/v2/agents/screenshot-batches/:batchId/complete",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/agents/health",
+      "v2Path": "/api/v2/agents/health",
+      "source": "hrms/back-end/src/modules/agent/agent.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/monitor/releases",
+      "v2Path": "/api/v2/monitor/releases",
+      "source": "hrms/back-end/src/modules/monitorUpdates/monitorUpdates.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/monitor/releases",
+      "v2Path": "/api/v2/monitor/releases",
+      "source": "hrms/back-end/src/modules/monitorUpdates/monitorUpdates.routes.js"
+    },
+    {
+      "method": "PATCH",
+      "v1Path": "/api/v1/monitor/releases/:releaseId",
+      "v2Path": "/api/v2/monitor/releases/:releaseId",
+      "source": "hrms/back-end/src/modules/monitorUpdates/monitorUpdates.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/monitor/update/latest",
+      "v2Path": "/api/v2/monitor/update/latest",
+      "source": "hrms/back-end/src/modules/monitorUpdates/monitorUpdates.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/monitor/update/status",
+      "v2Path": "/api/v2/monitor/update/status",
+      "source": "hrms/back-end/src/modules/monitorUpdates/monitorUpdates.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/departments",
+      "v2Path": "/api/v2/departments",
+      "source": "hrms/back-end/src/modules/departments/department.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/departments/:id",
+      "v2Path": "/api/v2/departments/:id",
+      "source": "hrms/back-end/src/modules/departments/department.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/departments/:id",
+      "v2Path": "/api/v2/departments/:id",
+      "source": "hrms/back-end/src/modules/departments/department.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/departments/:id",
+      "v2Path": "/api/v2/departments/:id",
+      "source": "hrms/back-end/src/modules/departments/department.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/departments",
+      "v2Path": "/api/v2/departments",
+      "source": "hrms/back-end/src/modules/departments/department.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/designations",
+      "v2Path": "/api/v2/designations",
+      "source": "hrms/back-end/src/modules/designations/designation.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/designations/:id",
+      "v2Path": "/api/v2/designations/:id",
+      "source": "hrms/back-end/src/modules/designations/designation.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/designations/:id",
+      "v2Path": "/api/v2/designations/:id",
+      "source": "hrms/back-end/src/modules/designations/designation.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/designations",
+      "v2Path": "/api/v2/designations",
+      "source": "hrms/back-end/src/modules/designations/designation.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/leave-types",
+      "v2Path": "/api/v2/leave-types",
+      "source": "hrms/back-end/src/modules/leaveTypes/leaveType.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/leave-types",
+      "v2Path": "/api/v2/leave-types",
+      "source": "hrms/back-end/src/modules/leaveTypes/leaveType.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/leave-types/:id",
+      "v2Path": "/api/v2/leave-types/:id",
+      "source": "hrms/back-end/src/modules/leaveTypes/leaveType.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/leave-types/:id",
+      "v2Path": "/api/v2/leave-types/:id",
+      "source": "hrms/back-end/src/modules/leaveTypes/leaveType.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/leaves/apply",
+      "v2Path": "/api/v2/leaves/apply",
+      "source": "hrms/back-end/src/modules/leaves/leave.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/leaves/my",
+      "v2Path": "/api/v2/leaves/my",
+      "source": "hrms/back-end/src/modules/leaves/leave.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/leaves/my-range",
+      "v2Path": "/api/v2/leaves/my-range",
+      "source": "hrms/back-end/src/modules/leaves/leave.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/leaves/apply-context",
+      "v2Path": "/api/v2/leaves/apply-context",
+      "source": "hrms/back-end/src/modules/leaves/leave.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/leaves",
+      "v2Path": "/api/v2/leaves",
+      "source": "hrms/back-end/src/modules/leaves/leave.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/leaves/pending/my-approvals",
+      "v2Path": "/api/v2/leaves/pending/my-approvals",
+      "source": "hrms/back-end/src/modules/leaves/leave.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/leaves/:id/action",
+      "v2Path": "/api/v2/leaves/:id/action",
+      "source": "hrms/back-end/src/modules/leaves/leave.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/leaves/:id/revert-request",
+      "v2Path": "/api/v2/leaves/:id/revert-request",
+      "source": "hrms/back-end/src/modules/leaves/leave.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/leaves/:id/revert-request/action",
+      "v2Path": "/api/v2/leaves/:id/revert-request/action",
+      "source": "hrms/back-end/src/modules/leaves/leave.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/holidays",
+      "v2Path": "/api/v2/holidays",
+      "source": "hrms/back-end/src/modules/holidays/holiday.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/holidays",
+      "v2Path": "/api/v2/holidays",
+      "source": "hrms/back-end/src/modules/holidays/holiday.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/holidays/:id",
+      "v2Path": "/api/v2/holidays/:id",
+      "source": "hrms/back-end/src/modules/holidays/holiday.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/holidays/:id",
+      "v2Path": "/api/v2/holidays/:id",
+      "source": "hrms/back-end/src/modules/holidays/holiday.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/week-offs",
+      "v2Path": "/api/v2/week-offs",
+      "source": "hrms/back-end/src/modules/weekOffs/weekOff.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/week-offs/all",
+      "v2Path": "/api/v2/week-offs/all",
+      "source": "hrms/back-end/src/modules/weekOffs/weekOff.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/week-offs",
+      "v2Path": "/api/v2/week-offs",
+      "source": "hrms/back-end/src/modules/weekOffs/weekOff.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/shifts",
+      "v2Path": "/api/v2/shifts",
+      "source": "hrms/back-end/src/modules/shifts/shift.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/shifts",
+      "v2Path": "/api/v2/shifts",
+      "source": "hrms/back-end/src/modules/shifts/shift.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/shifts/my",
+      "v2Path": "/api/v2/shifts/my",
+      "source": "hrms/back-end/src/modules/shifts/shift.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/shifts/:id",
+      "v2Path": "/api/v2/shifts/:id",
+      "source": "hrms/back-end/src/modules/shifts/shift.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/shifts/:id",
+      "v2Path": "/api/v2/shifts/:id",
+      "source": "hrms/back-end/src/modules/shifts/shift.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/approval-flows",
+      "v2Path": "/api/v2/approval-flows",
+      "source": "hrms/back-end/src/modules/approvalFlows/approvalFlow.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/approval-flows",
+      "v2Path": "/api/v2/approval-flows",
+      "source": "hrms/back-end/src/modules/approvalFlows/approvalFlow.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/approval-flows/:id",
+      "v2Path": "/api/v2/approval-flows/:id",
+      "source": "hrms/back-end/src/modules/approvalFlows/approvalFlow.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/approval-flows/:id",
+      "v2Path": "/api/v2/approval-flows/:id",
+      "source": "hrms/back-end/src/modules/approvalFlows/approvalFlow.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/leave-balances/my",
+      "v2Path": "/api/v2/leave-balances/my",
+      "source": "hrms/back-end/src/modules/leaveBalances/leaveBalance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/leave-balances/employee/:employeeId",
+      "v2Path": "/api/v2/leave-balances/employee/:employeeId",
+      "source": "hrms/back-end/src/modules/leaveBalances/leaveBalance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/leave-balances/employee/:employeeId/adjust",
+      "v2Path": "/api/v2/leave-balances/employee/:employeeId/adjust",
+      "source": "hrms/back-end/src/modules/leaveBalances/leaveBalance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/leave-balances/adjust-all",
+      "v2Path": "/api/v2/leave-balances/adjust-all",
+      "source": "hrms/back-end/src/modules/leaveBalances/leaveBalance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/timesheets/check-in",
+      "v2Path": "/api/v2/timesheets/check-in",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/timesheets/check-out",
+      "v2Path": "/api/v2/timesheets/check-out",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/timesheets/attendance/my",
+      "v2Path": "/api/v2/timesheets/attendance/my",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/timesheets/attendance",
+      "v2Path": "/api/v2/timesheets/attendance",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/timesheets/attendance/matrix",
+      "v2Path": "/api/v2/timesheets/attendance/matrix",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/timesheets/attendance/matrix/my",
+      "v2Path": "/api/v2/timesheets/attendance/matrix/my",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/timesheets/attendance/matrix/history",
+      "v2Path": "/api/v2/timesheets/attendance/matrix/history",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/timesheets/attendance/matrix/history/my",
+      "v2Path": "/api/v2/timesheets/attendance/matrix/history/my",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/timesheets/attendance/matrix/:employeeId",
+      "v2Path": "/api/v2/timesheets/attendance/matrix/:employeeId",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/timesheets/attendance/matrix/bulk",
+      "v2Path": "/api/v2/timesheets/attendance/matrix/bulk",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/timesheets/attendance/matrix/custom-bulk",
+      "v2Path": "/api/v2/timesheets/attendance/matrix/custom-bulk",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/timesheets/attendance/matrix/lock-month",
+      "v2Path": "/api/v2/timesheets/attendance/matrix/lock-month",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/timesheets/attendance/requests/my",
+      "v2Path": "/api/v2/timesheets/attendance/requests/my",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/timesheets/attendance/requests/defaults/my",
+      "v2Path": "/api/v2/timesheets/attendance/requests/defaults/my",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/timesheets/attendance/requests/my",
+      "v2Path": "/api/v2/timesheets/attendance/requests/my",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/timesheets/attendance/requests",
+      "v2Path": "/api/v2/timesheets/attendance/requests",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/timesheets/attendance/requests/pending/my-approvals",
+      "v2Path": "/api/v2/timesheets/attendance/requests/pending/my-approvals",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/timesheets/attendance/requests/:id/action",
+      "v2Path": "/api/v2/timesheets/attendance/requests/:id/action",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/timesheets/checkin-policy",
+      "v2Path": "/api/v2/timesheets/checkin-policy",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/timesheets/online",
+      "v2Path": "/api/v2/timesheets/online",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/timesheets/on-leave",
+      "v2Path": "/api/v2/timesheets/on-leave",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/timesheets/weekly",
+      "v2Path": "/api/v2/timesheets/weekly",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/timesheets/weekly/my",
+      "v2Path": "/api/v2/timesheets/weekly/my",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/timesheets/weekly/:id",
+      "v2Path": "/api/v2/timesheets/weekly/:id",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/timesheets/weekly/:id/submit",
+      "v2Path": "/api/v2/timesheets/weekly/:id/submit",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/timesheets/weekly/:id/recall",
+      "v2Path": "/api/v2/timesheets/weekly/:id/recall",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/timesheets/weekly",
+      "v2Path": "/api/v2/timesheets/weekly",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/timesheets/weekly/:id/action",
+      "v2Path": "/api/v2/timesheets/weekly/:id/action",
+      "source": "hrms/back-end/src/modules/timesheets/timesheet.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/org-settings/theme",
+      "v2Path": "/api/v2/org-settings/theme",
+      "source": "hrms/back-end/src/modules/orgSettings/orgSettings.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/org-settings/theme",
+      "v2Path": "/api/v2/org-settings/theme",
+      "source": "hrms/back-end/src/modules/orgSettings/orgSettings.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/org-settings",
+      "v2Path": "/api/v2/org-settings",
+      "source": "hrms/back-end/src/modules/orgSettings/orgSettings.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/org-settings",
+      "v2Path": "/api/v2/org-settings",
+      "source": "hrms/back-end/src/modules/orgSettings/orgSettings.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/organization-documents/catalog",
+      "v2Path": "/api/v2/organization-documents/catalog",
+      "source": "hrms/back-end/src/modules/organizationDocuments/organizationDocuments.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/organization-documents/summary",
+      "v2Path": "/api/v2/organization-documents/summary",
+      "source": "hrms/back-end/src/modules/organizationDocuments/organizationDocuments.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/organization-documents/reports/missing",
+      "v2Path": "/api/v2/organization-documents/reports/missing",
+      "source": "hrms/back-end/src/modules/organizationDocuments/organizationDocuments.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/organization-documents/reports/expiring-soon",
+      "v2Path": "/api/v2/organization-documents/reports/expiring-soon",
+      "source": "hrms/back-end/src/modules/organizationDocuments/organizationDocuments.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/organization-documents",
+      "v2Path": "/api/v2/organization-documents",
+      "source": "hrms/back-end/src/modules/organizationDocuments/organizationDocuments.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/organization-documents/upload",
+      "v2Path": "/api/v2/organization-documents/upload",
+      "source": "hrms/back-end/src/modules/organizationDocuments/organizationDocuments.routes.js"
+    },
+    {
+      "method": "PATCH",
+      "v1Path": "/api/v1/organization-documents/:id",
+      "v2Path": "/api/v2/organization-documents/:id",
+      "source": "hrms/back-end/src/modules/organizationDocuments/organizationDocuments.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/organization-documents/:id/access",
+      "v2Path": "/api/v2/organization-documents/:id/access",
+      "source": "hrms/back-end/src/modules/organizationDocuments/organizationDocuments.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/organization-documents/:id/preview",
+      "v2Path": "/api/v2/organization-documents/:id/preview",
+      "source": "hrms/back-end/src/modules/organizationDocuments/organizationDocuments.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/organization-documents/:id/download",
+      "v2Path": "/api/v2/organization-documents/:id/download",
+      "source": "hrms/back-end/src/modules/organizationDocuments/organizationDocuments.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/organization-documents/:id",
+      "v2Path": "/api/v2/organization-documents/:id",
+      "source": "hrms/back-end/src/modules/organizationDocuments/organizationDocuments.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/notifications/my",
+      "v2Path": "/api/v2/notifications/my",
+      "source": "hrms/back-end/src/modules/notifications/notification.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/notifications/unread-count",
+      "v2Path": "/api/v2/notifications/unread-count",
+      "source": "hrms/back-end/src/modules/notifications/notification.routes.js"
+    },
+    {
+      "method": "PATCH",
+      "v1Path": "/api/v1/notifications/:id/read",
+      "v2Path": "/api/v2/notifications/:id/read",
+      "source": "hrms/back-end/src/modules/notifications/notification.routes.js"
+    },
+    {
+      "method": "PATCH",
+      "v1Path": "/api/v1/notifications/read-all",
+      "v2Path": "/api/v2/notifications/read-all",
+      "source": "hrms/back-end/src/modules/notifications/notification.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/expenses",
+      "v2Path": "/api/v2/expenses",
+      "source": "hrms/back-end/src/modules/expenses/expense.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/expenses",
+      "v2Path": "/api/v2/expenses",
+      "source": "hrms/back-end/src/modules/expenses/expense.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/expenses/summary",
+      "v2Path": "/api/v2/expenses/summary",
+      "source": "hrms/back-end/src/modules/expenses/expense.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/expenses/employees",
+      "v2Path": "/api/v2/expenses/employees",
+      "source": "hrms/back-end/src/modules/expenses/expense.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/expenses/upload-receipt",
+      "v2Path": "/api/v2/expenses/upload-receipt",
+      "source": "hrms/back-end/src/modules/expenses/expense.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/expenses/vendors",
+      "v2Path": "/api/v2/expenses/vendors",
+      "source": "hrms/back-end/src/modules/expenses/expense.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/expenses/vendors",
+      "v2Path": "/api/v2/expenses/vendors",
+      "source": "hrms/back-end/src/modules/expenses/expense.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/expenses/vendors/:vendorId",
+      "v2Path": "/api/v2/expenses/vendors/:vendorId",
+      "source": "hrms/back-end/src/modules/expenses/expense.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/expenses/vendors/:vendorId",
+      "v2Path": "/api/v2/expenses/vendors/:vendorId",
+      "source": "hrms/back-end/src/modules/expenses/expense.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/expenses/:id",
+      "v2Path": "/api/v2/expenses/:id",
+      "source": "hrms/back-end/src/modules/expenses/expense.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/expenses/:id",
+      "v2Path": "/api/v2/expenses/:id",
+      "source": "hrms/back-end/src/modules/expenses/expense.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/expenses/:id/action",
+      "v2Path": "/api/v2/expenses/:id/action",
+      "source": "hrms/back-end/src/modules/expenses/expense.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/expenses/:id/reimbursement",
+      "v2Path": "/api/v2/expenses/:id/reimbursement",
+      "source": "hrms/back-end/src/modules/expenses/expense.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/expenses/:id/restore",
+      "v2Path": "/api/v2/expenses/:id/restore",
+      "source": "hrms/back-end/src/modules/expenses/expense.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/projects",
+      "v2Path": "/api/v2/projects",
+      "source": "hrms/back-end/src/modules/projects/project.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/projects",
+      "v2Path": "/api/v2/projects",
+      "source": "hrms/back-end/src/modules/projects/project.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/projects/employees",
+      "v2Path": "/api/v2/projects/employees",
+      "source": "hrms/back-end/src/modules/projects/project.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/projects/:id",
+      "v2Path": "/api/v2/projects/:id",
+      "source": "hrms/back-end/src/modules/projects/project.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/projects/:id",
+      "v2Path": "/api/v2/projects/:id",
+      "source": "hrms/back-end/src/modules/projects/project.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/projects/:id",
+      "v2Path": "/api/v2/projects/:id",
+      "source": "hrms/back-end/src/modules/projects/project.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/hiring/overview",
+      "v2Path": "/api/v2/hiring/overview",
+      "source": "hrms/back-end/src/modules/hiring/hiring.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/hiring/employees",
+      "v2Path": "/api/v2/hiring/employees",
+      "source": "hrms/back-end/src/modules/hiring/hiring.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/hiring/jobs",
+      "v2Path": "/api/v2/hiring/jobs",
+      "source": "hrms/back-end/src/modules/hiring/hiring.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/hiring/jobs",
+      "v2Path": "/api/v2/hiring/jobs",
+      "source": "hrms/back-end/src/modules/hiring/hiring.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/hiring/jobs/:id",
+      "v2Path": "/api/v2/hiring/jobs/:id",
+      "source": "hrms/back-end/src/modules/hiring/hiring.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/hiring/jobs/:id",
+      "v2Path": "/api/v2/hiring/jobs/:id",
+      "source": "hrms/back-end/src/modules/hiring/hiring.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/hiring/candidates",
+      "v2Path": "/api/v2/hiring/candidates",
+      "source": "hrms/back-end/src/modules/hiring/hiring.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/hiring/candidates",
+      "v2Path": "/api/v2/hiring/candidates",
+      "source": "hrms/back-end/src/modules/hiring/hiring.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/hiring/candidates/:id",
+      "v2Path": "/api/v2/hiring/candidates/:id",
+      "source": "hrms/back-end/src/modules/hiring/hiring.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/hiring/candidates/:id/stage",
+      "v2Path": "/api/v2/hiring/candidates/:id/stage",
+      "source": "hrms/back-end/src/modules/hiring/hiring.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/hiring/candidates/:id/release-offer-letter",
+      "v2Path": "/api/v2/hiring/candidates/:id/release-offer-letter",
+      "source": "hrms/back-end/src/modules/hiring/hiring.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/hiring/candidates/:id/send-rejection-email",
+      "v2Path": "/api/v2/hiring/candidates/:id/send-rejection-email",
+      "source": "hrms/back-end/src/modules/hiring/hiring.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/hiring/candidates/:id/convert-to-employee",
+      "v2Path": "/api/v2/hiring/candidates/:id/convert-to-employee",
+      "source": "hrms/back-end/src/modules/hiring/hiring.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/hiring/candidates/:id/interviews",
+      "v2Path": "/api/v2/hiring/candidates/:id/interviews",
+      "source": "hrms/back-end/src/modules/hiring/hiring.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/hiring/candidates/:id/interviews/:interviewId/feedback",
+      "v2Path": "/api/v2/hiring/candidates/:id/interviews/:interviewId/feedback",
+      "source": "hrms/back-end/src/modules/hiring/hiring.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/hiring/candidates/:id",
+      "v2Path": "/api/v2/hiring/candidates/:id",
+      "source": "hrms/back-end/src/modules/hiring/hiring.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/dashboard/summary",
+      "v2Path": "/api/v2/dashboard/summary",
+      "source": "hrms/back-end/src/modules/dashboard/dashboard.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/settings",
+      "v2Path": "/api/v2/payroll/settings",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/pay-groups",
+      "v2Path": "/api/v2/payroll/pay-groups",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/pay-groups/:payGroupId",
+      "v2Path": "/api/v2/payroll/pay-groups/:payGroupId",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/pay-groups",
+      "v2Path": "/api/v2/payroll/pay-groups",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/payroll/pay-groups/:payGroupId",
+      "v2Path": "/api/v2/payroll/pay-groups/:payGroupId",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/payroll/pay-groups/:payGroupId",
+      "v2Path": "/api/v2/payroll/pay-groups/:payGroupId",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/payroll/settings",
+      "v2Path": "/api/v2/payroll/settings",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/setup/bootstrap",
+      "v2Path": "/api/v2/payroll/setup/bootstrap",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/setup/save",
+      "v2Path": "/api/v2/payroll/setup/save",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/salary-components",
+      "v2Path": "/api/v2/payroll/salary-components",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/salary-components",
+      "v2Path": "/api/v2/payroll/salary-components",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/salary-components/:id",
+      "v2Path": "/api/v2/payroll/salary-components/:id",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/payroll/salary-components/:id",
+      "v2Path": "/api/v2/payroll/salary-components/:id",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/payroll/salary-components/:id",
+      "v2Path": "/api/v2/payroll/salary-components/:id",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/employee-profiles",
+      "v2Path": "/api/v2/payroll/employee-profiles",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/employee-profiles",
+      "v2Path": "/api/v2/payroll/employee-profiles",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/bank-details/lookup/by-account",
+      "v2Path": "/api/v2/payroll/bank-details/lookup/by-account",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/bank-details/lookup/by-ifsc/:ifscCode",
+      "v2Path": "/api/v2/payroll/bank-details/lookup/by-ifsc/:ifscCode",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/employee-profiles/:profileId",
+      "v2Path": "/api/v2/payroll/employee-profiles/:profileId",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/payroll/employee-profiles/:profileId",
+      "v2Path": "/api/v2/payroll/employee-profiles/:profileId",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/payroll/employee-profiles/:profileId",
+      "v2Path": "/api/v2/payroll/employee-profiles/:profileId",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/employee-profiles/:profileId/bank-details",
+      "v2Path": "/api/v2/payroll/employee-profiles/:profileId/bank-details",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/employee-profiles/:profileId/statutory-details",
+      "v2Path": "/api/v2/payroll/employee-profiles/:profileId/statutory-details",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/employee-profiles/:profileId/salary-structures",
+      "v2Path": "/api/v2/payroll/employee-profiles/:profileId/salary-structures",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "PUT",
+      "v1Path": "/api/v1/payroll/salary-structures/:salaryStructureId",
+      "v2Path": "/api/v2/payroll/salary-structures/:salaryStructureId",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "DELETE",
+      "v1Path": "/api/v1/payroll/salary-structures/:salaryStructureId",
+      "v2Path": "/api/v2/payroll/salary-structures/:salaryStructureId",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/runs",
+      "v2Path": "/api/v2/payroll/runs",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/runs",
+      "v2Path": "/api/v2/payroll/runs",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/runs/:runId",
+      "v2Path": "/api/v2/payroll/runs/:runId",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/runs/:runId/preview",
+      "v2Path": "/api/v2/payroll/runs/:runId/preview",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/runs/:runId/employee-breakdown",
+      "v2Path": "/api/v2/payroll/runs/:runId/employee-breakdown",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/attendance-snapshots/generate",
+      "v2Path": "/api/v2/payroll/attendance-snapshots/generate",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/attendance-snapshots",
+      "v2Path": "/api/v2/payroll/attendance-snapshots",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/runs/:runId/compute",
+      "v2Path": "/api/v2/payroll/runs/:runId/compute",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/runs/:runId/recompute",
+      "v2Path": "/api/v2/payroll/runs/:runId/recompute",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/runs/:runId/submit",
+      "v2Path": "/api/v2/payroll/runs/:runId/submit",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/runs/:runId/approve",
+      "v2Path": "/api/v2/payroll/runs/:runId/approve",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/runs/:runId/reject",
+      "v2Path": "/api/v2/payroll/runs/:runId/reject",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/runs/:runId/lock",
+      "v2Path": "/api/v2/payroll/runs/:runId/lock",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/runs/:runId/reopen",
+      "v2Path": "/api/v2/payroll/runs/:runId/reopen",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/runs/:runId/audit",
+      "v2Path": "/api/v2/payroll/runs/:runId/audit",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/runs/:runId/payslips/:employeeExternalId",
+      "v2Path": "/api/v2/payroll/runs/:runId/payslips/:employeeExternalId",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/payslips/monthly",
+      "v2Path": "/api/v2/payroll/payslips/monthly",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/payslips/my/monthly",
+      "v2Path": "/api/v2/payroll/payslips/my/monthly",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/payslips/my/months",
+      "v2Path": "/api/v2/payroll/payslips/my/months",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/payslips/my/runs",
+      "v2Path": "/api/v2/payroll/payslips/my/runs",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/payslips/my/runs/:runId",
+      "v2Path": "/api/v2/payroll/payslips/my/runs/:runId",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/reports/payroll-register",
+      "v2Path": "/api/v2/payroll/reports/payroll-register",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/reports/bank-transfer-export",
+      "v2Path": "/api/v2/payroll/reports/bank-transfer-export",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/reports/deduction-summary",
+      "v2Path": "/api/v2/payroll/reports/deduction-summary",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/reports/employer-contribution-summary",
+      "v2Path": "/api/v2/payroll/reports/employer-contribution-summary",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/payroll/reports/cost-center-totals",
+      "v2Path": "/api/v2/payroll/reports/cost-center-totals",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/payroll/runs/:runId/validate",
+      "v2Path": "/api/v2/payroll/runs/:runId/validate",
+      "source": "hrms/back-end/src/modules/payroll/payrollAttendance.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/activity/laptop-health",
+      "v2Path": "/api/v2/activity/laptop-health",
+      "source": "hrms/back-end/src/modules/activity/activity.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/activity/employees",
+      "v2Path": "/api/v2/activity/employees",
+      "source": "hrms/back-end/src/modules/activity/activity.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/activity/apps",
+      "v2Path": "/api/v2/activity/apps",
+      "source": "hrms/back-end/src/modules/activity/activity.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/activity/app-key-usage",
+      "v2Path": "/api/v2/activity/app-key-usage",
+      "source": "hrms/back-end/src/modules/activity/activity.routes.js"
+    },
+    {
+      "method": "GET",
+      "v1Path": "/api/v1/activity/browser-history",
+      "v2Path": "/api/v2/activity/browser-history",
+      "source": "hrms/back-end/src/modules/activity/activity.routes.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/notifications/device-token/register",
+      "v2Path": "/api/v2/notifications/device-token/register",
+      "source": "hrms/back-end/src/integrations/fcm/index.js"
+    },
+    {
+      "method": "POST",
+      "v1Path": "/api/v1/notifications/device-token/unregister",
+      "v2Path": "/api/v2/notifications/device-token/unregister",
+      "source": "hrms/back-end/src/integrations/fcm/index.js"
+    }
+  ]
+}
