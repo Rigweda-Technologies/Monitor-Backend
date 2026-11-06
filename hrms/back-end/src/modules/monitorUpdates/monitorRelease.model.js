@@ -8,6 +8,11 @@ const monitorReleaseSchema = new mongoose.Schema(
     r2ObjectKey: { type: String, required: true, trim: true },
     sha256: { type: String, required: true, trim: true },
     fileSize: { type: Number, required: true },
+    artifactType: {
+      type: String,
+      enum: ["executable", "package"],
+      default: "executable"
+    },
     mandatory: { type: Boolean, default: false },
     status: {
       type: String,
