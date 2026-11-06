@@ -6,7 +6,7 @@ const Organization = require("../modules/organizations/organization.model");
 const OrgUser = require("../modules/organizations/org-user.model");
 const Employee = require("../modules/employees/employee.model");
 
-const SUPERADMIN_EMAIL = String(process.env.SUPERADMIN_EMAIL || "superadmin@luvetha.com").toLowerCase().trim();
+const SUPERADMIN_EMAIL = String(process.env.SUPERADMIN_EMAIL || "superadmin@rigweda.com").toLowerCase().trim();
 
 const resolveSystemOrgId = async () => {
   if (process.env.SYSTEM_ORG_ID) return String(process.env.SYSTEM_ORG_ID);

@@ -133,7 +133,7 @@ module.exports = {
         properties: {
           email: {
             type: "string",
-            example: "superadmin@luvetha.com"
+            example: "superadmin@rigweda.com"
           },
           password: {
             type: "string",
